@@ -45,11 +45,6 @@ public class EnemyController : MonoBehaviour {
 		
 		if (health <= 0) {
 			Destroy(gameObject);
-			
-			// if Player made the kill, award full xp
-			//if (attacker == Game.Player.transform) Game.Player.ReceiveXP(xpGain);
-			// else award half xp?
-			//else Game.Player.ReceiveXP(Mathf.RoundToInt(xpGain/2));
 		}
 	}
 }

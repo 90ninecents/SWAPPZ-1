@@ -25,6 +25,8 @@ public class Boid : MonoBehaviour {
 		foreach (SteeringBehaviour s in transform.GetComponents<SteeringBehaviour>()) {
 			behaviours.Add(s);
 		}
+		
+		currentSpeed = maxSpeed;
 	}
 	
 	public void AddBehaviour(SteeringBehaviour b) {
@@ -62,7 +64,7 @@ public class Boid : MonoBehaviour {
 		if (!falling) {
 			Vector3 combinedSteering = new Vector3();
 			
-			foreach (SteeringBehaviour b in behaviours) {			
+			foreach (SteeringBehaviour b in behaviours) {
 				combinedSteering += b.CalculateSteering(transform.position);
 			}
 			

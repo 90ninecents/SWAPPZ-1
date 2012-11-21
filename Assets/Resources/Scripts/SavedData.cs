@@ -14,6 +14,8 @@ public class SavedData {
 	private static string numAllowedItems = "NumAllowedItems";
 	private static string numAllowedCompanions = "NumAllowedCompanions";
 	
+	private static string currentLevel = "CurLevel";
+	
 	public static string Inventory {
 		get { return PlayerPrefs.GetString(SavedData.inventory); }
 		set { PlayerPrefs.SetString(SavedData.inventory, value); }
@@ -36,7 +38,6 @@ public class SavedData {
 	
 	public static string Separator { get { return separator; } }
 	
-	
 	public static int NumAllowedItems {
 		get { return PlayerPrefs.GetInt(SavedData.numAllowedItems); }
 		set { PlayerPrefs.SetInt(SavedData.numAllowedItems, value); }
@@ -45,5 +46,10 @@ public class SavedData {
 	public static int NumAllowedCompanions {
 		get { return PlayerPrefs.GetInt(SavedData.numAllowedCompanions); }
 		set { PlayerPrefs.SetInt(SavedData.numAllowedCompanions, value); }
+	}
+	
+	public static string CurrentLevel {
+		get { return PlayerPrefs.GetString(SavedData.currentLevel); }
+		set { PlayerPrefs.SetString(SavedData.currentLevel, value); }
 	}
 }
