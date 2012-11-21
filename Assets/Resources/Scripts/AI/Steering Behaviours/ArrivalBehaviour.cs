@@ -4,7 +4,7 @@ using System.Collections;
 public class ArrivalBehaviour : SteeringBehaviour {
 	public Vector3 targetPoint;
 	public Transform targetObject;
-	public float stoppingRadius = 50.0f;			// Distance from target before slowing to a stop
+	public float stoppingRadius = 50.0f;			// Distance from target before stopping
 	
 	public void SetSeekTargetPoint(Vector3 point) {
 		targetPoint = point;
@@ -28,6 +28,7 @@ public class ArrivalBehaviour : SteeringBehaviour {
 		if (diff.magnitude > stoppingRadius) {
 			steering = new Vector3(targetPoint.x - pos.x, 0, targetPoint.z - pos.z).normalized;
 		}
+		
 		
 		return steering*weight;
 	}

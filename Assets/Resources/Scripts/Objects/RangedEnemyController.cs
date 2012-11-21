@@ -16,11 +16,9 @@ public class RangedEnemyController : EnemyController {
 	}
 	
 	protected override void Attack() {
-		//if (arrivalComponent.targetObject == Game.Player.transform) Game.Player.TakeDamage(strength);
-		//else arrivalComponent.targetObject.GetComponent<CompanionController>().TakeDamage(strength);
 		GameObject go = Instantiate(projectile) as GameObject;
-		go.transform.position = transform.position+(transform.forward*5);
-		go.GetComponent<Projectile>().Launch(projectileSpeed, transform.forward, attackReach);
+		go.transform.position = transform.position+(transform.forward*transform.localScale.z)+new Vector3(0,10,0);
+		go.GetComponent<Projectile>().Launch(projectileSpeed, transform.forward, strength, attackReach);
 		
 		cooling = true;
 		Invoke("Cooldown", attackCooldown);

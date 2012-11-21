@@ -26,8 +26,13 @@ public class EnemyController : MonoBehaviour {
 		if (!cooling && (transform.position-arrivalComponent.targetObject.position).magnitude <= attackRadius) {
 			Attack ();
 		}
+		
+		// rotate to face player at all times
 		else if (cooling) {
-			transform.rigidbody.rotation = Quaternion.LookRotation(arrivalComponent.targetObject.position-transform.position);
+			Vector3 aim = arrivalComponent.targetObject.position-transform.position;
+			aim.y = transform.position.y;
+			
+			transform.rotation = Quaternion.LookRotation(aim);
 		}
 	}
 	

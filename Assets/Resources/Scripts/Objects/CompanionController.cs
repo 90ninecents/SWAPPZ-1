@@ -2,10 +2,6 @@ using UnityEngine;
 using System.Collections;
 
 public class CompanionController : MonoBehaviour {
-//	public int health = 100;
-//	public int strength = 10;
-//	public float attackRadius = 25.0f;	// distance from target before attack can be made
-//	public int attackCooldown = 2;		// Seconds between attacks
 	
 	PlayerController pc;
 	Boid boidComponent;
@@ -93,10 +89,11 @@ public class CompanionController : MonoBehaviour {
 	}
 	
 	public void TakeDamage(int damage) {
-		health -= damage;
+		//health -= damage;
+		pc.TakeDamage(damage);
 		
-		if (health <= 0) {
-			Destroy(gameObject);
-		}
+		//if (health <= 0) {
+		//	Destroy(gameObject);
+		//}
 	}
 }
