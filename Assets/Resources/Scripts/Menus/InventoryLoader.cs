@@ -11,7 +11,7 @@ public class InventoryLoader : MonoBehaviour {
 		string debugInventory = "ItemNuke|ItemArmor|ItemHealth|ItemDamage|ItemSpeed|ItemSpinAttack|ItemNuke|ItemArmor|ItemHealth|ItemDamage|ItemSpeed|ItemSpinAttack";
 		SavedData.Inventory = debugInventory;
 		
-		string debugRoster = "Donatello|Raphael|Michelangelo|Leonardo|April|Splinter";
+		string debugRoster = "Donatello|Raphael|Michelangelo|Leonardo"; // |April|Splinter to come
 		SavedData.UnlockedCharacters = debugRoster;
 		// ----
 		

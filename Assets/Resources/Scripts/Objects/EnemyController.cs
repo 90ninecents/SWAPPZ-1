@@ -7,14 +7,15 @@ public class EnemyController : MonoBehaviour {
 	public float attackRadius = 25.0f;	// distance from target before attack can be made
 	public int attackCooldown = 2;		// Seconds between attacks
 	
-	ArrivalBehaviour arrivalComponent;
+	protected ArrivalBehaviour arrivalComponent;
 	
 	public int xpGain = 100;
 	
-	bool cooling = false;
+	protected bool cooling = false;
 	
 	void Start() {
 		arrivalComponent = transform.GetComponent<ArrivalBehaviour>();
+		arrivalComponent.stoppingRadius = attackRadius-5;
 	}
 	
 	void Update() {
@@ -22,16 +23,23 @@ public class EnemyController : MonoBehaviour {
 			arrivalComponent.targetObject = Game.Player.transform;
 		}
 		
-		if (!cooling && (transform.position-arrivalComponent.targetObject.position).magnitude <= attackRadius) {			
-			if (arrivalComponent.targetObject == Game.Player.transform) Game.Player.TakeDamage(strength);
-			else arrivalComponent.targetObject.GetComponent<CompanionController>().TakeDamage(strength);
-			
-			cooling = true;
-			Invoke("Cooldown", attackCooldown);
+		if (!cooling && (transform.position-arrivalComponent.targetObject.position).magnitude <= attackRadius) {
+			Attack ();
+		}
+		else if (cooling) {
+			transform.rigidbody.rotation = Quaternion.LookRotation(arrivalComponent.targetObject.position-transform.position);
 		}
 	}
 	
-	void Cooldown() {
+	protected virtual void Attack() {
+		if (arrivalComponent.targetObject == Game.Player.transform) Game.Player.TakeDamage(strength);
+		else arrivalComponent.targetObject.GetComponent<CompanionController>().TakeDamage(strength);
+		
+		cooling = true;
+		Invoke("Cooldown", attackCooldown);
+	}
+	
+	protected void Cooldown() {
 		cooling = false;
 	}
 	
