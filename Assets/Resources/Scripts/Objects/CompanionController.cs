@@ -43,7 +43,7 @@ public class CompanionController : MonoBehaviour {
 		boidComponent.GetBehaviour("ToPlayer").SetWeight(0);
 		boidComponent.GetBehaviour("ToTracker").SetWeight(1);
 	}
-	
+		
 	void Update() {
 		if (target == null) FindTarget();
 		

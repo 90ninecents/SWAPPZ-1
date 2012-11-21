@@ -12,7 +12,7 @@ public class RangedEnemyController : EnemyController {
 		arrivalComponent = transform.GetComponent<ArrivalBehaviour>();
 		//fleeComponent = transform.GetComponent<FleeBehaviour>();
 		
-		arrivalComponent.stoppingRadius = attackRadius-5;
+		//arrivalComponent.stoppingRadius = attackRadius-5;
 	}
 	
 	protected override void Attack() {

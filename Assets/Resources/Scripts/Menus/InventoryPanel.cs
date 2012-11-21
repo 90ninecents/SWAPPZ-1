@@ -98,79 +98,81 @@ public class InventoryPanel : MonoBehaviour {
 	void OnDraggingEnd(Vector2 point) {
 		// World coordinates
 		//Vector2 pos = new Vector2(point.x - Screen.width/2, point.y - Screen.height/2);
-		Vector2 pos = new Vector2(point.x - screenWidth/2, point.y - screenHeight/2);
-		
-		Ray ray = Camera.main.ScreenPointToRay(point);
-		RaycastHit[] hits = Physics.RaycastAll(ray, 1000);
+		if (Camera.main != null) {
+			Vector2 pos = new Vector2(point.x - screenWidth/2, point.y - screenHeight/2);
 			
-		
-		// if release occured inside this panel:
-		if (transform.renderer.bounds.Contains(new Vector3(pos.x, pos.y, transform.position.z))) {
-			Transform addItem = null;
-			int swapIndex = -1;
-			
-			foreach (RaycastHit hit in hits) {
-				// If release occured over a collider other than this panel's:
-				if (hit.transform != transform) {
-					// Find hit collider that matches new item (handles overlap with existing items)
-					bool go = true;
-					
-					
-					// Don't add anything under the touch event that is already part of this inventory panel
-					int count = 0;
-					foreach (Transform item in items) {
-						if (hit.transform == item) {
-							go = false;
-							//swapItem = item;
-							swapIndex = count;
-						}
-						count++;
-					}
-					
-					if (go && accepting) {
-						// Add dragged item to panel
-						addItem = hit.transform;
-					}
-				}
-			}
-			
-			if (addItem) {
-				int addIndex = AddItem(addItem);
+			Ray ray = Camera.main.ScreenPointToRay(point);
+			RaycastHit[] hits = Physics.RaycastAll(ray, 1000);
 				
-				if (swapIndex > -1 && addItem == lastRemoved) {
-					Transform swapItem = items[swapIndex];
-					
-					items[swapIndex] = addItem;
-					items[addIndex]  = swapItem;
-					
-					addItem.position  = new Vector3(slots[swapIndex].x, slots[swapIndex].y, addItem.position.z);
-					swapItem.position = new Vector3(slots[addIndex].x, slots[addIndex].y, swapItem.position.z);
+			
+			// if release occured inside this panel:
+			if (transform.renderer.bounds.Contains(new Vector3(pos.x, pos.y, transform.position.z))) {
+				Transform addItem = null;
+				int swapIndex = -1;
+				
+				foreach (RaycastHit hit in hits) {
+					// If release occured over a collider other than this panel's:
+					if (hit.transform != transform) {
+						// Find hit collider that matches new item (handles overlap with existing items)
+						bool go = true;
+						
+						
+						// Don't add anything under the touch event that is already part of this inventory panel
+						int count = 0;
+						foreach (Transform item in items) {
+							if (hit.transform == item) {
+								go = false;
+								//swapItem = item;
+								swapIndex = count;
+							}
+							count++;
+						}
+						
+						if (go && accepting) {
+							// Add dragged item to panel
+							addItem = hit.transform;
+						}
+					}
 				}
+				
+				if (addItem) {
+					int addIndex = AddItem(addItem);
+					
+					if (swapIndex > -1 && addItem == lastRemoved) {
+						Transform swapItem = items[swapIndex];
+						
+						items[swapIndex] = addItem;
+						items[addIndex]  = swapItem;
+						
+						addItem.position  = new Vector3(slots[swapIndex].x, slots[swapIndex].y, addItem.position.z);
+						swapItem.position = new Vector3(slots[addIndex].x, slots[addIndex].y, swapItem.position.z);
+					}
+				}
+				
+				accepting = false;
 			}
 			
-			accepting = false;
-		}
-		
-		// if release occured outside the panel and did not occur inside another (non-full) inventory panel, retrieve item
-		else if (lastRemoved != null) {
-			bool retrieve = true;
-			
-			foreach (RaycastHit hit in hits) {
-				InventoryPanel otherPanel = hit.transform.GetComponent<InventoryPanel>();
-				if (otherPanel != null) {
-					if (!otherPanel.IsFull || otherPanel.lastAdded == lastRemoved) {
-						foreach (Transform t in connections) {
-							if (t == otherPanel.transform) {
-								retrieve = false;
-								break;	
+			// if release occured outside the panel and did not occur inside another (non-full) inventory panel, retrieve item
+			else if (lastRemoved != null) {
+				bool retrieve = true;
+				
+				foreach (RaycastHit hit in hits) {
+					InventoryPanel otherPanel = hit.transform.GetComponent<InventoryPanel>();
+					if (otherPanel != null) {
+						if (!otherPanel.IsFull || otherPanel.lastAdded == lastRemoved) {
+							foreach (Transform t in connections) {
+								if (t == otherPanel.transform) {
+									retrieve = false;
+									break;	
+								}
 							}
 						}
 					}
 				}
+				
+				if (retrieve) AddItem(lastRemoved);
+				lastRemoved = null;
 			}
-			
-			if (retrieve) AddItem(lastRemoved);
-			lastRemoved = null;
 		}
 	}
 	

@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour {
 	
 	void Start() {
 		arrivalComponent = transform.GetComponent<ArrivalBehaviour>();
-		arrivalComponent.stoppingRadius = attackRadius-5;
+		//arrivalComponent.stoppingRadius = attackRadius-5;
 	}
 	
 	void Update() {
@@ -30,9 +30,9 @@ public class EnemyController : MonoBehaviour {
 		// rotate to face player at all times
 		else if (cooling) {
 			Vector3 aim = arrivalComponent.targetObject.position-transform.position;
-			aim.y = transform.position.y;
+			aim.y = 0;
 			
-			transform.rotation = Quaternion.LookRotation(aim);
+			transform.rigidbody.rotation = Quaternion.LookRotation(aim);
 		}
 	}
 	

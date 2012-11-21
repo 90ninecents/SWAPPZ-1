@@ -29,7 +29,6 @@ public class ArrivalBehaviour : SteeringBehaviour {
 			steering = new Vector3(targetPoint.x - pos.x, 0, targetPoint.z - pos.z).normalized;
 		}
 		
-		
 		return steering*weight;
 	}
 }

@@ -67,10 +67,12 @@ public class PlayerController : MonoBehaviour {
 		boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
 	}
 	
-	void OnTriggerEnter(Collider other) {		
-		Powerup pu = other.gameObject.GetComponent<Powerup>();
-		if (pu != null) {
-			CollectPowerup(pu);
+	void OnTriggerEnter(Collider other) {
+		if (enabled) {
+			Powerup pu = other.gameObject.GetComponent<Powerup>();
+			if (pu != null) {
+				CollectPowerup(pu);
+			}
 		}
 	}
 	
@@ -95,20 +97,24 @@ public class PlayerController : MonoBehaviour {
 				currentCombo = currentCombo.Remove(0,1);
 			}
 			
-			Ray ray = new Ray(transform.position, transform.forward);
+			// Check for object to be hit by attack
+			//Ray ray = new Ray(transform.position, transform.forward);
 			RaycastHit hit;
 			
-			if (Physics.Raycast(ray, out hit, attackRadius)) {
+			//if (Physics.Raycast(ray, out hit, attackRadius)) {
+			if (rigidbody.SweepTest(transform.forward, out hit, attackRadius)) {
 				EnemyController enemy = hit.collider.transform.GetComponent<EnemyController>();
 				BreakableObject obj = hit.collider.transform.GetComponent<BreakableObject>();
 				
+				// If enemy hit:
 				if (enemy != null) {
 					enemy.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), transform);
 					// Get XP on hit
 					ReceiveXP(enemy.xpGain);
-					
 				}
+				// If breakable object hit:
 				else if (obj != null) {
+					print ("hi");
 					obj.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier));
 				}
 			}

@@ -20,6 +20,7 @@ public class Game : MonoBehaviour {
 	// -----
 	
 	static List<GameObject> availablePowerups;
+	static PowerupSpawner[] powerupSpawners;
 	//static List<GameObject> companions;
 	static GUITexture[] uiList;
 	
@@ -56,22 +57,12 @@ public class Game : MonoBehaviour {
 			}
 		}
 		
-		
-		// Load chosen items
-		availablePowerups = new List<GameObject>();
-		
-		string[] items = SavedData.ItemLoadout.Split(SavedData.Separator[0]);
-		
-		foreach (string s in items) {
-			if (s.StartsWith("Powerup")) {
-				availablePowerups.Add(Resources.Load("Prefabs/In-Game Items/"+s) as GameObject);
-			}
-		}
+		powerupSpawners = gameObject.GetComponentsInChildren<PowerupSpawner>();
 		
 		player = playerObject.GetComponent<PlayerController>();
 		joystick = joystickObject.GetComponent<Joystick>();
 		
-		if (availablePowerups.Count > 0) InvokeRepeating("SpawnPowerup", powerupSpawnInterval, powerupSpawnInterval);
+		if (powerupSpawners.Length > 0) InvokeRepeating("SpawnPowerup", powerupSpawnInterval, powerupSpawnInterval);
 	}
 	
 	void OnEnable() {
@@ -156,13 +147,12 @@ public class Game : MonoBehaviour {
 	}
 	
 	void SpawnPowerup() {
-		// Choose a random powerup from the list of chosen powerups and spawn it in the player's view
 		
-		// 25% chance of spawning each interval
-		if (Random.Range(0.0f, 1.0f) < 0.25) {			
-			int index = Random.Range(0, availablePowerups.Count);
-			GameObject powerup = Instantiate(availablePowerups[index]) as GameObject;
-			powerup.transform.position = new Vector3(instance.playerObject.position.x+Random.Range(-powerupSpawnDistance, powerupSpawnDistance), instance.playerObject.position.y+powerup.renderer.bounds.extents.y, instance.playerObject.position.z+Random.Range(-powerupSpawnDistance, powerupSpawnDistance));
+		// Pick random powerup spawner
+		int index = Random.Range(0, powerupSpawners.Length);
+		
+		if (powerupSpawners[index].available) {
+			powerupSpawners[index].Spawn();
 		}
 	}
 }

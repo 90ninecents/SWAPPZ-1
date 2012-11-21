@@ -9,8 +9,6 @@ public class BreakableObject : MonoBehaviour {
 		particles = Instantiate(destructionEffect) as GameObject;
 		particles.transform.parent = transform;
 		particles.transform.localPosition = new Vector3(0,0,0);
-		
-		
 	}
 	
 	public void TakeDamage(int damage) {

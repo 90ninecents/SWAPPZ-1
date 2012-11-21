@@ -46,16 +46,17 @@ public class Boid : MonoBehaviour {
 		return null;
 	}
 	
-	void OnCollisionEnter(Collision collisionInfo) {
-		// On collision, check if top of other collider is above boid's feet and also lower than max jumping height
-		distanceToJump = collisionInfo.collider.bounds.max.y-transform.collider.bounds.min.y;
-		
-		//Debug.Log(collisionInfo.collider.bounds.max.y+" "+transform.collider.bounds.min.y);
-		
-		if (collisionInfo.collider.gameObject.GetComponent<Boid>() == null  && distanceToJump > 1f && distanceToJump <= jumpHeight) {
-			//jumping = true;
-		}
-	}
+	// forget this for now
+//	void OnCollisionEnter(Collision collisionInfo) {		
+//		// On collision, check if top of other collider is above boid's feet and also lower than max jumping height
+//		distanceToJump = collisionInfo.collider.bounds.max.y-transform.collider.bounds.min.y;
+//		
+//		Debug.Log(collisionInfo.collider.bounds.max.y+" "+transform.collider.bounds.min.y);
+//		
+//		if (collisionInfo.collider.gameObject.GetComponent<Boid>() == null  && distanceToJump > 1f && distanceToJump <= jumpHeight) {
+//			jumping = true;
+//		}
+//	}
 	
 	// Called before each physics timestep
 	void FixedUpdate () {
@@ -90,8 +91,5 @@ public class Boid : MonoBehaviour {
 		
 		// Apply gravity
 		if (transform.rigidbody.useGravity) transform.rigidbody.velocity += Physics.gravity;
-		
-		//if (transform.rigidbody.velocity.y < Physics.gravity.y) transform.rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
-		//else transform.rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
 	}
 }
