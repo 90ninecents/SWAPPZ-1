@@ -114,7 +114,6 @@ public class PlayerController : MonoBehaviour {
 				}
 				// If breakable object hit:
 				else if (obj != null) {
-					print ("hi");
 					obj.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier));
 				}
 			}

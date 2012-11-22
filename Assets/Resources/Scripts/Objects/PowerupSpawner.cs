@@ -10,6 +10,7 @@ public class PowerupSpawner : MonoBehaviour {
 	
 	void Awake() {
 		if (powerupChoices == null) powerupChoices = SavedData.ItemLoadout.Split(SavedData.Separator[0]);
+		print (SavedData.ItemLoadout);
 	}
 	
 	void Update() {
@@ -20,11 +21,13 @@ public class PowerupSpawner : MonoBehaviour {
 		if (available) {
 			string p = powerupChoices[Random.Range(0,powerupChoices.Length)];
 			
-			powerup = Instantiate(Resources.Load(powerupPath+p)) as GameObject;
-			powerup.transform.position = transform.position;
-			powerup.transform.position += new Vector3(0,powerup.renderer.bounds.extents.y,0);
-			
-			available = false;
+			if (p != "") {
+				powerup = Instantiate(Resources.Load(powerupPath+p)) as GameObject;
+				powerup.transform.position = transform.position;
+				powerup.transform.position += new Vector3(0,powerup.renderer.bounds.extents.y,0);
+				
+				available = false;
+			}
 		}
 	}
 }
