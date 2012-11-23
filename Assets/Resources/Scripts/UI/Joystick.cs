@@ -20,8 +20,7 @@ public class Joystick : MonoBehaviour {
 		Gesture.onDraggingEndE -= OnDragEnd;
 	}
 	
-	void OnDrag(DragInfo dragInfo) {
-		
+	void OnDrag(DragInfo dragInfo) {		
 		Vector2 position = new Vector3(dragInfo.pos.x/Screen.width, dragInfo.pos.y/Screen.height);
 		
 		if ((restPosition-position).magnitude <= maxOffsetRadius) {

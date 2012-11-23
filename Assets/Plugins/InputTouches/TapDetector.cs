@@ -46,7 +46,7 @@ public class TapDetector : MonoBehaviour {
 		
 		InputEvent inputEvent=new InputEvent();
 		
-		if(Input.touchCount==1){
+		if(Input.touchCount>1){
 			Touch touch=Input.touches[0];
 			_InputState state;
 			if(touch.phase==TouchPhase.Began) state=_InputState.Down;

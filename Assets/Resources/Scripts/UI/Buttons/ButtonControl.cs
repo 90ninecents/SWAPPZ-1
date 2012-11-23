@@ -25,7 +25,7 @@ public class ButtonControl : MonoBehaviour {
 	}
 	
 	void OnTouch (Vector2 touchPos) {
-		if (!dragging) {
+		//if (!dragging) {
 			
 			foreach (Transform t in transform) {
 				if (t.GetComponent<Button>() != null) {
@@ -51,6 +51,6 @@ public class ButtonControl : MonoBehaviour {
 				}
 			}
 			
-		}
+		//}
 	}
 }

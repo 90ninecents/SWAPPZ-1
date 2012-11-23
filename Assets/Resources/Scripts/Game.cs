@@ -11,6 +11,7 @@ public class Game : MonoBehaviour {
 	public Transform joystickObject;
 	public Transform enemyGroupObject;
 	public Transform touchTracker;
+	public Transform playerGroupObject;
 	
 	public float powerupSpawnInterval = 2.0f;		// Seconds between attempting to spawn a powerup
 	public float powerupSpawnDistance = 100.0f;
@@ -24,10 +25,13 @@ public class Game : MonoBehaviour {
 	//static List<GameObject> companions;
 	static GUITexture[] uiList;
 	
+	static bool fy = false;
+	
 	public static PlayerController Player { get { return instance.player; } }
 	public static Joystick Joystick { get { return instance.joystick; } }
 	public static Transform EnemyGroup { get { return instance.enemyGroupObject; } }
 	public static Transform TouchTracker { get { return instance.touchTracker; } }
+	public static Transform PlayerGroup { get { return instance.playerGroupObject; } }
 	
 
 	// Use this for initialization
@@ -45,6 +49,7 @@ public class Game : MonoBehaviour {
 			if (s == characters[0]) {
 				GameObject go = Instantiate(Resources.Load("Prefabs/Player Characters/"+s)) as GameObject;
 				go.transform.position = new Vector3(0,10,0);
+				go.transform.parent = playerGroupObject;
 				SwitchPlayer(go);
 			}
 			// others = companions
@@ -53,6 +58,7 @@ public class Game : MonoBehaviour {
 				companion.GetComponent<CompanionController>().enabled = true;
 				companion.GetComponent<PlayerController>().enabled = false;
 				companion.transform.position = new Vector3(0,10,0);
+				companion.transform.parent = playerGroupObject;
 				//companions.Add(companion);
 			}
 		}
@@ -69,6 +75,7 @@ public class Game : MonoBehaviour {
 		Gesture.onTouchDownE += OnTouch;
 		// Unpause
 		Time.timeScale = 1.0f;
+		fy = false;
 	}
 	
 	void OnDisable() {
@@ -76,25 +83,33 @@ public class Game : MonoBehaviour {
 	}
 	
 	void OnTouch(Vector2 touchPos) {
-		
-		bool exit = false;
-		foreach (GUITexture tex in uiList) {
-			if (tex.GetScreenRect().Contains(touchPos)) {
-				exit = true;
-				break;
-			}
-		}
-		
-		if (!exit) {
-			Ray ray = Camera.main.ScreenPointToRay(touchPos);
-			RaycastHit hit;
-			
-			if (Physics.Raycast(ray, out hit, 1000)) {
-				if (hit.transform.GetComponent<PlayerController>() != null) {
-					SwitchPlayer(hit.transform.gameObject);
-				}
-			}
-		}
+//		if (!fy) {
+//			if (Time.timeScale < 1) Time.timeScale = 1.0f;
+//			else Time.timeScale = 0;
+//			print (Time.timeScale);
+//			fy = true;
+//		}
+//		
+//		
+//		
+//		bool exit = false;
+//		foreach (GUITexture tex in uiList) {
+//			if (tex.GetScreenRect().Contains(touchPos)) {
+//				exit = true;
+//				break;
+//			}
+//		}
+//		
+//		if (!exit) {
+//			Ray ray = Camera.main.ScreenPointToRay(touchPos);
+//			RaycastHit hit;
+//			
+//			if (Physics.Raycast(ray, out hit, 1000)) {
+//				if (hit.transform.GetComponent<PlayerController>() != null) {
+//					SwitchPlayer(hit.transform.gameObject);
+//				}
+//			}
+//		}
 		
 	}
 	
@@ -129,8 +144,9 @@ public class Game : MonoBehaviour {
 		
 		// Set up new player character
 		playerObject = go.transform;
-		playerObject.GetComponent<ArrivalBehaviour>().SetWeight(1);
-		playerObject.GetComponent<ArrivalBehaviour>().targetObject = touchTracker;
+		Boid b = playerObject.GetComponent<Boid>();
+		b.GetBehaviour("ToTracker").SetWeight(1);
+		(b.GetBehaviour("ToTracker") as ArrivalBehaviour).targetObject = touchTracker;
 		
 		// Disable companion AI
 		playerObject.GetComponent<CompanionController>().enabled = false;

@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update() {
 		boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
+		
 	}
 	
 	void OnTriggerEnter(Collider other) {
@@ -154,6 +155,8 @@ public class PlayerController : MonoBehaviour {
 			speedModifier 	 *= p.speedModifier;
 			strengthModifier *= p.damageModifier;
 			
+			boidComponent.turningSpeed *= p.speedModifier;
+			
 			// don't use invincible = p.invincibility; will cause powerups to cancel invincibility granted by other powerups
 			if (p.invincibility) invincible = true;
 		}
@@ -189,6 +192,8 @@ public class PlayerController : MonoBehaviour {
 				armorModifier 	 /= p.armorModifier;
 				speedModifier 	 /= p.speedModifier;
 				strengthModifier /= p.damageModifier;
+				
+				boidComponent.turningSpeed /= p.speedModifier;
 				
 				if (p.invincibility) invincible = false;
 			}

@@ -15,7 +15,6 @@ public class General : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//#if UNITY_IPHONE || UNITY_ANDROID
-		
 		if(Input.touchCount>0){
 			foreach(Touch touch in Input.touches){
 				if(touch.phase==TouchPhase.Began) Gesture.OnTouchDown(touch.position);
@@ -42,7 +41,7 @@ public class General : MonoBehaviour {
 		//drag event detection goes here
 		InputEvent inputEvent=new InputEvent();
 		
-		if(Input.touchCount==1){
+		if(Input.touchCount>0) {//==1){
 			Touch touch=Input.touches[0];
 			_InputState state;
 			if(touch.phase==TouchPhase.Began) state=_InputState.Down;
@@ -50,7 +49,8 @@ public class General : MonoBehaviour {
 			else state=_InputState.On;
 			inputEvent=new InputEvent(touch.position, _InputType.Touch, state);
 		}
-		else if(Input.touchCount==0){
+		//else
+		if(Input.touchCount==0){
 			if(Input.GetMouseButtonDown(0)){
 				inputEvent=new InputEvent(Input.mousePosition, _InputType.Mouse1, _InputState.Down);
 			}

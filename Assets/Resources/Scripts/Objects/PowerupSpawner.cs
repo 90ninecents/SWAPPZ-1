@@ -10,7 +10,6 @@ public class PowerupSpawner : MonoBehaviour {
 	
 	void Awake() {
 		if (powerupChoices == null) powerupChoices = SavedData.ItemLoadout.Split(SavedData.Separator[0]);
-		print (SavedData.ItemLoadout);
 	}
 	
 	void Update() {

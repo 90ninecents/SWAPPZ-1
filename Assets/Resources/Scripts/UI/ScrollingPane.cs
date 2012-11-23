@@ -77,18 +77,16 @@ public class ScrollingPane : MonoBehaviour {
 	}
 	
 	void MoveChildren(float d) {
-		//if (first.position.x <= upperScrollLimit && last.position.x >= lowerScrollLimit) {
-			foreach(Transform t in transform) {
-				if (vertical) {
-					t.position = new Vector3(0,d,0);
-				}
-				else {
-					t.position += new Vector3(d,0,0);
-				}
+		foreach(Transform t in transform) {
+			if (vertical) {
+				t.position = new Vector3(0,d,0);
 			}
-		//}
+			else {
+				t.position += new Vector3(d,0,0);
+			}
+		}
+		
 		if (first.position.x > upperScrollLimit) {
-			//print (upperScrollLimit-first.position.x);
 			MoveChildren(upperScrollLimit-first.position.x-5);
 		}
 		else if (last.position.x < upperScrollLimit) {

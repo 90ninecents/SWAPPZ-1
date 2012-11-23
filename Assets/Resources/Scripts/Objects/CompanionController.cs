@@ -32,6 +32,7 @@ public class CompanionController : MonoBehaviour {
 		boidComponent.GetBehaviour("ToPlayer").SetWeight(0);
 		boidComponent.GetBehaviour("ToTracker").SetWeight(0);
 		boidComponent.GetBehaviour("ObstacleAvoidance").SetWeight(1);
+		boidComponent.GetBehaviour("Separation").SetWeight(1);
 		
 		// Update health
 		health = Mathf.RoundToInt(pc.healthMax*pc.HealthPercentage);
@@ -44,8 +45,9 @@ public class CompanionController : MonoBehaviour {
 		boidComponent.GetBehaviour("ToPlayer").SetWeight(0);
 		boidComponent.GetBehaviour("ToTracker").SetWeight(1);
 		boidComponent.GetBehaviour("ObstacleAvoidance").SetWeight(0);
+		boidComponent.GetBehaviour("Separation").SetWeight(0);
 	}
-		
+
 	void Update() {
 		if (target == null) FindTarget();
 		
