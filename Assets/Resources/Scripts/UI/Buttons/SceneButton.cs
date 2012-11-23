@@ -11,6 +11,11 @@ public class SceneButton : Button {
 			go.active = false;
 		}
 		
+//		GameObject g = GameObject.Find("LoadingIcon");
+//		if (g != null) {
+//			g.active = true;
+//		}
+		
 		Application.LoadLevelAsync(sceneName);
 	}
 }

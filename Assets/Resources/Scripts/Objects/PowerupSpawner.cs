@@ -8,8 +8,8 @@ public class PowerupSpawner : MonoBehaviour {
 	
 	public bool available = true;
 	
-	void Awake() {
-		if (powerupChoices == null) powerupChoices = SavedData.ItemLoadout.Split(SavedData.Separator[0]);
+	void OnEnable() {
+		powerupChoices = SavedData.ItemLoadout.Split(SavedData.Separator[0]);
 	}
 	
 	void Update() {

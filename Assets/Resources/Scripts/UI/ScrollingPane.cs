@@ -72,8 +72,12 @@ public class ScrollingPane : MonoBehaviour {
 	}
 	
 	void OnDrag (DragInfo info) {
-		if (vertical) MoveChildren(info.delta.y*scrollSpeed);
-		else MoveChildren(info.delta.x*scrollSpeed);
+		if (vertical) scrollDelta = info.delta.y;
+		else scrollDelta = info.delta.x;
+		
+		MoveChildren(scrollDelta*scrollSpeed);
+		
+		scrollDelta /= Mathf.Abs(scrollDelta);
 	}
 	
 	void MoveChildren(float d) {
@@ -95,25 +99,26 @@ public class ScrollingPane : MonoBehaviour {
 	}
 	
 	void OnDragEnd(Vector2 touchPos) {
-		
 		Transform closest = null;
-		float distance = -1;
+		float distance = 0;
+		
+		float direction = 0;
 		
 		foreach (Transform t in transform) {
 			float d = (transform.position-t.position).magnitude;
+			
+			direction = (transform.position.x-t.position.x);
+			direction /= Mathf.Abs(direction);
+			
 			if (closest == null || d < distance) {
-				closest = t;
-				distance = d;
+				if  (direction == scrollDelta || d < 100) {
+					closest = t;
+					distance = d;
+				}
 			}
 		}
 		
-		if (vertical) {
-			if (closest.position.y < transform.position.y) MoveChildren(distance);
-			else MoveChildren(-distance);
-		}
-		else {
-			if (closest.position.x < transform.position.x) MoveChildren(distance);
-			else MoveChildren(-distance);
-		}
+		if (closest.position.y < transform.position.y || closest.position.x < transform.position.x) MoveChildren(distance);
+		else MoveChildren(-distance);
 	}
 }

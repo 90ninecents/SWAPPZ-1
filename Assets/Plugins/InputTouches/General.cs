@@ -15,7 +15,7 @@ public class General : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//#if UNITY_IPHONE || UNITY_ANDROID
-		if(Input.touchCount>0){
+		if(Input.touchCount>0){	
 			foreach(Touch touch in Input.touches){
 				if(touch.phase==TouchPhase.Began) Gesture.OnTouchDown(touch.position);
 				else if(touch.phase==TouchPhase.Ended) Gesture.OnTouchUp(touch.position);

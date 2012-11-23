@@ -7,9 +7,11 @@ public class LoadoutManager : MonoBehaviour {
 	InventoryPanel itemLoadout;
 	InventoryPanel characterLoadout;
 	
-	void Start() {
+	void OnEnable() {
 		itemLoadout = itemLoadoutPanel.GetComponent<InventoryPanel>();
 		characterLoadout = characterLoadoutPanel.GetComponent<InventoryPanel>();
+		
+		print ("enable");
 	}
 	
 	void OnDisable() {

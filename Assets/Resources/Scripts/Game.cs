@@ -83,33 +83,25 @@ public class Game : MonoBehaviour {
 	}
 	
 	void OnTouch(Vector2 touchPos) {
-//		if (!fy) {
-//			if (Time.timeScale < 1) Time.timeScale = 1.0f;
-//			else Time.timeScale = 0;
-//			print (Time.timeScale);
-//			fy = true;
-//		}
-//		
-//		
-//		
-//		bool exit = false;
-//		foreach (GUITexture tex in uiList) {
-//			if (tex.GetScreenRect().Contains(touchPos)) {
-//				exit = true;
-//				break;
-//			}
-//		}
-//		
-//		if (!exit) {
-//			Ray ray = Camera.main.ScreenPointToRay(touchPos);
-//			RaycastHit hit;
-//			
-//			if (Physics.Raycast(ray, out hit, 1000)) {
-//				if (hit.transform.GetComponent<PlayerController>() != null) {
-//					SwitchPlayer(hit.transform.gameObject);
-//				}
-//			}
-//		}
+		
+		bool exit = false;
+		foreach (GUITexture tex in uiList) {
+			if (tex.GetScreenRect().Contains(touchPos)) {
+				exit = true;
+				break;
+			}
+		}
+		
+		if (!exit) {
+			Ray ray = Camera.main.ScreenPointToRay(touchPos);
+			RaycastHit hit;
+			
+			if (Physics.Raycast(ray, out hit, 1000)) {
+				if (hit.transform.GetComponent<PlayerController>() != null) {
+					SwitchPlayer(hit.transform.gameObject);
+				}
+			}
+		}
 		
 	}
 	
