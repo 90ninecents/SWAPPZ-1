@@ -22,6 +22,10 @@ public class AvoidanceBehaviour : SteeringBehaviour {
 			obstacles.Clear();
 		}
 		
+		if (transform.name == "Donatello(Clone)") {
+			print (steering*weight);
+		}
+		
 		return steering*weight;
 	}
 }

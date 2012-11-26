@@ -11,6 +11,8 @@ public class CompanionController : MonoBehaviour {
 	float attackRadius;
 	float attackCooldown;
 	
+	public float enemySearchRadius = 100.0f;
+	
 	EnemyController target;
 	
 	bool cooling = false;
@@ -78,13 +80,13 @@ public class CompanionController : MonoBehaviour {
 			}
 		}
 		
-		if (closest != null) {
+		if (closest != null && smallestDistance < enemySearchRadius) {
 			boidComponent.GetBehaviour("ToPlayer").SetWeight(0);
 			boidComponent.GetBehaviour("ToEnemy").SetWeight(1);
 			target = closest;
 			(boidComponent.GetBehaviour("ToEnemy") as ArrivalBehaviour).targetObject = target.transform;
 		}
-		else {
+		else if (boidComponent.GetBehaviour("ToEnemy").weight != 0) {
 			boidComponent.GetBehaviour("ToEnemy").SetWeight(0);
 			
 			(boidComponent.GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = Game.Player.transform;
