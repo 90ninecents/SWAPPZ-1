@@ -23,10 +23,13 @@ public class InventoryPanel : MonoBehaviour {
 	Transform lastRemoved;
 	int itemCount = 0;
 	
-	public int capacity = -1;		// allows the final (rows*columns - capacity) slots to become "locked" (unable to accept items)
+	public int capacity = -1;		// allows the final rows*columns-capacity slots to become "locked" (unable to accept items)
 	
 	public bool IsFull { get { return (itemCount == capacity); } }
 	public Transform[] Items { get { return items; } }
+	
+	public Transform LastRemoved { get { return lastRemoved; } }
+	public Transform LastAdded { get { return lastAdded; } }
 	
 	public Transform[] connections;		// Other Inventory panels that can "communicate" with this one
 	bool accepting = true;
@@ -56,16 +59,16 @@ public class InventoryPanel : MonoBehaviour {
 	}
 	
 	void OnEnable() {
-		Gesture.onTouchDownE += OnDraggingStart;
-		Gesture.onTouchUpE += OnDraggingEnd;
+		Gesture.onTouchDownE += OnTouchDown;
+		Gesture.onTouchUpE += OnTouchUp;
 	}
 	
 	void OnDisable() {
-		Gesture.onTouchDownE -= OnDraggingStart;
-		Gesture.onTouchUpE -= OnDraggingEnd;
+		Gesture.onTouchDownE -= OnTouchDown;
+		Gesture.onTouchUpE -= OnTouchUp;
 	}
 	
-	void OnDraggingStart(Vector2 point) {		
+	void OnTouchDown(Vector2 point) {		
 		// World coordinates
 		//Vector2 pos = new Vector2(point.x - Screen.width/2, point.y - Screen.height/2);
 		Vector2 pos = new Vector2(point.x - screenWidth/2, point.y - screenHeight/2);
@@ -95,9 +98,7 @@ public class InventoryPanel : MonoBehaviour {
 		}
 	}
 	
-	void OnDraggingEnd(Vector2 point) {
-		// World coordinates
-		//Vector2 pos = new Vector2(point.x - Screen.width/2, point.y - Screen.height/2);
+	void OnTouchUp(Vector2 point) {
 		if (Camera.main != null) {
 			Vector2 pos = new Vector2(point.x - screenWidth/2, point.y - screenHeight/2);
 			
@@ -122,7 +123,6 @@ public class InventoryPanel : MonoBehaviour {
 						foreach (Transform item in items) {
 							if (hit.transform == item) {
 								go = false;
-								//swapItem = item;
 								swapIndex = count;
 							}
 							count++;

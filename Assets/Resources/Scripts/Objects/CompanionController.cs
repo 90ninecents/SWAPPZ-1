@@ -30,16 +30,18 @@ public class CompanionController : MonoBehaviour {
 	void OnEnable() {
 		boidComponent.Speed = boidComponent.maxSpeed;
 		
-		boidComponent.GetBehaviour("ToEnemy").SetWeight(1);
-		boidComponent.GetBehaviour("ToPlayer").SetWeight(0);
+		boidComponent.GetBehaviour("ToEnemy").SetWeight(0);
+		boidComponent.GetBehaviour("ToPlayer").SetWeight(1);
 		boidComponent.GetBehaviour("ToTracker").SetWeight(0);
 		boidComponent.GetBehaviour("ObstacleAvoidance").SetWeight(1);
 		boidComponent.GetBehaviour("Separation").SetWeight(1);
 		
+		(boidComponent.GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = Game.Player.transform;
+		
 		// Update health
 		health = Mathf.RoundToInt(pc.healthMax*pc.HealthPercentage);
 		// Find a target
-		FindTarget();
+		//FindTarget();
 	}
 	
 	void OnDisable() {
@@ -86,10 +88,8 @@ public class CompanionController : MonoBehaviour {
 			target = closest;
 			(boidComponent.GetBehaviour("ToEnemy") as ArrivalBehaviour).targetObject = target.transform;
 		}
-		else if (boidComponent.GetBehaviour("ToEnemy").weight != 0) {
+		else if ((closest == null || smallestDistance > enemySearchRadius) && boidComponent.GetBehaviour("ToEnemy").weight != 0) {
 			boidComponent.GetBehaviour("ToEnemy").SetWeight(0);
-			
-			(boidComponent.GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = Game.Player.transform;
 			boidComponent.GetBehaviour("ToPlayer").SetWeight(1);
 		}
 	}

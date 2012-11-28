@@ -6,21 +6,23 @@ public class InventoryLoader : MonoBehaviour {
 	
 	void Start() {
 		// debugging
-		//PlayerPrefs.DeleteAll();
-		
-		string debugInventory = "ItemNuke|ItemArmor|ItemHealth|ItemDamage|ItemSpeed|ItemSpinAttack|ItemNuke|ItemArmor|ItemHealth|ItemDamage|ItemSpeed|ItemSpinAttack";
-		SavedData.Inventory = debugInventory;
-		
-		string debugRoster = "Donatello|Raphael|Michelangelo|Leonardo";
-		SavedData.UnlockedCharacters = debugRoster;
+//		PlayerPrefs.DeleteAll();
+//		
+//		string debugInventory = "ItemNuke|ItemArmor|ItemFullHealth|ItemDamage|ItemSpeed|ItemSpinAttack|ItemNuke|ItemArmor|ItemFullHealth|ItemDamage|ItemSpeed|ItemSpinAttack";
+//		SavedData.Inventory = debugInventory;
+//		
+//		string debugRoster = "CharacterDonatello|CharacterRaphael|CharacterMichelangelo|CharacterLeonardo";
+//		SavedData.UnlockedCharacters = debugRoster;
 		// ----
+		
+		LoadoutManager manager = transform.GetComponent<LoadoutManager>();
 		
 		InventoryPanel[] panels = transform.GetComponentsInChildren<InventoryPanel>();
 		
 		foreach (InventoryPanel p in panels) {
 			if (p.populateOnStartup) {
-				if (p.capacity <= 6) {
-					// Characters
+				if (p.transform == manager.rosterPanel) {
+					// Available Characters
 					string[] roster = SavedData.UnlockedCharacters.Split(SavedData.Separator[0]);
 					GameObject go;
 					
@@ -31,7 +33,22 @@ public class InventoryLoader : MonoBehaviour {
 						}
 					}
 				}
-				else {
+				
+				else if (p.transform == manager.characterLoadoutPanel) {
+					// Selected Characters
+					string[] roster = SavedData.CharacterLoadout.Split(SavedData.Separator[0]);
+					GameObject go;
+					
+					foreach (string s in roster) {
+						if (s != "") {
+							go = Instantiate(Resources.Load("Prefabs/Loadout Characters/"+s)) as GameObject;
+							p.AddItem(go.transform);
+						}
+					}
+				}
+				
+				
+				else if (p.transform == manager.inventoryPanel) {
 					// Inventory
 					string[] inventory = SavedData.Inventory.Split(SavedData.Separator[0]);
 					GameObject go;
@@ -43,6 +60,20 @@ public class InventoryLoader : MonoBehaviour {
 						}
 					}
 				}
+				
+				else if (p.transform == manager.itemLoadoutPanel) {
+					// Selected Items
+					string[] inventory = SavedData.ItemLoadout.Split(SavedData.Separator[0]);
+					GameObject go;
+					
+					foreach (string s in inventory) {
+						if (s != "") {
+							go = Instantiate(Resources.Load("Prefabs/Loadout Items/"+s)) as GameObject;
+							p.AddItem(go.transform);
+						}
+					}
+				}
+				
 			}
 		}
 	}

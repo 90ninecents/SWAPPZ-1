@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Powerup : MonoBehaviour {
+public class Powerup : MonoBehaviour {	
 	public float armorModifier = 1.0f;
 	public float damageModifier = 1.0f;
 	public float speedModifier = 1.0f;

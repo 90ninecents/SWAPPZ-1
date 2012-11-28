@@ -14,7 +14,6 @@ public class Game : MonoBehaviour {
 	public Transform playerGroupObject;
 	
 	public float powerupSpawnInterval = 2.0f;		// Seconds between attempting to spawn a powerup
-	public float powerupSpawnDistance = 100.0f;
 	
 	PlayerController player;
 	Joystick joystick;
@@ -47,14 +46,20 @@ public class Game : MonoBehaviour {
 		foreach (string s in characters) {
 			// First character = player
 			if (s == characters[0]) {
-				GameObject go = Instantiate(Resources.Load("Prefabs/Player Characters/"+s)) as GameObject;
+				GameObject g = Resources.Load("Prefabs/Loadout Characters/"+s) as GameObject;
+				
+				GameObject go = Instantiate(g.GetComponent<InventoryItem>().itemPrefab) as GameObject;
+				
 				go.transform.position = new Vector3(0,10,0);
 				go.transform.parent = playerGroupObject;
 				SwitchPlayer(go);
 			}
 			// others = companions
 			else {
-				GameObject companion = Instantiate(Resources.Load("Prefabs/Player Characters/"+s)) as GameObject;
+				GameObject g = Resources.Load("Prefabs/Loadout Characters/"+s) as GameObject;
+				
+				GameObject companion = Instantiate(g.GetComponent<InventoryItem>().itemPrefab) as GameObject;
+				
 				companion.GetComponent<CompanionController>().enabled = true;
 				companion.GetComponent<PlayerController>().enabled = false;
 				companion.transform.position = new Vector3(0,10,0);
@@ -132,6 +137,11 @@ public class Game : MonoBehaviour {
 			// Reset previous player character (if applicable)
 			player.enabled = false;
 			playerObject.GetComponent<CompanionController>().enabled = true;
+		}
+		
+		// Update all companions to point at new player
+		foreach (Transform t in playerGroupObject) {
+			(t.gameObject.GetComponent<Boid>().GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = go.transform;
 		}
 		
 		// Set up new player character
