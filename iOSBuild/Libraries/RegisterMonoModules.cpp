@@ -200,10 +200,6 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_AudioClip_Init_Internal ();
 	void Register_UnityEngine_AudioSource_PlayOneShot ();
 	Register_UnityEngine_AudioSource_PlayOneShot ();
-	void Register_UnityEngine_AudioSource_get_mute ();
-	Register_UnityEngine_AudioSource_get_mute ();
-	void Register_UnityEngine_AudioSource_set_mute ();
-	Register_UnityEngine_AudioSource_set_mute ();
 	void Register_UnityEngine_Behaviour_get_enabled ();
 	Register_UnityEngine_Behaviour_get_enabled ();
 	void Register_UnityEngine_Behaviour_set_enabled ();
@@ -240,8 +236,6 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Component_get_rigidbody ();
 	void Register_UnityEngine_Component_get_renderer ();
 	Register_UnityEngine_Component_get_renderer ();
-	void Register_UnityEngine_Component_get_audio ();
-	Register_UnityEngine_Component_get_audio ();
 	void Register_UnityEngine_Component_get_guiText ();
 	Register_UnityEngine_Component_get_guiText ();
 	void Register_UnityEngine_Component_get_guiTexture ();

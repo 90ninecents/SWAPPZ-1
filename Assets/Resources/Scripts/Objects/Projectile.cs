@@ -3,12 +3,10 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour {
 	float distanceToTravel = 0.0f;
-	float speed = 0.0f;
 	Vector3 startPosition = Vector3.zero;
 	int damage = 0;
 	
 	public void Launch(float velocity, Vector3 direction, int strength, float distance) {
-		speed = velocity;
 		distanceToTravel = distance;
 		transform.rotation = Quaternion.LookRotation(direction);
 		transform.rigidbody.velocity = velocity*transform.forward;

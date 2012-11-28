@@ -8,7 +8,7 @@ public class Boid : MonoBehaviour {
 	float currentSpeed = 1.0f;
 	public float turningSpeed = 10.0f;
 	public float jumpHeight = 10.0f;
-	float distanceToJump = 0.0f;
+//	float distanceToJump = 0.0f;
 	bool falling = false;
 	bool jumping = false;
 	

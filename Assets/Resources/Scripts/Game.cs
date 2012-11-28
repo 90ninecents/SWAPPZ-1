@@ -24,7 +24,7 @@ public class Game : MonoBehaviour {
 	//static List<GameObject> companions;
 	static GUITexture[] uiList;
 	
-	static bool fy = false;
+	//static bool fy = false;
 	
 	public static PlayerController Player { get { return instance.player; } }
 	public static Joystick Joystick { get { return instance.joystick; } }
@@ -80,7 +80,7 @@ public class Game : MonoBehaviour {
 		Gesture.onTouchDownE += OnTouch;
 		// Unpause
 		Time.timeScale = 1.0f;
-		fy = false;
+		//fy = false;
 	}
 	
 	void OnDisable() {
@@ -139,7 +139,7 @@ public class Game : MonoBehaviour {
 			playerObject.GetComponent<CompanionController>().enabled = true;
 		}
 		
-		// Update all companions to point at new player
+		// Update all companions (and enemies?) to point at new player
 		foreach (Transform t in playerGroupObject) {
 			(t.gameObject.GetComponent<Boid>().GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = go.transform;
 		}

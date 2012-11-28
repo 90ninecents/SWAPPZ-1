@@ -6,7 +6,6 @@ public class CompanionController : MonoBehaviour {
 	PlayerController pc;
 	Boid boidComponent;
 	
-	int health;
 	int strength;
 	float attackRadius;
 	float attackCooldown;
@@ -21,7 +20,6 @@ public class CompanionController : MonoBehaviour {
 		boidComponent = transform.GetComponent<Boid>();
 		pc = transform.GetComponent<PlayerController>();
 		
-		health = Mathf.RoundToInt(pc.healthMax*pc.HealthPercentage);
 		strength = pc.attackStrengths[0];
 		attackRadius = pc.attackRadius;
 		attackCooldown = pc.attackCooldown;
@@ -37,11 +35,6 @@ public class CompanionController : MonoBehaviour {
 		boidComponent.GetBehaviour("Separation").SetWeight(1);
 		
 		(boidComponent.GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = Game.Player.transform;
-		
-		// Update health
-		health = Mathf.RoundToInt(pc.healthMax*pc.HealthPercentage);
-		// Find a target
-		//FindTarget();
 	}
 	
 	void OnDisable() {
@@ -95,11 +88,6 @@ public class CompanionController : MonoBehaviour {
 	}
 	
 	public void TakeDamage(int damage) {
-		//health -= damage;
 		pc.TakeDamage(damage);
-		
-		//if (health <= 0) {
-		//	Destroy(gameObject);
-		//}
 	}
 }

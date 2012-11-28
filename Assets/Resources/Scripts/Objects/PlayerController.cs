@@ -78,10 +78,12 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	public void ExecuteAttack(int attackNumber = 1) {
-		if (!cooling) {
+		if (!cooling) {			
 			CancelInvoke("BreakCombo");
 			
 			currentCombo += ""+attackNumber;
+			
+			//print (currentCombo);
 			
 			bool match = false;
 			for (int i = 0; i < combos.Length; i++) {
@@ -99,10 +101,8 @@ public class PlayerController : MonoBehaviour {
 			}
 			
 			// Check for object to be hit by attack
-			//Ray ray = new Ray(transform.position, transform.forward);
 			RaycastHit hit;
 			
-			//if (Physics.Raycast(ray, out hit, attackRadius)) {
 			if (rigidbody.SweepTest(transform.forward, out hit, attackRadius)) {
 				EnemyController enemy = hit.collider.transform.GetComponent<EnemyController>();
 				BreakableObject obj = hit.collider.transform.GetComponent<BreakableObject>();

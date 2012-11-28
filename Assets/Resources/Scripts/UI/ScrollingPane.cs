@@ -7,7 +7,6 @@ public class ScrollingPane : MonoBehaviour {
 	public bool vertical = false;
 	
 	float upperScrollLimit = 0.0f;
-	float lowerScrollLimit = 0.0f;
 	
 	Transform first;
 	Transform last;
@@ -34,7 +33,6 @@ public class ScrollingPane : MonoBehaviour {
 				}
 			}
 			
-			lowerScrollLimit = transform.position.y-last.position.y;
 			upperScrollLimit = transform.position.y+first.position.y;
 		}
 		
@@ -54,7 +52,6 @@ public class ScrollingPane : MonoBehaviour {
 				}
 			}
 			
-			lowerScrollLimit = transform.position.x-last.position.x-1;
 			upperScrollLimit = transform.position.x+first.position.x+1;
 		}
 		
