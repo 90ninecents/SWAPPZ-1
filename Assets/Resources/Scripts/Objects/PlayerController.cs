@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour {
 	float armorModifier = 1.0f;			// Affected by powerups
 	float regenModifier = 1.0f;			// Affected by powerups; modifies speed of regeneration, not amount
 	float xpModifier = 1.0f;
+	float sizeModifier = 1.0f;			// Affects model size, attack radius
 	
 	bool invincible = false;			// Affected by powerups
 
@@ -147,6 +148,7 @@ public class PlayerController : MonoBehaviour {
 			if (health > healthMax) health = healthMax;
 		}
 		
+		// Powerups with duration
 		else {
 			powerups.Add(p);
 			if (powerups.Count == 1) InvokeRepeating("PowerupTick", 1, 1);
@@ -156,6 +158,8 @@ public class PlayerController : MonoBehaviour {
 			strengthModifier *= p.damageModifier;
 			regenModifier 	 *= p.regenModifier;
 			xpModifier 		 *= p.xpModifier;
+			
+			sizeModifier 	 *= p.sizeModifier;
 			
 			if (IsInvoking("HealthTick")) {
 				CancelInvoke("HealthTick");
@@ -204,6 +208,8 @@ public class PlayerController : MonoBehaviour {
 				strengthModifier /= p.damageModifier;
 				regenModifier	 /= p.regenModifier;
 				xpModifier 		 /= p.xpModifier;
+				
+				sizeModifier 	 /= p.sizeModifier;
 				
 				if (IsInvoking("HealthTick")) {
 					CancelInvoke("HealthTick");

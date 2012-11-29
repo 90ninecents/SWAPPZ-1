@@ -16,6 +16,8 @@ public class Powerup : MonoBehaviour {
 	public bool invincibility = false;
 	public bool destroyEnemies = false;
 	
+	public float sizeModifier = 1.0f;
+	
 	int life = 0;
 	bool expired = false;
 	

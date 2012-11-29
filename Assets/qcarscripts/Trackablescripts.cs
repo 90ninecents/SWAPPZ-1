@@ -16,7 +16,7 @@ public class Trackablescripts : MonoBehaviour {
 			//Debug.Log("marker detected");
 		}
 		else {
-			Debug.Log("marker not detected");
+			//Debug.Log("marker not detected");
 		}
 	}
 }
