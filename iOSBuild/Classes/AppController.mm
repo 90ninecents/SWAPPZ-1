@@ -1,3 +1,4 @@
+#include "QCARUnityPlayer.h"
 #import "AppController.h"
 
 #import <CoreGraphics/CoreGraphics.h>
@@ -76,7 +77,7 @@
 // Meaningful only if EVENT_PUMP_BASED_LOOP method is used.
 
 #define USE_OPENGLES20_IF_AVAILABLE 1
-#define USE_DISPLAY_LINK_IF_AVAILABLE 1
+#define USE_DISPLAY_LINK_IF_AVAILABLE 0
 // MSAA_DEFAULT_SAMPLE_COUNT was moved to iPhone_GlesSupport.h
 
 //#define FALLBACK_LOOP_TYPE NSTIMER_BASED_LOOP
@@ -361,6 +362,7 @@ bool CreateSurface(EAGLView *view, EAGLSurfaceDesc* surface)
     CreateSurfaceGLES(surface);
     GLES_CHK( glBindRenderbufferOES(GL_RENDERBUFFER_OES, surface->renderbuffer) );
 
+	QCARUnityPlayer::getInstance().QCARNotifyCreated((int)surface->w, (int)surface->h);
     return true;
 }
 
@@ -581,6 +583,7 @@ int OpenEAGL_UnityCallback(UIWindow** window, int* screenWidth, int* screenHeigh
 
     _splashView.image = [UIImage imageNamed:SplashViewImage(ConvertToIosScreenOrientation(_curOrientation))];
 
+	QCARUnityPlayer::getInstance().QCARSetOrientation(_curOrientation);
     UnitySetScreenOrientation(_curOrientation);
     if(_curOrientation != portrait)
     {
@@ -1088,6 +1091,10 @@ void NotifyAutoOrientationChange()
     if ([UIDevice currentDevice].generatesDeviceOrientationNotifications == NO)
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 
+	NSString* orientation = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"UIInterfaceOrientation"];
+
+	QCARUnityPlayer::getInstance().QCARInit([orientation UTF8String]);
+	QCARUnityPlayer::getInstance().QCARSetOrientation(_curOrientation);
     [self startUnity:application];
 
     return NO;
@@ -1116,6 +1123,7 @@ void NotifyAutoOrientationChange()
     printf_console("-> applicationDidBecomeActive()\n");
     if (_didResignActive)
     {
+		QCARUnityPlayer::getInstance().QCARPause(false);
         UnityPause(false);
     }
 
@@ -1125,7 +1133,9 @@ void NotifyAutoOrientationChange()
 - (void) applicationWillResignActive:(UIApplication*)application
 {
     printf_console("-> applicationWillResignActive()\n");
-    UnityPause(true);
+	UnityPause(true);
+	PresentSurface(&_surface);
+	QCARUnityPlayer::getInstance().QCARPause(true);
 
     _didResignActive = YES;
 }
@@ -1141,6 +1151,7 @@ void NotifyAutoOrientationChange()
 
     Profiler_UninitProfiler();
 
+	QCARUnityPlayer::getInstance().destroy();
     UnityCleanup();
 }
 
@@ -1201,6 +1212,7 @@ void NotifyAutoOrientationChange()
     if (_activityIndicator)
         _activityIndicator.center = CGPointMake([self.view bounds].size.width/2, [self.view bounds].size.height/2);
 
+	QCARUnityPlayer::getInstance().QCARSetOrientation(_curOrientation);
     UnitySetScreenOrientation(_curOrientation);
     if( OrientationWillChangeSurfaceExtents( ConvertToUnityScreenOrientation(fromInterfaceOrientation,0), _curOrientation ) )
     {

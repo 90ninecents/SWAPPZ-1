@@ -1,11 +1,6 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/UI/Buttons/LevelButton.cs">
-    <Files>
-      <File FileName="Assets/Resources/Scripts/UI/Buttons/LevelButton.cs" Line="16" Column="6" />
-      <File FileName="Assets/Resources/Scripts/UI/Buttons/SceneButton.cs" Line="8" Column="3" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
