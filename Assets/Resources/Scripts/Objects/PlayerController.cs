@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour {
 	float strengthModifier = 1.0f;		// Affected by powerups
 	float speedModifier = 1.0f;			// Affected by powerups; modifies both movement speed and attack speed
 	float armorModifier = 1.0f;			// Affected by powerups
+	float regenModifier = 1.0f;			// Affected by powerups; modifies speed of regeneration, not amount
+	float xpModifier = 1.0f;
 	
 	bool invincible = false;			// Affected by powerups
 
@@ -82,8 +84,6 @@ public class PlayerController : MonoBehaviour {
 			CancelInvoke("BreakCombo");
 			
 			currentCombo += ""+attackNumber;
-			
-			//print (currentCombo);
 			
 			bool match = false;
 			for (int i = 0; i < combos.Length; i++) {
@@ -154,6 +154,13 @@ public class PlayerController : MonoBehaviour {
 			armorModifier 	 *= p.armorModifier;
 			speedModifier 	 *= p.speedModifier;
 			strengthModifier *= p.damageModifier;
+			regenModifier 	 *= p.regenModifier;
+			xpModifier 		 *= p.xpModifier;
+			
+			if (IsInvoking("HealthTick")) {
+				CancelInvoke("HealthTick");
+				InvokeRepeating("HealthTick", healthRegenRate/regenModifier, healthRegenRate/regenModifier);
+			}
 			
 			boidComponent.turningSpeed *= p.speedModifier;
 			
@@ -171,14 +178,17 @@ public class PlayerController : MonoBehaviour {
 				health = 0;
 			}
 			else if (!IsInvoking("HealthTick")) {
-				InvokeRepeating("HealthTick", healthRegenRate, healthRegenRate);
+				InvokeRepeating("HealthTick", healthRegenRate/regenModifier, healthRegenRate/regenModifier);
 			}
 		}
 	}
 	
 	void HealthTick() {
 		if (health < healthMax) health++;
-		if (health >= healthMax) CancelInvoke("HealthTick");
+		if (health >= healthMax) {
+			CancelInvoke("HealthTick");
+			health = healthMax;
+		}
 	}
 	
 	void PowerupTick() {
@@ -192,6 +202,13 @@ public class PlayerController : MonoBehaviour {
 				armorModifier 	 /= p.armorModifier;
 				speedModifier 	 /= p.speedModifier;
 				strengthModifier /= p.damageModifier;
+				regenModifier	 /= p.regenModifier;
+				xpModifier 		 /= p.xpModifier;
+				
+				if (IsInvoking("HealthTick")) {
+					CancelInvoke("HealthTick");
+					InvokeRepeating("HealthTick", healthRegenRate/regenModifier, healthRegenRate/regenModifier);
+				}
 				
 				boidComponent.turningSpeed /= p.speedModifier;
 				
@@ -207,6 +224,6 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	public void ReceiveXP(int amount) {
-		xp += amount;
+		xp += Mathf.RoundToInt(amount*xpModifier);
 	}
 }

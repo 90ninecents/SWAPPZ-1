@@ -7,8 +7,7 @@ public class InventoryLoader : MonoBehaviour {
 	void Start() {
 		// debugging
 //		PlayerPrefs.DeleteAll();
-//		
-//		string debugInventory = "ItemNuke|ItemArmor|ItemFullHealth|ItemDamage|ItemSpeed|ItemSpinAttack|ItemNuke|ItemArmor|ItemFullHealth|ItemDamage|ItemSpeed|ItemSpinAttack";
+//		string debugInventory = "ItemArmor|ItemCalzone|ItemInvincibility|ItemNuke|ItemPizzaFull|ItemSpeed|ItemSpinAttack|ItemXP|ItemArmor|ItemCalzone|ItemInvincibility|ItemNuke|ItemPizzaFull|ItemSpeed|ItemSpinAttack|ItemXP|ItemArmor|ItemCalzone|ItemInvincibility|ItemNuke|ItemPizzaFull|ItemSpeed|ItemSpinAttack|ItemXP";
 //		SavedData.Inventory = debugInventory;
 //		
 //		string debugRoster = "CharacterDonatello|CharacterRaphael|CharacterMichelangelo|CharacterLeonardo";

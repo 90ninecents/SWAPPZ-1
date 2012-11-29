@@ -5,6 +5,9 @@ public class Powerup : MonoBehaviour {
 	public float armorModifier = 1.0f;
 	public float damageModifier = 1.0f;
 	public float speedModifier = 1.0f;
+	public float regenModifier = 1.0f;
+	public float xpModifier = 1.0f;
+	
 	public int durationInSeconds = 10;
 	public float effectRadius = 0.0f;
 	
