@@ -369,7 +369,7 @@ public class QCARBehaviour : MonoBehaviour
     // Start the camera and trackers and update the camera projection
     private void StartQCAR()
     {
-        Debug.Log("StartQCAR");
+//        Debug.Log("StartQCAR");
 
         CameraDevice.Instance.Init();
 
@@ -396,7 +396,7 @@ public class QCARBehaviour : MonoBehaviour
     // Stop the trackers, stop and deinit the camera
     private void StopQCAR()
     {
-        Debug.Log("StopQCAR");
+//        Debug.Log("StopQCAR");
 
         if (TrackerManager.Instance.GetTracker(Tracker.Type.MARKER_TRACKER) != null)
         {

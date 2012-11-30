@@ -13,26 +13,33 @@ public class EnemyController : MonoBehaviour {
 	
 	protected bool cooling = false;
 	
+	bool stunned = false;
+	
 	void Start() {
 		arrivalComponent = transform.GetComponent<ArrivalBehaviour>();
 		//arrivalComponent.stoppingRadius = attackRadius-5;
 	}
 	
 	void Update() {
-		if (arrivalComponent.targetObject == null) {
-			arrivalComponent.targetObject = Game.Player.transform;
-		}
-		
-		if (!cooling && (transform.position-arrivalComponent.targetObject.position).magnitude <= attackRadius) {
-			Attack ();
-		}
-		
-		// rotate to face player at all times
-		else if (cooling) {
-			Vector3 aim = arrivalComponent.targetObject.position-transform.position;
-			aim.y = 0;
+		if (!stunned) {
+			if (arrivalComponent.targetObject == null) {
+				arrivalComponent.targetObject = Game.Player.transform;
+			}
 			
-			transform.rigidbody.rotation = Quaternion.LookRotation(aim);
+			if (!cooling && (transform.position-arrivalComponent.targetObject.position).magnitude <= attackRadius) {
+				Attack ();
+			}
+			
+			// rotate to face player at all times
+			else if (cooling) {
+				Vector3 aim = arrivalComponent.targetObject.position-transform.position;
+				aim.y = 0;
+				
+				transform.rigidbody.rotation = Quaternion.LookRotation(aim);
+			}
+		}
+		else {
+			// play stunned animations
 		}
 	}
 	
@@ -46,6 +53,16 @@ public class EnemyController : MonoBehaviour {
 	
 	protected void Cooldown() {
 		cooling = false;
+	}
+	
+	public void Stun(float duration) {
+		stunned = true;
+		
+		Invoke("EndStun", duration);
+	}
+	
+	void EndStun() {
+		stunned = false;
 	}
 	
 	public void TakeDamage(int damage, Transform attacker) {		

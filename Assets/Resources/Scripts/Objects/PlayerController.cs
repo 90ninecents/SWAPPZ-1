@@ -104,7 +104,7 @@ public class PlayerController : MonoBehaviour {
 			// Check for object to be hit by attack
 			RaycastHit hit;
 			
-			if (rigidbody.SweepTest(transform.forward, out hit, attackRadius)) {
+			if (rigidbody.SweepTest(transform.forward, out hit, attackRadius*sizeModifier)) {
 				EnemyController enemy = hit.collider.transform.GetComponent<EnemyController>();
 				BreakableObject obj = hit.collider.transform.GetComponent<BreakableObject>();
 				
@@ -143,6 +143,10 @@ public class PlayerController : MonoBehaviour {
 			Game.DestroyEnemies(p.effectRadius);
 		}
 		
+		else if (p.stunEnemies) {
+			Game.StunEnemies(p.durationInSeconds, p.effectRadius);
+		}
+		
 		else if (p.healthRestorePercent > 0) {
 			health += healthMax*(p.healthRestorePercent/100);
 			if (health > healthMax) health = healthMax;
@@ -160,6 +164,7 @@ public class PlayerController : MonoBehaviour {
 			xpModifier 		 *= p.xpModifier;
 			
 			sizeModifier 	 *= p.sizeModifier;
+			transform.localScale *= p.sizeModifier;
 			
 			if (IsInvoking("HealthTick")) {
 				CancelInvoke("HealthTick");
@@ -210,6 +215,7 @@ public class PlayerController : MonoBehaviour {
 				xpModifier 		 /= p.xpModifier;
 				
 				sizeModifier 	 /= p.sizeModifier;
+				transform.localScale /= p.sizeModifier;
 				
 				if (IsInvoking("HealthTick")) {
 					CancelInvoke("HealthTick");

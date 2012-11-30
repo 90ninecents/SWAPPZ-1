@@ -8,6 +8,8 @@ public class Powerup : MonoBehaviour {
 	public float regenModifier = 1.0f;
 	public float xpModifier = 1.0f;
 	
+	public float sizeModifier = 1.0f;
+	
 	public int durationInSeconds = 10;
 	public float effectRadius = 0.0f;
 	
@@ -15,8 +17,7 @@ public class Powerup : MonoBehaviour {
 	
 	public bool invincibility = false;
 	public bool destroyEnemies = false;
-	
-	public float sizeModifier = 1.0f;
+	public bool stunEnemies = false;
 	
 	int life = 0;
 	bool expired = false;

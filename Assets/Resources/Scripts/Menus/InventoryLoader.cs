@@ -6,11 +6,17 @@ public class InventoryLoader : MonoBehaviour {
 	
 	void Start() {
 		// debugging
-//		PlayerPrefs.DeleteAll();
-//		string debugInventory = "ItemArmor|ItemCalzone|ItemInvincibility|ItemNuke|ItemPizzaFull|ItemSpeed|ItemSpinAttack|ItemXP|ItemArmor|ItemCalzone|ItemInvincibility|ItemNuke|ItemPizzaFull|ItemSpeed|ItemSpinAttack|ItemXP|ItemArmor|ItemCalzone|ItemInvincibility|ItemNuke|ItemPizzaFull|ItemSpeed|ItemSpinAttack|ItemXP";
+		//PlayerPrefs.DeleteAll();
+//		string debugInventory = "ItemArmor|ItemCalzone|ItemInvincibility|ItemNuke|ItemPizzaFull|ItemSpeed|ItemSpinAttack|ItemXP|ItemSizeUp";
 //		SavedData.Inventory = debugInventory;
 //		
-//		string debugRoster = "CharacterDonatello|CharacterRaphael|CharacterMichelangelo|CharacterLeonardo";
+//		string debugItemLoadout = "ItemFlashBomb";
+//		SavedData.ItemLoadout = debugItemLoadout;
+//		
+//		string debugCharLoadout = "CharacterDonatello";
+//		SavedData.CharacterLoadout = debugCharLoadout;
+//		
+//		string debugRoster = "CharacterRaphael|CharacterMichelangelo|CharacterLeonardo";
 //		SavedData.UnlockedCharacters = debugRoster;
 		// ----
 		

@@ -131,6 +131,27 @@ public class Game : MonoBehaviour {
 		}
 	}
 	
+	public static void StunEnemies(float duration, float radius = 0.0f) {
+		// Stuns all enemies in a circular area with given radius around the player
+		// If radius is 0, all spawned enemies are stunned
+		
+		int count = EnemyGroup.childCount;
+		
+		if (radius == 0) {
+			for (int i = 0; i < count; i++) {
+				EnemyGroup.GetChild(i).GetComponent<EnemyController>().Stun(duration);
+			}
+		}
+		
+		else {			
+			for (int i = 0; i < count; i++) {
+				if ((EnemyGroup.GetChild(i).position-instance.playerObject.position).magnitude <= radius) {
+					EnemyGroup.GetChild(i).GetComponent<EnemyController>().Stun(duration);
+				}
+			}
+		}
+	}
+	
 	void SwitchPlayer(GameObject go) {
 		
 		if (playerObject != null) {
