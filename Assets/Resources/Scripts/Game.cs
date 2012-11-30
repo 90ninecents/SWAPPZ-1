@@ -24,8 +24,6 @@ public class Game : MonoBehaviour {
 	//static List<GameObject> companions;
 	static GUITexture[] uiList;
 	
-	//static bool fy = false;
-	
 	public static PlayerController Player { get { return instance.player; } }
 	public static Joystick Joystick { get { return instance.joystick; } }
 	public static Transform EnemyGroup { get { return instance.enemyGroupObject; } }
@@ -74,13 +72,14 @@ public class Game : MonoBehaviour {
 		joystick = joystickObject.GetComponent<Joystick>();
 		
 		if (powerupSpawners.Length > 0) InvokeRepeating("SpawnPowerup", powerupSpawnInterval, powerupSpawnInterval);
+		
+		//StartSlowMo(20);
 	}
 	
 	void OnEnable() {
 		Gesture.onTouchDownE += OnTouch;
 		// Unpause
 		Time.timeScale = 1.0f;
-		//fy = false;
 	}
 	
 	void OnDisable() {
@@ -185,7 +184,17 @@ public class Game : MonoBehaviour {
 		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);
 	}
 	
-	void SpawnPowerup() {
+//	public static void StartSlowMo(float duration) {
+//		EnemyController.speedModifier /= 4;
+//		
+//		Invoke("EndSlowMo", duration);
+//	}
+//	
+//	static void EndSlowMo() {
+//		EnemyController.speedModifier *= 4;
+//	}
+	
+	static void SpawnPowerup() {
 		
 		// Pick random powerup spawner
 		int index = Random.Range(0, powerupSpawners.Length);

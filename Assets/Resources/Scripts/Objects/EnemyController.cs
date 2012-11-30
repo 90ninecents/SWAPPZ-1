@@ -7,6 +7,8 @@ public class EnemyController : MonoBehaviour {
 	public float attackRadius = 25.0f;	// distance from target before attack can be made
 	public int attackCooldown = 2;		// Seconds between attacks
 	
+	public static float speedModifier = 1.0f;
+	
 	protected ArrivalBehaviour arrivalComponent;
 	
 	public int xpGain = 100;
@@ -22,6 +24,8 @@ public class EnemyController : MonoBehaviour {
 	
 	void Update() {
 		if (!stunned) {
+			transform.GetComponent<Boid>().Speed = transform.GetComponent<Boid>().maxSpeed*speedModifier;
+			
 			if (arrivalComponent.targetObject == null) {
 				arrivalComponent.targetObject = Game.Player.transform;
 			}
@@ -48,12 +52,12 @@ public class EnemyController : MonoBehaviour {
 		else arrivalComponent.targetObject.GetComponent<CompanionController>().TakeDamage(strength);
 		
 		cooling = true;
-		Invoke("Cooldown", attackCooldown);
+		Invoke("Cooldown", attackCooldown/speedModifier);
 	}
 	
 	protected void Cooldown() {
 		cooling = false;
-	}
+	}	
 	
 	public void Stun(float duration) {
 		stunned = true;

@@ -20,6 +20,7 @@ public class PlayerController : MonoBehaviour {
 	float regenModifier = 1.0f;			// Affected by powerups; modifies speed of regeneration, not amount
 	float xpModifier = 1.0f;
 	float sizeModifier = 1.0f;			// Affects model size, attack radius
+	float comboModifier = 1.0f;
 	
 	bool invincible = false;			// Affected by powerups
 
@@ -92,7 +93,7 @@ public class PlayerController : MonoBehaviour {
 					if (combos[i] == currentCombo) {
 						Debug.Log("combo #"+i+" performed");
 						currentCombo = "";
-						if (comboMeter < comboMax) comboMeter += comboPoints;
+						if (comboMeter < comboMax) comboMeter += Mathf.RoundToInt(comboPoints*comboModifier);
 					}
 					match = true;
 				}
@@ -162,6 +163,7 @@ public class PlayerController : MonoBehaviour {
 			strengthModifier *= p.damageModifier;
 			regenModifier 	 *= p.regenModifier;
 			xpModifier 		 *= p.xpModifier;
+			comboModifier 	 *= p.comboModifier;
 			
 			sizeModifier 	 *= p.sizeModifier;
 			transform.localScale *= p.sizeModifier;
@@ -213,6 +215,7 @@ public class PlayerController : MonoBehaviour {
 				strengthModifier /= p.damageModifier;
 				regenModifier	 /= p.regenModifier;
 				xpModifier 		 /= p.xpModifier;
+				comboModifier 	 /= p.comboModifier;
 				
 				sizeModifier 	 /= p.sizeModifier;
 				transform.localScale /= p.sizeModifier;

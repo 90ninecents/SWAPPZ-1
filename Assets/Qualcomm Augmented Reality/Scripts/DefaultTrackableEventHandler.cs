@@ -17,7 +17,9 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
 	Animation Idle_test_ani;
 	
 	
-     GameObject ninja;
+    GameObject ninja;
+	bool scanned = false;
+	
     #region PRIVATE_MEMBER_VARIABLES
  
     private TrackableBehaviour mTrackableBehaviour;
@@ -79,8 +81,24 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
         foreach (Renderer component in rendererComponents) {
             component.enabled = true;
         }
-
-//        Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
+		
+		if (!scanned) {
+			print ("Leonardo scanned");
+			
+			string character = "CharacterLeonardo";
+			
+			bool unlock = true;
+			
+			foreach (string s in SavedData.UnlockedCharacters.Split(SavedData.Separator[0])) {
+				if (s == character) unlock = false;
+			}
+			foreach (string s in SavedData.CharacterLoadout.Split(SavedData.Separator[0])) {
+				if (s == character) unlock = false;
+			}
+			
+			if (unlock) SavedData.UnlockedCharacters = SavedData.UnlockedCharacters+SavedData.Separator+character;
+			scanned = true;
+		}
     }
 
 
