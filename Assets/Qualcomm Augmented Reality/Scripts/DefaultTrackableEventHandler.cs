@@ -11,11 +11,8 @@ using UnityEngine;
 public class DefaultTrackableEventHandler : MonoBehaviour,
                                             ITrackableEventHandler
 {
-	
-	
 	public TrackableBehaviour mtrackableBehaviour;
 	Animation Idle_test_ani;
-	
 	
     GameObject ninja;
 	bool scanned = false;
@@ -29,10 +26,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
 
 
     #region UNTIY_MONOBEHAVIOUR_METHODS
-	
-
-
-    
+	    
     void Start()
     {
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
@@ -83,10 +77,8 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
         }
 		
 		if (!scanned) {
-			print ("Leonardo scanned");
-			
+			// Unlock scanned character
 			string character = "CharacterLeonardo";
-			
 			bool unlock = true;
 			
 			foreach (string s in SavedData.UnlockedCharacters.Split(SavedData.Separator[0])) {
@@ -111,13 +103,12 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
             component.enabled = false;
         }
 
-       if (Idle_test_ani != null)
-       Idle_test_ani.Stop();
-	
+       if (Idle_test_ani != null) Idle_test_ani.Stop();
     }
+	
 	void OnTrack()
 	{
-		  Idle_test_ani.Play();
+		//Idle_test_ani.Play();
 	}
 
     #endregion // PRIVATE_METHODS

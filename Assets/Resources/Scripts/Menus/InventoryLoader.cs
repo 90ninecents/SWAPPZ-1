@@ -7,25 +7,22 @@ public class InventoryLoader : MonoBehaviour {
 	void Start() {
 		// debugging
 		//PlayerPrefs.DeleteAll();
-//		SavedData.Inventory = "";		
-//
-//		SavedData.ItemLoadout = "";		
-//
+//		SavedData.Inventory = "";
+//		SavedData.ItemLoadout = "";
 //		SavedData.CharacterLoadout = "";
-//
 //		SavedData.UnlockedCharacters = "";
 		
-//		string debugInventory = "ItemArmor|ItemCalzone|ItemInvincibility|ItemNuke|ItemPizzaFull|ItemSpeed|ItemSpinAttack|ItemXP|ItemSizeUp";
-//		SavedData.Inventory = debugInventory;
-//		
-//		string debugItemLoadout = "ItemCombo";
-//		SavedData.ItemLoadout = debugItemLoadout;
-//		
-//		string debugCharLoadout = "CharacterDonatello";
-//		SavedData.CharacterLoadout = debugCharLoadout;
-//		
-//		string debugRoster = "CharacterRaphael|CharacterMichelangelo|CharacterLeonardo";
-//		SavedData.UnlockedCharacters = debugRoster;
+		string debugInventory = "ItemArmor|ItemCalzone|ItemInvincibility|ItemNuke|ItemPizzaFull|ItemSpeed|ItemSpinAttack|ItemXP|ItemSizeUp";
+		SavedData.Inventory = debugInventory;
+		
+		string debugItemLoadout = "ItemCombo";
+		SavedData.ItemLoadout = debugItemLoadout;
+		
+		string debugCharLoadout = "CharacterDonatello";
+		SavedData.CharacterLoadout = debugCharLoadout;
+		
+		string debugRoster = "CharacterRaphael|CharacterMichelangelo|CharacterLeonardo";
+		SavedData.UnlockedCharacters = debugRoster;
 		// ----
 		
 		LoadoutManager manager = transform.GetComponent<LoadoutManager>();
