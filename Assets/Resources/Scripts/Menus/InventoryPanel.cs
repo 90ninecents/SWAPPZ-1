@@ -208,6 +208,7 @@ public class InventoryPanel : MonoBehaviour {
 			if (items[i] == item) {
 				// make slot available
 				items[i] = null;
+				print (item.name+" - "+items[i]);
 				
 				itemCount--;
 				lastRemoved = item;

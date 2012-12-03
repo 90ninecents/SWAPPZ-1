@@ -11,7 +11,7 @@ public class ObserverCombo : MonoBehaviour {
 	
 	void Update () {
 		Rect r = transform.guiTexture.pixelInset;
-		r.width = Game.Player.ComboPercentage*originalWidth;
+		r.width = Game.Player.ComboPercentage*originalWidth + 5;
 		transform.guiTexture.pixelInset = r;
 	}
 }

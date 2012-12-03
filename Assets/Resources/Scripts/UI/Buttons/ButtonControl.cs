@@ -17,19 +17,22 @@ public class ButtonControl : MonoBehaviour {
 			if (t.GetComponent<Button>() != null) {
 				
 				if (t.renderer != null) {
-					if (t.renderer.bounds.Contains(new Vector3(touchPos.x-Screen.width/2, touchPos.y-Screen.height/2, t.position.z))) {
+					if (t.renderer.enabled &&
+						t.renderer.bounds.Contains(new Vector3(touchPos.x-Screen.width/2, touchPos.y-Screen.height/2, t.position.z))) {
 						t.GetComponent<Button>().Fire();
 						break;
 					}
 				}
 				else if (t.guiTexture != null) {
-					if (t.guiTexture.GetScreenRect().Contains(touchPos)) {
+					if (t.guiTexture.enabled &&
+						t.guiTexture.GetScreenRect().Contains(touchPos)) {
 						t.GetComponent<Button>().Fire();
 						break;
 					}
 				}
 				else if (t.guiText != null) {
-					if (t.guiText.GetScreenRect().Contains(touchPos)) {
+					if (t.guiText.enabled &&
+						t.guiText.GetScreenRect().Contains(touchPos)) {
 						t.GetComponent<Button>().Fire();
 						break;
 					}

@@ -566,6 +566,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_GUIText_set_alignment ();
 	void Register_UnityEngine_GUIText_set_anchor ();
 	Register_UnityEngine_GUIText_set_anchor ();
+	void Register_UnityEngine_GUITexture_set_texture ();
+	Register_UnityEngine_GUITexture_set_texture ();
 	void Register_UnityEngine_GUITexture_INTERNAL_get_pixelInset ();
 	Register_UnityEngine_GUITexture_INTERNAL_get_pixelInset ();
 	void Register_UnityEngine_GUITexture_INTERNAL_set_pixelInset ();
@@ -786,6 +788,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Quaternion_INTERNAL_CALL_Internal_FromEulerRad ();
 	void Register_UnityEngine_Random_RandomRangeInt ();
 	Register_UnityEngine_Random_RandomRangeInt ();
+	void Register_UnityEngine_Renderer_get_enabled ();
+	Register_UnityEngine_Renderer_get_enabled ();
 	void Register_UnityEngine_Renderer_set_enabled ();
 	Register_UnityEngine_Renderer_set_enabled ();
 	void Register_UnityEngine_Renderer_get_material ();

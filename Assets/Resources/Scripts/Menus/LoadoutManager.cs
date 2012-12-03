@@ -12,6 +12,8 @@ public class LoadoutManager : MonoBehaviour {
 	InventoryPanel inventory;
 	InventoryPanel roster;
 	
+	GUIText btnAccept;
+	
 	void OnEnable() {
 		if (itemLoadoutPanel != null) {
 			itemLoadout = itemLoadoutPanel.GetComponent<InventoryPanel>();
@@ -20,6 +22,15 @@ public class LoadoutManager : MonoBehaviour {
 		if (characterLoadoutPanel != null) {
 			characterLoadout = characterLoadoutPanel.GetComponent<InventoryPanel>();
 			roster = rosterPanel.GetComponent<InventoryPanel>();
+			
+			btnAccept = GameObject.Find ("AcceptButton").transform.guiText;
+			btnAccept.enabled = false;
+		}
+	}
+	
+	void Update() {
+		if (characterLoadout != null) {
+			btnAccept.enabled = (characterLoadout.Items[0] != null);
 		}
 	}
 	

@@ -69,7 +69,6 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update() {
 		boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
-		
 	}
 	
 	void OnTriggerEnter(Collider other) {
@@ -113,7 +112,7 @@ public class PlayerController : MonoBehaviour {
 				if (enemy != null) {
 					enemy.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), transform);
 					// Get XP on hit
-					ReceiveXP(enemy.xpGain);
+					if (xp < xpTNL) ReceiveXP(enemy.xpGain);
 				}
 				// If breakable object hit:
 				else if (obj != null) {
@@ -139,9 +138,13 @@ public class PlayerController : MonoBehaviour {
 	public void CollectPowerup(Powerup p) {
 		Destroy(p.gameObject);
 		
-		// Assuming a powerup that destroys enemies/restores life has no other benefits
+		// Assuming a powerup that affects enemies/restores life has no other benefits
 		if (p.destroyEnemies) {
 			Game.DestroyEnemies(p.effectRadius);
+		}
+		
+		else if (p.slowEnemies) {
+			Game.StartSlowMo(p.durationInSeconds);
 		}
 		
 		else if (p.stunEnemies) {

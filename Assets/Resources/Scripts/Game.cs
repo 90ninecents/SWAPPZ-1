@@ -72,8 +72,6 @@ public class Game : MonoBehaviour {
 		joystick = joystickObject.GetComponent<Joystick>();
 		
 		if (powerupSpawners.Length > 0) InvokeRepeating("SpawnPowerup", powerupSpawnInterval, powerupSpawnInterval);
-		
-		//StartSlowMo(20);
 	}
 	
 	void OnEnable() {
@@ -184,17 +182,17 @@ public class Game : MonoBehaviour {
 		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);
 	}
 	
-//	public static void StartSlowMo(float duration) {
-//		EnemyController.speedModifier /= 4;
-//		
-//		Invoke("EndSlowMo", duration);
-//	}
-//	
-//	static void EndSlowMo() {
-//		EnemyController.speedModifier *= 4;
-//	}
+	public static void StartSlowMo(float duration) {
+		EnemyController.speedModifier /= 4;
+		
+		Game.instance.Invoke("EndSlowMo", duration);
+	}
 	
-	static void SpawnPowerup() {
+	void EndSlowMo() {
+		EnemyController.speedModifier *= 4;
+	}
+	
+	void SpawnPowerup() {
 		
 		// Pick random powerup spawner
 		int index = Random.Range(0, powerupSpawners.Length);
