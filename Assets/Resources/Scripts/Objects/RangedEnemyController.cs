@@ -8,13 +8,6 @@ public class RangedEnemyController : EnemyController {
 	
 	FleeBehaviour fleeComponent;
 	
-	void Start() {
-		arrivalComponent = transform.GetComponent<ArrivalBehaviour>();
-		//fleeComponent = transform.GetComponent<FleeBehaviour>();
-		
-		//arrivalComponent.stoppingRadius = attackRadius-5;
-	}
-	
 	protected override void Attack() {
 		GameObject go = Instantiate(projectile) as GameObject;
 		go.transform.position = transform.position+(transform.forward*transform.localScale.z)+new Vector3(0,10,0);

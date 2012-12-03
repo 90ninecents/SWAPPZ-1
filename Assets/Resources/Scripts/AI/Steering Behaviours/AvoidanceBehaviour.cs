@@ -22,6 +22,7 @@ public class AvoidanceBehaviour : SteeringBehaviour {
 			obstacles.Clear();
 		}
 		
-		return steering*weight;
+		lastSteering = steering*weight;
+		return lastSteering;
 	}
 }

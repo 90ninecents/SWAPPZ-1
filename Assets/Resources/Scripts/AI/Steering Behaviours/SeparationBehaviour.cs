@@ -24,6 +24,7 @@ public class SeparationBehaviour : SteeringBehaviour {
 			}
 		}
 		
-		return steering*weight;
+		lastSteering = steering*weight;
+		return lastSteering;
 	}
 }

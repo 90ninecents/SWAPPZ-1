@@ -48,12 +48,21 @@ public class PlayerController : MonoBehaviour {
 	public float HealthPercentage { get {return (float)health/healthMax; } }
 	public float XPPercentage { get { return (float)xp/xpTNL; } }
 	
+	Animation animation;
 	
 	void Awake() {
 		health = healthMax;
 	}
 	
-	void OnEnable() {		
+	void OnEnable() {
+		animation = transform.GetComponentInChildren<Animation>();
+		animation.AddClip(Resources.Load("Animations/Players/Idle") as AnimationClip, "idle");
+		animation.AddClip(Resources.Load("Animations/Players/Attack1") as AnimationClip, "attack1");
+		animation.AddClip(Resources.Load("Animations/Players/Attack2") as AnimationClip, "attack2");
+		animation.AddClip(Resources.Load("Animations/Players/Attack3") as AnimationClip, "attack3");
+		
+		animation.Play("idle");
+		
 		boidComponent = transform.GetComponent<Boid>();
 		
 		boidComponent.GetBehaviour("ToEnemy").SetWeight(0);
@@ -81,7 +90,10 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	public void ExecuteAttack(int attackNumber = 1) {
-		if (!cooling) {			
+		if (!cooling) {
+			animation.CrossFadeQueued("attack"+attackNumber,0,QueueMode.PlayNow);
+			animation.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
+			
 			CancelInvoke("BreakCombo");
 			
 			currentCombo += ""+attackNumber;
@@ -93,12 +105,16 @@ public class PlayerController : MonoBehaviour {
 						Debug.Log("combo #"+i+" performed");
 						currentCombo = "";
 						if (comboMeter < comboMax) comboMeter += Mathf.RoundToInt(comboPoints*comboModifier);
+						
+						animation.CrossFadeQueued("attack3",0,QueueMode.PlayNow);
+						animation.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
 					}
 					match = true;
 				}
 			}
 			if (!match) {
 				currentCombo = currentCombo.Remove(0,1);
+				
 			}
 			
 			// Check for object to be hit by attack

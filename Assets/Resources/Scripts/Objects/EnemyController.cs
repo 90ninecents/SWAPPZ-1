@@ -12,18 +12,29 @@ public class EnemyController : MonoBehaviour {
 	protected ArrivalBehaviour arrivalComponent;
 	
 	public int xpGain = 100;
-	
 	protected bool cooling = false;
+	protected bool stunned = false;
 	
-	bool stunned = false;
+	Animation animation;
 	
 	void Start() {
 		arrivalComponent = transform.GetComponent<ArrivalBehaviour>();
-		//arrivalComponent.stoppingRadius = attackRadius-5;
+		
+		animation = transform.GetComponentInChildren<Animation>();
+		
+		animation.AddClip(Resources.Load("Animations/Enemies/Run") as AnimationClip, "run");
+		foreach (AnimationState state in animation) {
+			state.speed = 0.5f;
+		}
+		
+		animation.AddClip(Resources.Load("Animations/Enemies/Idle") as AnimationClip, "idle");
 	}
 	
 	void Update() {
 		if (!stunned) {
+			if (arrivalComponent.Steering.magnitude > 0) animation.CrossFade("run");
+			else animation.CrossFade("idle");
+			
 			transform.GetComponent<Boid>().Speed = transform.GetComponent<Boid>().maxSpeed*speedModifier;
 			
 			if (arrivalComponent.targetObject == null) {

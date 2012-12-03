@@ -26,6 +26,7 @@ public class FleeBehaviour : SteeringBehaviour {
 			steering.Scale(new Vector3(weight, weight, weight));
 		}
 		
-		return steering;
+		lastSteering = steering*weight;
+		return lastSteering;
 	}
 }

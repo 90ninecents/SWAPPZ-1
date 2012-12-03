@@ -17,6 +17,7 @@ public class CohesionBehaviour : SteeringBehaviour {
 			steering += new Vector3(avg.x - transform.position.x, avg.y - transform.position.y, avg.z - transform.position.z).normalized;
 		}
 		
-		return steering*weight;
+		lastSteering = steering*weight;
+		return lastSteering;
 	}
 }
