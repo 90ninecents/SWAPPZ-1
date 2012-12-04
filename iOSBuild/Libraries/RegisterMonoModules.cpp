@@ -378,8 +378,6 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Camera_get_main ();
 	void Register_UnityEngine_Collider_get_attachedRigidbody ();
 	Register_UnityEngine_Collider_get_attachedRigidbody ();
-	void Register_UnityEngine_Collider_INTERNAL_get_bounds ();
-	Register_UnityEngine_Collider_INTERNAL_get_bounds ();
 	void Register_UnityEngine_Component_get_transform ();
 	Register_UnityEngine_Component_get_transform ();
 	void Register_UnityEngine_Component_get_rigidbody ();
