@@ -48,20 +48,20 @@ public class PlayerController : MonoBehaviour {
 	public float HealthPercentage { get {return (float)health/healthMax; } }
 	public float XPPercentage { get { return (float)xp/xpTNL; } }
 	
-	Animation animation;
+	public Animation anim;
 	
 	void Awake() {
 		health = healthMax;
+		anim = transform.GetComponentInChildren<Animation>();
+		
+		anim.AddClip(Resources.Load("Animations/Players/Idle") as AnimationClip, "idle");
+		anim.AddClip(Resources.Load("Animations/Players/Attack1") as AnimationClip, "attack1");
+		anim.AddClip(Resources.Load("Animations/Players/Attack2") as AnimationClip, "attack2");
+		anim.AddClip(Resources.Load("Animations/Players/Attack3") as AnimationClip, "attack3");
 	}
 	
 	void OnEnable() {
-		animation = transform.GetComponentInChildren<Animation>();
-		animation.AddClip(Resources.Load("Animations/Players/Idle") as AnimationClip, "idle");
-		animation.AddClip(Resources.Load("Animations/Players/Attack1") as AnimationClip, "attack1");
-		animation.AddClip(Resources.Load("Animations/Players/Attack2") as AnimationClip, "attack2");
-		animation.AddClip(Resources.Load("Animations/Players/Attack3") as AnimationClip, "attack3");
-		
-		animation.Play("idle");
+		anim.Play("idle");
 		
 		boidComponent = transform.GetComponent<Boid>();
 		
@@ -91,8 +91,8 @@ public class PlayerController : MonoBehaviour {
 	
 	public void ExecuteAttack(int attackNumber = 1) {
 		if (!cooling) {
-			animation.CrossFadeQueued("attack"+attackNumber,0,QueueMode.PlayNow);
-			animation.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
+			anim.CrossFadeQueued("attack"+attackNumber,0,QueueMode.PlayNow);
+			anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
 			
 			CancelInvoke("BreakCombo");
 			
@@ -106,8 +106,8 @@ public class PlayerController : MonoBehaviour {
 						currentCombo = "";
 						if (comboMeter < comboMax) comboMeter += Mathf.RoundToInt(comboPoints*comboModifier);
 						
-						animation.CrossFadeQueued("attack3",0,QueueMode.PlayNow);
-						animation.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
+						anim.CrossFadeQueued("attack3",0,QueueMode.PlayNow);
+						anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
 					}
 					match = true;
 				}

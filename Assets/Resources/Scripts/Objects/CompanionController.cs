@@ -20,12 +20,14 @@ public class CompanionController : MonoBehaviour {
 		boidComponent = transform.GetComponent<Boid>();
 		pc = transform.GetComponent<PlayerController>();
 		
-		strength = pc.attackStrengths[0];
-		attackRadius = pc.attackRadius;
-		attackCooldown = pc.attackCooldown;
+		strength = pc.attackStrengths[0]/4;
+		attackRadius = pc.attackRadius*2;
+		attackCooldown = pc.attackCooldown*10;
 	}
 	
 	void OnEnable() {
+		pc.anim.Play("idle");
+			
 		boidComponent.Speed = boidComponent.maxSpeed;
 		
 		boidComponent.GetBehaviour("ToEnemy").SetWeight(0);
@@ -50,6 +52,11 @@ public class CompanionController : MonoBehaviour {
 		
 		else {
 			if (!cooling && (transform.position-target.transform.position).magnitude <= attackRadius) {
+				
+				int attackNumber = Random.Range(1,3);
+				pc.anim.CrossFadeQueued("attack"+attackNumber,0,QueueMode.PlayNow);
+				pc.anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
+				
 				target.TakeDamage(strength, transform);
 				cooling = true;
 				InvokeRepeating("Cooldown", attackCooldown, attackCooldown);

@@ -160,6 +160,14 @@ void RegisterAllStrippedInternalCalls ()
 {
 	void Register_UnityEngine_Animation_INTERNAL_CALL_Stop ();
 	Register_UnityEngine_Animation_INTERNAL_CALL_Stop ();
+	void Register_UnityEngine_Animation_Play ();
+	Register_UnityEngine_Animation_Play ();
+	void Register_UnityEngine_Animation_CrossFade ();
+	Register_UnityEngine_Animation_CrossFade ();
+	void Register_UnityEngine_Animation_CrossFadeQueued ();
+	Register_UnityEngine_Animation_CrossFadeQueued ();
+	void Register_UnityEngine_Animation_AddClip ();
+	Register_UnityEngine_Animation_AddClip ();
 	void Register_UnityEngine_Animation_PlayDefaultAnimation ();
 	Register_UnityEngine_Animation_PlayDefaultAnimation ();
 	void Register_UnityEngine_Animation_GetStateAtIndex ();
@@ -200,6 +208,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_AnimationCurve_Init ();
 	void Register_UnityEngine_AnimationEvent_Destroy ();
 	Register_UnityEngine_AnimationEvent_Destroy ();
+	void Register_UnityEngine_AnimationState_set_speed ();
+	Register_UnityEngine_AnimationState_set_speed ();
 	void Register_UnityEngine_Application_Quit ();
 	Register_UnityEngine_Application_Quit ();
 	void Register_UnityEngine_Application_CancelQuit ();
@@ -1030,6 +1040,8 @@ int RegisterClass_AudioListener();
  RegisterClass_AudioListener();
 int RegisterClass_GUILayer();
  RegisterClass_GUILayer();
+int RegisterClass_TrailRenderer();
+ RegisterClass_TrailRenderer();
 int RegisterClass_TextMesh();
  RegisterClass_TextMesh();
 int RegisterClass_RenderSettings();

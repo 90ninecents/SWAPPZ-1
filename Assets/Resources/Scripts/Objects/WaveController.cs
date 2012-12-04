@@ -25,7 +25,7 @@ public class WaveController : MonoBehaviour {
 	}
 	
 	void CheckWave () {
-		if (Game.EnemyGroup.GetChildCount() == 0) {
+		if (Game.EnemyGroup.GetChildCount() == 0 && waveNumber < waves.Length) {
 			waves[waveNumber].SetActiveRecursively(false);
 			LaunchWave(waveNumber);
 			waveNumber++;
