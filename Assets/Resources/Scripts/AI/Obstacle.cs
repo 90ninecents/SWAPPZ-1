@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class Obstacle : MonoBehaviour {
-	public float radius = 250.0f;
+	public float radius = 100.0f;
 	
 	
 	void Awake() {
@@ -23,7 +23,7 @@ public class Obstacle : MonoBehaviour {
 //			else {
 //				radius = 10+(transform.localScale.x*transform.parent.localScale.x);
 //			}
-//		}
+//		}		
 	}
 	
 	// Update is called once per frame

@@ -7,6 +7,15 @@ public class InventoryLoader : MonoBehaviour {
 	void Start() {
 		// debugging
 		//PlayerPrefs.DeleteAll();
+		
+		if (SavedData.UnlockedCharacters.Length == 0 && SavedData.CharacterLoadout.Length == 0) {
+			string debugInventory = "ItemArmor|ItemCalzone|ItemInvincibility|ItemNuke|ItemPizzaFull|ItemSpeed|ItemSpinAttack|ItemXP|ItemSizeUp|ItemCombo|ItemSlow";
+			SavedData.Inventory = debugInventory;
+			
+			string debugRoster = "CharacterRaphael";
+			SavedData.UnlockedCharacters = debugRoster;
+		}
+		
 //		SavedData.Inventory = "";
 //		SavedData.ItemLoadout = "";
 //		SavedData.CharacterLoadout = "";

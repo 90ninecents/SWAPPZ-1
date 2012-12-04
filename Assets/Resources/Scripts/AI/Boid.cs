@@ -63,14 +63,15 @@ public class Boid : MonoBehaviour {
 		falling = (transform.rigidbody.velocity.y < -9.81f);
 		
 		if (!falling) {
+			
 			Vector3 combinedSteering = new Vector3();
 			
 			foreach (SteeringBehaviour b in behaviours) {
 				combinedSteering += b.CalculateSteering(transform.position);
 			}
 			
+			combinedSteering.y = 0;
 			if (combinedSteering != Vector3.zero) {
-				combinedSteering.y = 0;
 				transform.rigidbody.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(combinedSteering), Time.deltaTime*turningSpeed);
 				transform.rigidbody.velocity = transform.forward*currentSpeed;
 			}
@@ -79,7 +80,6 @@ public class Boid : MonoBehaviour {
 			}
 			
 			if (jumping) {
-				
 				transform.rigidbody.velocity += new Vector3(0,transform.rigidbody.mass*5,0);
 				jumpCount++;
 				if (jumpCount >= jumpHeight/5) {

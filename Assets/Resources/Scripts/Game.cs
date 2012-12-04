@@ -48,7 +48,7 @@ public class Game : MonoBehaviour {
 				
 				GameObject go = Instantiate(g.GetComponent<InventoryItem>().itemPrefab) as GameObject;
 				
-				go.transform.position = new Vector3(0,10,0);
+				go.transform.position = new Vector3(0,30,0);
 				go.transform.parent = playerGroupObject;
 				SwitchPlayer(go);
 			}

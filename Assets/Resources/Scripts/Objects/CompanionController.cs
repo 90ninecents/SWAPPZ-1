@@ -5,6 +5,7 @@ public class CompanionController : MonoBehaviour {
 	
 	PlayerController pc;
 	Boid boidComponent;
+	ArrivalBehaviour arrivalComponent;
 	
 	int strength;
 	float attackRadius;
@@ -19,6 +20,8 @@ public class CompanionController : MonoBehaviour {
 	void Awake() {
 		boidComponent = transform.GetComponent<Boid>();
 		pc = transform.GetComponent<PlayerController>();
+		
+		arrivalComponent = boidComponent.GetBehaviour("ToEnemy") as ArrivalBehaviour;
 		
 		strength = pc.attackStrengths[0]/4;
 		attackRadius = pc.attackRadius*2;
@@ -60,6 +63,12 @@ public class CompanionController : MonoBehaviour {
 				target.TakeDamage(strength, transform);
 				cooling = true;
 				InvokeRepeating("Cooldown", attackCooldown, attackCooldown);
+			}
+			else if (cooling) {
+				Vector3 aim = arrivalComponent.targetObject.position-transform.position;
+				aim.y = 0;
+				
+				transform.rigidbody.rotation = Quaternion.LookRotation(aim);
 			}
 		}
 	}

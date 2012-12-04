@@ -1066,6 +1066,8 @@ int RegisterClass_GUIText();
  RegisterClass_GUIText();
 int RegisterClass_GUIElement();
  RegisterClass_GUIElement();
+int RegisterClass_PhysicMaterial();
+ RegisterClass_PhysicMaterial();
 int RegisterClass_SphereCollider();
  RegisterClass_SphereCollider();
 int RegisterClass_CapsuleCollider();

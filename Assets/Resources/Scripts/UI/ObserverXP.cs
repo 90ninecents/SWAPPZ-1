@@ -11,7 +11,10 @@ public class ObserverXP : MonoBehaviour {
 	
 	void Update () {
 		Rect r = transform.guiTexture.pixelInset;
-		r.width = Game.Player.XPPercentage*originalWidth + 5;
+		
+		r.width = Game.Player.XPPercentage*originalWidth;
+		if (r.width == 0) r.width = 5;
+		
 		transform.guiTexture.pixelInset = r;
 	}
 }

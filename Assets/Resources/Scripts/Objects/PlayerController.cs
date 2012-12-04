@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour {
 				
 			}
 			
-			// Check for object to be hit by attack
+			// Check for object to be hit by attack 
 			RaycastHit hit;
 			
 			if (rigidbody.SweepTest(transform.forward, out hit, attackRadius*sizeModifier)) {
