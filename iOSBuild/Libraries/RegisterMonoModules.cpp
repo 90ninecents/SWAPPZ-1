@@ -336,8 +336,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Behaviour_get_enabled ();
 	void Register_UnityEngine_Behaviour_set_enabled ();
 	Register_UnityEngine_Behaviour_set_enabled ();
-	void Register_UnityEngine_Bounds_INTERNAL_CALL_Internal_Contains ();
-	Register_UnityEngine_Bounds_INTERNAL_CALL_Internal_Contains ();
+	void Register_UnityEngine_Bounds_INTERNAL_CALL_Internal_IntersectRay ();
+	Register_UnityEngine_Bounds_INTERNAL_CALL_Internal_IntersectRay ();
 	void Register_UnityEngine_Camera_get_nearClipPlane ();
 	Register_UnityEngine_Camera_get_nearClipPlane ();
 	void Register_UnityEngine_Camera_set_nearClipPlane ();
@@ -378,6 +378,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Camera_get_main ();
 	void Register_UnityEngine_Collider_get_attachedRigidbody ();
 	Register_UnityEngine_Collider_get_attachedRigidbody ();
+	void Register_UnityEngine_Collider_INTERNAL_get_bounds ();
+	Register_UnityEngine_Collider_INTERNAL_get_bounds ();
 	void Register_UnityEngine_Component_get_transform ();
 	Register_UnityEngine_Component_get_transform ();
 	void Register_UnityEngine_Component_get_rigidbody ();
@@ -796,8 +798,6 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Quaternion_INTERNAL_CALL_Internal_FromEulerRad ();
 	void Register_UnityEngine_Random_RandomRangeInt ();
 	Register_UnityEngine_Random_RandomRangeInt ();
-	void Register_UnityEngine_Renderer_get_enabled ();
-	Register_UnityEngine_Renderer_get_enabled ();
 	void Register_UnityEngine_Renderer_set_enabled ();
 	Register_UnityEngine_Renderer_set_enabled ();
 	void Register_UnityEngine_Renderer_get_material ();

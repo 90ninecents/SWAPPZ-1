@@ -13,17 +13,13 @@ public class ButtonControl : MonoBehaviour {
 	}
 	
 	void OnTouch (Vector2 touchPos) {
-		foreach (Transform t in transform) {
-			if (t.GetComponent<Button>() != null) {
+		
+		if (Camera.main != null) {
+			Ray ray = Camera.main.ScreenPointToRay(touchPos);
+		
+			foreach (Transform t in transform) {
 				
-				if (t.renderer != null) {
-					if (t.renderer.enabled &&
-						t.renderer.bounds.Contains(new Vector3(touchPos.x-Screen.width/2, touchPos.y-Screen.height/2, t.position.z))) {
-						t.GetComponent<Button>().Fire();
-						break;
-					}
-				}
-				else if (t.guiTexture != null) {
+				if (t.guiTexture != null) {
 					if (t.guiTexture.enabled &&
 						t.guiTexture.GetScreenRect().Contains(touchPos)) {
 						t.GetComponent<Button>().Fire();
@@ -37,8 +33,14 @@ public class ButtonControl : MonoBehaviour {
 						break;
 					}
 				}
+				else if (t.collider != null) {
+					if (t.collider.bounds.IntersectRay(ray)) {
+						t.GetComponent<Button>().Fire();
+						break;
+					}
+				}	
 			}
-			
 		}
+		
 	}
 }

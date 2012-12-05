@@ -10,6 +10,7 @@ public class ScrollingPane : MonoBehaviour {
 	
 	Transform first;
 	Transform last;
+	Transform center;
 	
 	float scrollDelta = 0.0f;
 	
@@ -55,6 +56,7 @@ public class ScrollingPane : MonoBehaviour {
 			upperScrollLimit = transform.position.x+first.position.x+1;
 		}
 		
+		center = first;
 		
 	}
 
@@ -108,14 +110,18 @@ public class ScrollingPane : MonoBehaviour {
 			direction /= Mathf.Abs(direction);
 			
 			if (closest == null || d < distance) {
-				if  (direction == scrollDelta || d < 100) {
+				if  (direction == scrollDelta || d < Screen.width/10) {
 					closest = t;
 					distance = d;
 				}
 			}
 		}
 		
+		if (closest == null) closest = center;
+		
 		if (closest.position.y < transform.position.y || closest.position.x < transform.position.x) MoveChildren(distance);
 		else MoveChildren(-distance);
+		
+		center = closest;
 	}
 }

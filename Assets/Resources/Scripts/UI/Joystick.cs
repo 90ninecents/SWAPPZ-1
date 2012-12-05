@@ -7,7 +7,9 @@ public class Joystick : MonoBehaviour {
 	Vector2 restPosition;
 	
 	void Start() {
-		restPosition = transform.position;
+		//restPosition = transform.position;
+		restPosition = new Vector2(transform.guiTexture.pixelInset.center.x/Screen.width, transform.guiTexture.pixelInset.center.y/Screen.height);
+		print (restPosition);
 	}
 
 	void OnEnable() {

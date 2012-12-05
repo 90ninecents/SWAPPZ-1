@@ -11,6 +11,8 @@ public class InventoryPanel : MonoBehaviour {
 	public int rows = 2;
 	public int columns = 2;
 	
+	public int maxSelectable = 4;
+	
 	public float sizeIncrease = 1.25f;
 	
 	Vector2[] slots;
