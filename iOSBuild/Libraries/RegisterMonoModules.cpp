@@ -768,8 +768,6 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Physics_INTERNAL_get_gravity ();
 	void Register_UnityEngine_Physics_INTERNAL_CALL_Internal_Raycast ();
 	Register_UnityEngine_Physics_INTERNAL_CALL_Internal_Raycast ();
-	void Register_UnityEngine_Physics_INTERNAL_CALL_RaycastAll ();
-	Register_UnityEngine_Physics_INTERNAL_CALL_RaycastAll ();
 	void Register_UnityEngine_Physics_INTERNAL_CALL_OverlapSphere ();
 	Register_UnityEngine_Physics_INTERNAL_CALL_OverlapSphere ();
 	void Register_UnityEngine_PlayerPrefs_TrySetInt ();
@@ -780,6 +778,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_PlayerPrefs_GetInt ();
 	void Register_UnityEngine_PlayerPrefs_GetString ();
 	Register_UnityEngine_PlayerPrefs_GetString ();
+	void Register_UnityEngine_PlayerPrefs_DeleteAll ();
+	Register_UnityEngine_PlayerPrefs_DeleteAll ();
 	void Register_UnityEngine_Quaternion_INTERNAL_CALL_AngleAxis ();
 	Register_UnityEngine_Quaternion_INTERNAL_CALL_AngleAxis ();
 	void Register_UnityEngine_Quaternion_INTERNAL_CALL_FromToRotation ();

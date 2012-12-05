@@ -22,20 +22,21 @@ public class General : MonoBehaviour {
 				else Gesture.OnTouch(touch.position);
 			}
 		}
-		
-		if(Input.GetMouseButtonDown(0)) {
-			Gesture.OnTouchDown(new Vector2(Input.mousePosition.x, Input.mousePosition.y));	// Simulate touch event in editor
-			Gesture.OnMouse1Down(Input.mousePosition);
+		else {
+			if(Input.GetMouseButtonDown(0)) {
+				Gesture.OnTouchDown(new Vector2(Input.mousePosition.x, Input.mousePosition.y));	// Simulate touch event in editor
+				//Gesture.OnMouse1Down(Input.mousePosition);
+			}
+			else if(Input.GetMouseButtonUp(0)) {
+				Gesture.OnTouchUp(new Vector2(Input.mousePosition.x, Input.mousePosition.y)); // Simulate touch event in editor
+				//Gesture.OnMouse1Up(Input.mousePosition);
+			}
 		}
-		else if(Input.GetMouseButtonUp(0)) {
-			Gesture.OnTouchUp(new Vector2(Input.mousePosition.x, Input.mousePosition.y)); // Simulate touch event in editor
-			Gesture.OnMouse1Up(Input.mousePosition);
-		}
-		else if(Input.GetMouseButton(0)) Gesture.OnMouse1(Input.mousePosition);
-		
-		if(Input.GetMouseButtonDown(1)) Gesture.OnMouse2Down(Input.mousePosition);
-		else if(Input.GetMouseButtonUp(1)) Gesture.OnMouse2Up(Input.mousePosition);
-		else if(Input.GetMouseButton(1)) Gesture.OnMouse2(Input.mousePosition);
+//		else if(Input.GetMouseButton(0)) Gesture.OnMouse1(Input.mousePosition);
+//		
+//		if(Input.GetMouseButtonDown(1)) Gesture.OnMouse2Down(Input.mousePosition);
+//		else if(Input.GetMouseButtonUp(1)) Gesture.OnMouse2Up(Input.mousePosition);
+//		else if(Input.GetMouseButton(1)) Gesture.OnMouse2(Input.mousePosition);
 		
 		
 		//drag event detection goes here

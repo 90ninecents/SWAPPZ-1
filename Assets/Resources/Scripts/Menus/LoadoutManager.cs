@@ -2,25 +2,28 @@ using UnityEngine;
 using System.Collections;
 
 public class LoadoutManager : MonoBehaviour {
-	public Transform itemLoadoutPanel;
 	public Transform inventoryPanel;
-	public Transform characterLoadoutPanel;
 	public Transform rosterPanel;
 	
-	InventoryPanel itemLoadout;
-	InventoryPanel characterLoadout;
+	public int maxItems = 5;
+	public int maxCharacters = 4;
+	
 	InventoryPanel inventory;
 	InventoryPanel roster;
+	
+	Transform[] selectedItems;
+	Transform[] selectedCharacters;
 	
 	GUIText btnAccept;
 	
 	void OnEnable() {
-		if (itemLoadoutPanel != null) {
-			itemLoadout = itemLoadoutPanel.GetComponent<InventoryPanel>();
+		selectedItems = new Transform[maxItems];
+		selectedCharacters = new Transform[maxCharacters];
+		
+		if (inventoryPanel != null) {
 			inventory = inventoryPanel.GetComponent<InventoryPanel>();
 		}
-		if (characterLoadoutPanel != null) {
-			characterLoadout = characterLoadoutPanel.GetComponent<InventoryPanel>();
+		if (rosterPanel != null) {
 			roster = rosterPanel.GetComponent<InventoryPanel>();
 			
 			btnAccept = GameObject.Find ("AcceptButton").transform.guiText;
@@ -29,16 +32,28 @@ public class LoadoutManager : MonoBehaviour {
 	}
 	
 	void Update() {
-		if (characterLoadout != null) {
-			btnAccept.enabled = (characterLoadout.Items[0] != null);
+		if (roster != null) {
+			btnAccept.enabled = false;
+			
+			foreach (Transform t in roster.SelectedItems) {
+				if (t != null) {
+					btnAccept.enabled = true;
+					break;
+				}
+			}
 		}
 	}
 	
 	void OnDisable() {
-		if (itemLoadout != null) 		SavedData.ItemLoadout 		 = GetDataString(itemLoadout.Items);
-		if (inventory != null) 			SavedData.Inventory 		 = GetDataString(inventory.Items);
-		if (characterLoadout != null) 	SavedData.CharacterLoadout	 = GetDataString(characterLoadout.Items);
-		if (roster != null) 			SavedData.UnlockedCharacters = GetDataString(roster.Items);
+		if (inventory != null) {
+			SavedData.ItemLoadout = GetDataString(inventory.SelectedItems);
+			SavedData.Inventory   = GetDataString(inventory.Items);
+		}
+		
+		if (roster != null) {
+			SavedData.CharacterLoadout	 = GetDataString(roster.SelectedItems);
+			SavedData.UnlockedCharacters = GetDataString(roster.Items);
+		}
 		
 		PowerupSpawner.loadoutChange = true;
 	}

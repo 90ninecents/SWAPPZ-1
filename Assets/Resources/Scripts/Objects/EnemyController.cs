@@ -83,7 +83,7 @@ public class EnemyController : MonoBehaviour {
 	public void TakeDamage(int damage, Transform attacker) {		
 		if (attacker != arrivalComponent.targetObject) {
 			arrivalComponent.targetObject = attacker;
-			Debug.Log ("switch");
+			//Debug.Log ("switch");
 		}
 		
 		health -= damage;
