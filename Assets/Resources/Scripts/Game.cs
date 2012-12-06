@@ -12,11 +12,14 @@ public class Game : MonoBehaviour {
 	public Transform enemyGroupObject;
 	public Transform touchTracker;
 	public Transform playerGroupObject;
+	public Transform damageCounterObject;
 	
 	public float powerupSpawnInterval = 2.0f;		// Seconds between attempting to spawn a powerup
+	public int enemyKillsPerCoin = 5;
 	
 	PlayerController player;
 	Joystick joystick;
+	DamageCounter damageCounter;
 	// -----
 	
 	static List<GameObject> availablePowerups;
@@ -24,13 +27,19 @@ public class Game : MonoBehaviour {
 	//static List<GameObject> companions;
 	static GUITexture[] uiList;
 	
+	int coins;
+	int enemiesKilled = 0;
+	
 	public static PlayerController Player { get { return instance.player; } }
 	public static Joystick Joystick { get { return instance.joystick; } }
 	public static Transform EnemyGroup { get { return instance.enemyGroupObject; } }
 	public static Transform TouchTracker { get { return instance.touchTracker; } }
 	public static Transform PlayerGroup { get { return instance.playerGroupObject; } }
+	public static int Coins { get { return instance.coins; } 
+							  set { instance.coins = value; } }
+	public static int EnemiesKilled { get { return instance.enemiesKilled; }
+									  set { instance.enemiesKilled = value; } }
 	
-
 	// Use this for initialization
 	void Start () {
 		if (instance == null) instance = this;
@@ -70,6 +79,7 @@ public class Game : MonoBehaviour {
 		
 		player = playerObject.GetComponent<PlayerController>();
 		joystick = joystickObject.GetComponent<Joystick>();
+		damageCounter = damageCounterObject.GetComponent<DamageCounter>();
 		
 		if (powerupSpawners.Length > 0) InvokeRepeating("SpawnPowerup", powerupSpawnInterval, powerupSpawnInterval);
 	}
@@ -180,6 +190,11 @@ public class Game : MonoBehaviour {
 		Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(playerObject);
 		
 		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);
+		
+		if (damageCounterObject != null) {
+			damageCounterObject.parent = playerObject;
+			damageCounterObject.position = new Vector3(0,damageCounterObject.position.y,0);
+		}
 	}
 	
 	public static void StartSlowMo(float duration) {
@@ -192,13 +207,23 @@ public class Game : MonoBehaviour {
 		EnemyController.speedModifier *= 4;
 	}
 	
+	public static void DisplayDamage(float damage) {
+		if (instance.damageCounter != null) {
+			instance.damageCounter.Show(""+damage);
+		}
+	}
+	
 	void SpawnPowerup() {
-		
 		// Pick random powerup spawner
 		int index = Random.Range(0, powerupSpawners.Length);
 		
 		if (powerupSpawners[index].available) {
 			powerupSpawners[index].Spawn();
 		}
+	}
+	
+	
+	public static bool SpawnCoin() {
+		return (EnemiesKilled%instance.enemyKillsPerCoin == 0);
 	}
 }

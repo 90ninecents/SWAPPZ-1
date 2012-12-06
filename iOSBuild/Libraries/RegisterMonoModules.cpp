@@ -210,6 +210,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_AnimationEvent_Destroy ();
 	void Register_UnityEngine_AnimationState_set_speed ();
 	Register_UnityEngine_AnimationState_set_speed ();
+	void Register_UnityEngine_AnimationState_get_name ();
+	Register_UnityEngine_AnimationState_get_name ();
 	void Register_UnityEngine_Application_Quit ();
 	Register_UnityEngine_Application_Quit ();
 	void Register_UnityEngine_Application_CancelQuit ();
@@ -642,6 +644,10 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_iPhoneKeyboard_Destroy ();
 	void Register_UnityEngine_Material_get_shader ();
 	Register_UnityEngine_Material_get_shader ();
+	void Register_UnityEngine_Material_INTERNAL_CALL_SetColor ();
+	Register_UnityEngine_Material_INTERNAL_CALL_SetColor ();
+	void Register_UnityEngine_Material_GetColor ();
+	Register_UnityEngine_Material_GetColor ();
 	void Register_UnityEngine_Material_SetTexture ();
 	Register_UnityEngine_Material_SetTexture ();
 	void Register_UnityEngine_Material_GetTexture ();
@@ -886,6 +892,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_SystemInfo_get_graphicsDeviceVersion ();
 	void Register_UnityEngine_TextAsset_get_text ();
 	Register_UnityEngine_TextAsset_get_text ();
+	void Register_UnityEngine_TextMesh_set_text ();
+	Register_UnityEngine_TextMesh_set_text ();
 	void Register_UnityEngine_Texture_Internal_GetWidth ();
 	Register_UnityEngine_Texture_Internal_GetWidth ();
 	void Register_UnityEngine_Texture_Internal_GetHeight ();

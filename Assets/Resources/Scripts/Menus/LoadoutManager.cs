@@ -8,19 +8,14 @@ public class LoadoutManager : MonoBehaviour {
 	InventoryPanel inventory;
 	InventoryPanel roster;
 	
-	Transform[] selectedItems;
-	Transform[] selectedCharacters;
-	
 	GUIText btnAccept;
 	
 	void OnEnable() {
 		if (inventoryPanel != null) {
 			inventory = inventoryPanel.GetComponent<InventoryPanel>();
-			selectedItems = new Transform[inventory.maxSelectable];
 		}
 		if (rosterPanel != null) {
 			roster = rosterPanel.GetComponent<InventoryPanel>();
-			selectedCharacters = new Transform[roster.maxSelectable];
 			
 			btnAccept = GameObject.Find ("AcceptButton").transform.guiText;
 			btnAccept.enabled = false;

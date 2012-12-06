@@ -15,25 +15,25 @@ public class EnemyController : MonoBehaviour {
 	protected bool cooling = false;
 	protected bool stunned = false;
 	
-	Animation animation;
+	Animation anim;
 	
 	void Start() {
 		arrivalComponent = transform.GetComponent<ArrivalBehaviour>();
 		
-		animation = transform.GetComponentInChildren<Animation>();
+		anim = transform.GetComponentInChildren<Animation>();
 		
-		animation.AddClip(Resources.Load("Animations/Enemies/Run") as AnimationClip, "run");
-		foreach (AnimationState state in animation) {
-			state.speed = 0.5f;
+		anim.AddClip(Resources.Load("Animations/Enemies/Run") as AnimationClip, "run");
+		anim.AddClip(Resources.Load("Animations/Enemies/Idle") as AnimationClip, "idle");
+		
+		foreach (AnimationState state in anim) {
+			if (state.name == "run") state.speed = 0.5f;
 		}
-		
-		animation.AddClip(Resources.Load("Animations/Enemies/Idle") as AnimationClip, "idle");
 	}
 	
 	void Update() {
 		if (!stunned) {
-			if (arrivalComponent.Steering.magnitude > 0) animation.CrossFade("run");
-			else animation.CrossFade("idle");
+			if (arrivalComponent.Steering.magnitude > 0) anim.CrossFade("run");
+			else anim.CrossFade("idle");
 			
 			transform.GetComponent<Boid>().Speed = transform.GetComponent<Boid>().maxSpeed*speedModifier;
 			
@@ -89,6 +89,13 @@ public class EnemyController : MonoBehaviour {
 		health -= damage;
 		
 		if (health <= 0) {
+			Game.EnemiesKilled++;
+			
+			if (Game.SpawnCoin()) {
+				GameObject coin = Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
+				coin.transform.position = transform.position+new Vector3(0,15,0);
+			}
+				
 			Destroy(gameObject);
 		}
 	}

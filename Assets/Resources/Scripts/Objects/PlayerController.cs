@@ -33,10 +33,12 @@ public class PlayerController : MonoBehaviour {
 	
 	// Attacks/Combos
 	public float attackRadius = 20.0f;
-	public int[] attackStrengths = {200,100};
+	public int[] attackStrengths = {100,200};
+	public float[] attackSpeeds = {1.5f, 0.75f, 1};
 	public float attackCooldown = 0.25f;
 	
 	bool cooling = false;
+	bool dashing = false;	// Handles forward motion on attack
 	
 	public string[] combos = {"1221", "2112"};
 	public int[] comboStrengths = {300,300};
@@ -54,10 +56,17 @@ public class PlayerController : MonoBehaviour {
 		health = healthMax;
 		anim = transform.GetComponentInChildren<Animation>();
 		
-		anim.AddClip(Resources.Load("Animations/Players/Idle") as AnimationClip, "idle");
 		anim.AddClip(Resources.Load("Animations/Players/Attack1") as AnimationClip, "attack1");
 		anim.AddClip(Resources.Load("Animations/Players/Attack2") as AnimationClip, "attack2");
 		anim.AddClip(Resources.Load("Animations/Players/Attack3") as AnimationClip, "attack3");
+		
+//		int count = 0;
+//		foreach (AnimationState state in anim) {
+//			if (state.name.StartsWith("attack")) state.speed = attackSpeeds[count];
+//			count++;
+//		}
+		
+		anim.AddClip(Resources.Load("Animations/Players/Idle") as AnimationClip, "idle");
 	}
 	
 	void OnEnable() {
@@ -77,21 +86,33 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void Update() {
-		boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
+		if (dashing) {
+			Game.TouchTracker.position += transform.forward*5f;
+			transform.position += transform.forward*5f;
+		}
+		else {
+			boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
+		}
 	}
 	
 	void OnTriggerEnter(Collider other) {
 		if (enabled) {
-			Powerup pu = other.gameObject.GetComponent<Powerup>();
-			if (pu != null) {
-				CollectPowerup(pu);
+			Coin c = other.gameObject.GetComponent<Coin>();
+			if (c != null) {
+				CollectCoin(c);
+			}
+			else {
+				Powerup pu = other.gameObject.GetComponent<Powerup>();
+				if (pu != null) {
+					CollectPowerup(pu);
+				}
 			}
 		}
 	}
 	
 	public void ExecuteAttack(int attackNumber = 1) {
 		if (!cooling) {
-			anim.CrossFadeQueued("attack"+attackNumber,0,QueueMode.PlayNow);
+			anim.CrossFadeQueued("attack"+attackNumber,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];
 			anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
 			
 			CancelInvoke("BreakCombo");
@@ -106,7 +127,7 @@ public class PlayerController : MonoBehaviour {
 						currentCombo = "";
 						if (comboMeter < comboMax) comboMeter += Mathf.RoundToInt(comboPoints*comboModifier);
 						
-						anim.CrossFadeQueued("attack3",0,QueueMode.PlayNow);
+						anim.CrossFadeQueued("attack3",0,QueueMode.PlayNow).speed = attackSpeeds[2];
 						anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
 					}
 					match = true;
@@ -114,7 +135,6 @@ public class PlayerController : MonoBehaviour {
 			}
 			if (!match) {
 				currentCombo = currentCombo.Remove(0,1);
-				
 			}
 			
 			// Check for object to be hit by attack 
@@ -134,12 +154,16 @@ public class PlayerController : MonoBehaviour {
 				else if (obj != null) {
 					obj.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier));
 				}
+				
+				if (enemy!=null || obj!=null) Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier));
 			}
 			
 			if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
 			
 			cooling = true;
-			Invoke("Cooldown", attackCooldown*speedModifier);
+			dashing = true;
+			Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
+			Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber]*speedModifier);
 		}
 	}
 	
@@ -149,6 +173,9 @@ public class PlayerController : MonoBehaviour {
 	
 	void Cooldown() {
 		cooling = false;
+	}
+	void EndDash() {
+		dashing = false;
 	}
 	
 	public void CollectPowerup(Powerup p) {
@@ -197,6 +224,11 @@ public class PlayerController : MonoBehaviour {
 			// don't use invincible = p.invincibility; will cause powerups to cancel invincibility granted by other powerups
 			if (p.invincibility) invincible = true;
 		}
+	}
+	
+	void CollectCoin(Coin c) {
+		c.Kill();
+		Game.Coins++;
 	}
 	
 	public void TakeDamage(int damage) {
