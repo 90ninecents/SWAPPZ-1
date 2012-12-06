@@ -5,11 +5,12 @@ public class Joystick : MonoBehaviour {
 	
 	public float maxOffsetRadius = 0.1f;
 	Vector2 restPosition;
+	Vector2 restScreenPosition;
 	
 	void Start() {
 		//restPosition = transform.position;
-		restPosition = new Vector2(transform.guiTexture.pixelInset.center.x/Screen.width, transform.guiTexture.pixelInset.center.y/Screen.height);
-		print (restPosition);
+		restScreenPosition = new Vector2(transform.guiTexture.pixelInset.center.x/Screen.width, transform.guiTexture.pixelInset.center.y/Screen.height);
+		restPosition = transform.position;
 	}
 
 	void OnEnable() {
@@ -25,11 +26,11 @@ public class Joystick : MonoBehaviour {
 	void OnDrag(DragInfo dragInfo) {		
 		Vector2 position = new Vector3(dragInfo.pos.x/Screen.width, dragInfo.pos.y/Screen.height);
 		
-		if ((restPosition-position).magnitude <= maxOffsetRadius) {
-			transform.position = position;
+		if ((restScreenPosition-position).magnitude <= maxOffsetRadius) {
+			transform.position = (position-restScreenPosition);
 		}
 		else if (new Vector2(transform.position.x, transform.position.y) != restPosition) {
-			transform.position = restPosition + (position-restPosition).normalized*maxOffsetRadius;
+			transform.position = restPosition + (position-restScreenPosition).normalized*maxOffsetRadius;
 		}
 	}
 	
