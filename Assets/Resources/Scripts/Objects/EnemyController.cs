@@ -22,18 +22,20 @@ public class EnemyController : MonoBehaviour {
 		
 		anim = transform.GetComponentInChildren<Animation>();
 		
-		anim.AddClip(Resources.Load("Animations/Enemies/Run") as AnimationClip, "run");
-		anim.AddClip(Resources.Load("Animations/Enemies/Idle") as AnimationClip, "idle");
-		
 		foreach (AnimationState state in anim) {
-			if (state.name == "run") state.speed = 0.5f;
+			if (state.name == "run") state.speed = 0.75f;
 		}
+		
+		
 	}
 	
 	void Update() {
 		if (!stunned) {
-			if (arrivalComponent.Steering.magnitude > 0) anim.CrossFade("run");
-			else anim.CrossFade("idle");
+			if (arrivalComponent.Steering.magnitude > 0) anim.Play("run");
+			else if (cooling) {
+				if (anim.IsPlaying("run")) anim.CrossFadeQueued("idle", 0f, QueueMode.PlayNow);
+				else anim.CrossFadeQueued("idle", 0.05f, QueueMode.CompleteOthers);
+			}
 			
 			transform.GetComponent<Boid>().Speed = transform.GetComponent<Boid>().maxSpeed*speedModifier;
 			
@@ -59,11 +61,23 @@ public class EnemyController : MonoBehaviour {
 	}
 	
 	protected virtual void Attack() {
-		if (arrivalComponent.targetObject == Game.Player.transform) Game.Player.TakeDamage(strength);
-		else arrivalComponent.targetObject.GetComponent<CompanionController>().TakeDamage(strength);
+		anim.Stop("run");
+		anim.Stop("idle");
+		anim.CrossFadeQueued("toAttack", 0.1f, QueueMode.PlayNow);
+		anim.CrossFadeQueued("attack", 0.1f, QueueMode.CompleteOthers);
+		//anim.CrossFadeQueued("idle", 0.05f, QueueMode.CompleteOthers);
+		
+		Invoke ("AttackDelay", 0.5f);
+//		if (arrivalComponent.targetObject == Game.Player.transform) Game.Player.TakeDamage(strength);
+//		else arrivalComponent.targetObject.GetComponent<CompanionController>().TakeDamage(strength);
 		
 		cooling = true;
 		Invoke("Cooldown", attackCooldown/speedModifier);
+	}
+	
+	protected void AttackDelay() {
+		if (arrivalComponent.targetObject == Game.Player.transform) Game.Player.TakeDamage(strength);
+		else arrivalComponent.targetObject.GetComponent<CompanionController>().TakeDamage(strength);
 	}
 	
 	protected void Cooldown() {
