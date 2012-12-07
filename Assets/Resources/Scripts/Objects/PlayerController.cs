@@ -55,22 +55,10 @@ public class PlayerController : MonoBehaviour {
 	void Awake() {
 		health = healthMax;
 		anim = transform.GetComponentInChildren<Animation>();
-		
-		anim.AddClip(Resources.Load("Animations/Players/Attack1") as AnimationClip, "attack1");
-		anim.AddClip(Resources.Load("Animations/Players/Attack2") as AnimationClip, "attack2");
-		anim.AddClip(Resources.Load("Animations/Players/Attack3") as AnimationClip, "attack3");
-		
-//		int count = 0;
-//		foreach (AnimationState state in anim) {
-//			if (state.name.StartsWith("attack")) state.speed = attackSpeeds[count];
-//			count++;
-//		}
-		
-		anim.AddClip(Resources.Load("Animations/Players/Idle") as AnimationClip, "idle");
 	}
 	
 	void OnEnable() {
-		anim.Play("idle");
+		
 		
 		boidComponent = transform.GetComponent<Boid>();
 		
@@ -92,6 +80,12 @@ public class PlayerController : MonoBehaviour {
 		}
 		else {
 			boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
+			if (Game.Joystick.GetDrive() != Vector3.zero && !anim.IsPlaying("run")) {
+				anim.CrossFadeQueued("run", 0.1f, QueueMode.PlayNow);
+			}
+			else if (Game.Joystick.GetDrive() == Vector3.zero && (anim.IsPlaying ("run") || !anim.isPlaying)) {
+				anim.CrossFadeQueued("idle",0.15f,QueueMode.CompleteOthers);
+			}
 		}
 	}
 	
@@ -234,6 +228,7 @@ public class PlayerController : MonoBehaviour {
 	public void TakeDamage(int damage) {
 		if (!invincible) {
 			health -= Mathf.RoundToInt(damage-(armor*armorModifier));
+			if (anim.IsPlaying("idle")) anim.CrossFadeQueued("hit", 0.05f, QueueMode.PlayNow);
 			
 			if (health <= 0) {
 				// trigger game over

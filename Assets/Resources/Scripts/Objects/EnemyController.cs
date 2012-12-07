@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour {
 	protected bool cooling = false;
 	protected bool stunned = false;
 	
-	Animation anim;
+	protected Animation anim;
 	
 	void Start() {
 		arrivalComponent = transform.GetComponent<ArrivalBehaviour>();
@@ -25,16 +25,17 @@ public class EnemyController : MonoBehaviour {
 		foreach (AnimationState state in anim) {
 			if (state.name == "run") state.speed = 0.75f;
 		}
-		
-		
 	}
 	
 	void Update() {
 		if (!stunned) {
-			if (arrivalComponent.Steering.magnitude > 0) anim.Play("run");
-			else if (cooling) {
-				if (anim.IsPlaying("run")) anim.CrossFadeQueued("idle", 0f, QueueMode.PlayNow);
+			
+			if (cooling && arrivalComponent.Steering == Vector3.zero) {
+				if (anim.IsPlaying("run")) anim.CrossFadeQueued("endRun", 0f, QueueMode.PlayNow);
 				else anim.CrossFadeQueued("idle", 0.05f, QueueMode.CompleteOthers);
+			}
+			else {
+				anim.Play("run");
 			}
 			
 			transform.GetComponent<Boid>().Speed = transform.GetComponent<Boid>().maxSpeed*speedModifier;
@@ -101,6 +102,7 @@ public class EnemyController : MonoBehaviour {
 		}
 		
 		health -= damage;
+		anim.CrossFadeQueued("hit", 0.05f,QueueMode.PlayNow); 
 		
 		if (health <= 0) {
 			Game.EnemiesKilled++;

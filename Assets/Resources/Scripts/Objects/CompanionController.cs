@@ -5,7 +5,8 @@ public class CompanionController : MonoBehaviour {
 	
 	PlayerController pc;
 	Boid boidComponent;
-	ArrivalBehaviour arrivalComponent;
+	ArrivalBehaviour arrivalComponentE;
+	ArrivalBehaviour arrivalComponentP;
 	
 	int strength;
 	float attackRadius;
@@ -21,7 +22,8 @@ public class CompanionController : MonoBehaviour {
 		boidComponent = transform.GetComponent<Boid>();
 		pc = transform.GetComponent<PlayerController>();
 		
-		arrivalComponent = boidComponent.GetBehaviour("ToEnemy") as ArrivalBehaviour;
+		arrivalComponentE = boidComponent.GetBehaviour("ToEnemy") as ArrivalBehaviour;
+		arrivalComponentP = boidComponent.GetBehaviour("ToPlayer") as ArrivalBehaviour;
 		
 		strength = pc.attackStrengths[0]/4;
 		attackRadius = pc.attackRadius*2;
@@ -40,6 +42,9 @@ public class CompanionController : MonoBehaviour {
 		boidComponent.GetBehaviour("Separation").SetWeight(1);
 		
 		(boidComponent.GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = Game.Player.transform;
+		
+		boidComponent.maxSpeed -= 15;
+		boidComponent.Speed = boidComponent.maxSpeed;
 	}
 	
 	void OnDisable() {
@@ -48,14 +53,27 @@ public class CompanionController : MonoBehaviour {
 		boidComponent.GetBehaviour("ToTracker").SetWeight(1);
 		boidComponent.GetBehaviour("ObstacleAvoidance").SetWeight(0);
 		boidComponent.GetBehaviour("Separation").SetWeight(0);
+		
+		boidComponent.maxSpeed += 15;
+		boidComponent.Speed = boidComponent.maxSpeed;
 	}
 
 	void Update() {
-		if (target == null) FindTarget();
+		if (target == null) {
+			if (Game.EnemyGroup.childCount > 0) FindTarget();
+			if (arrivalComponentP.Steering != Vector3.zero && !pc.anim.IsPlaying("run")) {
+				pc.anim.CrossFadeQueued("run", 0.1f, QueueMode.PlayNow);
+			}
+			else if (arrivalComponentP.Steering == Vector3.zero) {
+				pc.anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
+			}
+		}
 		
 		else {
-			if (!cooling && (transform.position-target.transform.position).magnitude <= attackRadius) {
-				
+			if (arrivalComponentE.Steering != Vector3.zero && !pc.anim.IsPlaying("run")) {
+				pc.anim.CrossFadeQueued("run", 0.1f, QueueMode.PlayNow);
+			}
+			else if (!cooling && (transform.position-target.transform.position).magnitude <= attackRadius) {
 				int attackNumber = Random.Range(1,3);
 				pc.anim.CrossFadeQueued("attack"+attackNumber,0,QueueMode.PlayNow);
 				pc.anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
@@ -65,7 +83,8 @@ public class CompanionController : MonoBehaviour {
 				InvokeRepeating("Cooldown", attackCooldown, attackCooldown);
 			}
 			else if (cooling) {
-				Vector3 aim = arrivalComponent.targetObject.position-transform.position;
+				pc.anim.CrossFadeQueued("idle",0.15f,QueueMode.CompleteOthers);
+				Vector3 aim = arrivalComponentE.targetObject.position-transform.position;
 				aim.y = 0;
 				
 				transform.rigidbody.rotation = Quaternion.LookRotation(aim);

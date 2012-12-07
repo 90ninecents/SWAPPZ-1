@@ -160,10 +160,12 @@ void RegisterAllStrippedInternalCalls ()
 {
 	void Register_UnityEngine_Animation_INTERNAL_CALL_Stop ();
 	Register_UnityEngine_Animation_INTERNAL_CALL_Stop ();
+	void Register_UnityEngine_Animation_Internal_StopByName ();
+	Register_UnityEngine_Animation_Internal_StopByName ();
+	void Register_UnityEngine_Animation_IsPlaying ();
+	Register_UnityEngine_Animation_IsPlaying ();
 	void Register_UnityEngine_Animation_Play ();
 	Register_UnityEngine_Animation_Play ();
-	void Register_UnityEngine_Animation_CrossFade ();
-	Register_UnityEngine_Animation_CrossFade ();
 	void Register_UnityEngine_Animation_CrossFadeQueued ();
 	Register_UnityEngine_Animation_CrossFadeQueued ();
 	void Register_UnityEngine_Animation_AddClip ();
