@@ -57,14 +57,13 @@ public class PlayerController : MonoBehaviour {
 		anim = transform.GetComponentInChildren<Animation>();
 	}
 	
-	void OnEnable() {
-		
-		
+	void OnEnable() {		
 		boidComponent = transform.GetComponent<Boid>();
 		
 		boidComponent.GetBehaviour("ToEnemy").SetWeight(0);
 		boidComponent.GetBehaviour("ToPlayer").SetWeight(0);
 		boidComponent.GetBehaviour("ToTracker").SetWeight(1);
+		boidComponent.GetBehaviour("ObstacleAvoidance").SetWeight(0);
 		
 		transform.GetComponent<ArrivalBehaviour>().targetObject = Game.TouchTracker;
 		

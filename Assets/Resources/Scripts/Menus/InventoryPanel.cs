@@ -68,7 +68,7 @@ public class InventoryPanel : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay(touchPos);
 		RaycastHit hit;
 			
-		if (Physics.Raycast(ray, out hit, 1000)) {
+		if (Physics.Raycast(ray, out hit, 1500)) {
 			bool found = false;
 			
 			for (int i = 0; i < selectedItems.Length; i++) {
@@ -113,7 +113,12 @@ public class InventoryPanel : MonoBehaviour {
 			
 			// if empty slot found, add to slot
 			if (index >= 0) {				
-				item.position = new Vector3(slots[index].x, slots[index].y, item.position.z);
+				Vector3 pos = new Vector3(slots[index].x, slots[index].y, item.position.z);
+				item.transform.position = pos;
+				
+				Vector3 diff = item.transform.collider.bounds.center - pos;
+				
+				item.transform.Translate(diff);
 				
 				items[index] = item;
 				itemCount++;
