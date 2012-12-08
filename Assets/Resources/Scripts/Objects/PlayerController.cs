@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour {
 			transform.position += transform.forward*5f;
 		}
 		else {
-			boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
+			if (!anim.IsPlaying("attack1") && !anim.IsPlaying("attack2") && !anim.IsPlaying("attack3")) boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
 			if (Game.Joystick.GetDrive() != Vector3.zero && !anim.IsPlaying("run")) {
 				anim.CrossFadeQueued("run", 0.1f, QueueMode.PlayNow);
 			}

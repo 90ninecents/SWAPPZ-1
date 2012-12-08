@@ -162,14 +162,14 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Animation_INTERNAL_CALL_Stop ();
 	void Register_UnityEngine_Animation_Internal_StopByName ();
 	Register_UnityEngine_Animation_Internal_StopByName ();
+	void Register_UnityEngine_Animation_get_isPlaying ();
+	Register_UnityEngine_Animation_get_isPlaying ();
 	void Register_UnityEngine_Animation_IsPlaying ();
 	Register_UnityEngine_Animation_IsPlaying ();
 	void Register_UnityEngine_Animation_Play ();
 	Register_UnityEngine_Animation_Play ();
 	void Register_UnityEngine_Animation_CrossFadeQueued ();
 	Register_UnityEngine_Animation_CrossFadeQueued ();
-	void Register_UnityEngine_Animation_AddClip ();
-	Register_UnityEngine_Animation_AddClip ();
 	void Register_UnityEngine_Animation_PlayDefaultAnimation ();
 	Register_UnityEngine_Animation_PlayDefaultAnimation ();
 	void Register_UnityEngine_Animation_GetStateAtIndex ();

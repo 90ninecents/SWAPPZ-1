@@ -17,6 +17,8 @@ public class Game : MonoBehaviour {
 	public float powerupSpawnInterval = 2.0f;		// Seconds between attempting to spawn a powerup
 	public int enemyKillsPerCoin = 5;
 	
+	public float timeBetweenWaves = 5;
+	
 	PlayerController player;
 	Joystick joystick;
 	DamageCounter damageCounter;
@@ -39,6 +41,7 @@ public class Game : MonoBehaviour {
 							  set { instance.coins = value; } }
 	public static int EnemiesKilled { get { return instance.enemiesKilled; }
 									  set { instance.enemiesKilled = value; } }
+	public static float TimeBetweenWaves { get { return instance.timeBetweenWaves; } }
 	
 	// Use this for initialization
 	void Start () {
