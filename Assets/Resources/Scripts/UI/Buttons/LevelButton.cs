@@ -6,13 +6,12 @@ public class LevelButton : Button {
 	public string levelName;
 	
 	public override void Fire() {
+		GameObject loader = Instantiate(Resources.Load("Prefabs/UI/LoadingGraphic")) as GameObject;
+		
 		GameObject[] allObjects = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
 		
 		foreach (GameObject go in allObjects) {
-			if (go.name == "LoadingIcon") {
-				go.renderer.enabled = true;
-			}
-			else go.active = false;
+			if (!(go == Camera.main.gameObject) && !(go == loader) && (!go.transform.parent == loader)) go.SetActiveRecursively(false);
 		}
 		
 		SavedData.CurrentLevel = levelName;

@@ -17,6 +17,7 @@ public class InventoryPanel : MonoBehaviour {
 	
 	Vector2[] slots;
 	Transform[] items;
+	Transform[] selectableItems;
 	Transform[] selectedItems;
 	
 	Transform lastAdded;
@@ -39,6 +40,7 @@ public class InventoryPanel : MonoBehaviour {
 		
 		items = new Transform[numItems];
 		selectedItems = new Transform[numItems];
+		selectableItems = new Transform[numItems];
 		slots = new Vector2[numItems];
 		
 		float xSpace = transform.localScale.x/columns;
@@ -69,37 +71,47 @@ public class InventoryPanel : MonoBehaviour {
 		RaycastHit hit;
 			
 		if (Physics.Raycast(ray, out hit, 1500)) {
-			bool found = false;
 			
-			for (int i = 0; i < selectedItems.Length; i++) {
-				if (hit.transform == selectedItems[i]) {
-					selectedItems[i].localScale /= sizeIncrease;
-					selectedItems[i] = null;
-					found = true;
+			bool go = false;
+			// Check if hit object is selectable
+			foreach (Transform t in selectableItems) {
+				if (t == hit.transform) {
+					go = true;
 					break;
 				}
 			}
 			
-			
-			if (!found) {
-				for (int i = 0; i < items.Length; i++) {
-					if (hit.transform == items[i]) {
-						items[i].localScale *= sizeIncrease;
-						selectedItems[i] = items[i];
-						
+			if (go) {
+				
+				bool found = false;
+				
+				// If already selected, deselect
+				for (int i = 0; i < selectedItems.Length; i++) {
+					if (hit.transform == selectedItems[i]) {
+						selectedItems[i].localScale /= sizeIncrease;
+						selectedItems[i] = null;
+						found = true;
 						break;
 					}
 				}
+				
+				// If not already selected, select
+				if (!found) {
+					for (int i = 0; i < items.Length; i++) {
+						if (hit.transform == items[i]) {
+							items[i].localScale *= sizeIncrease;
+							selectedItems[i] = items[i];
+							
+							break;
+						}
+					}
+				}
 			}
+			
 		}
-		
-//		foreach (Transform t in selectedItems) {
-//			if (t!=null) print (t.name);
-//			else print ("null");
-//		}
 	}
 	
-	public int AddItem(Transform item) {
+	public int AddItem(Transform item, bool selectable = true) {
 		// Returns the index of the newly added item
 		int index = -1;
 		
@@ -121,6 +133,8 @@ public class InventoryPanel : MonoBehaviour {
 				item.transform.Translate(diff);
 				
 				items[index] = item;
+				if (selectable) selectableItems[index] = item;
+				
 				itemCount++;
 				
 				lastAdded = item;
