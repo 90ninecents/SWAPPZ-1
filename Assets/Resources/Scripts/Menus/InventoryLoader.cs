@@ -6,7 +6,7 @@ public class InventoryLoader : MonoBehaviour {
 	
 	void Start() {
 		
-		SavedData.UnlockedCharacters = "CharacterLeonardo|CharacterDonatello|CharacterMichelangelo|CharacterRaphael";
+		//SavedData.UnlockedCharacters = "CharacterLeonardo|CharacterDonatello";
 		
 		LoadoutManager manager = transform.GetComponent<LoadoutManager>();
 		
@@ -15,13 +15,31 @@ public class InventoryLoader : MonoBehaviour {
 		foreach (InventoryPanel p in panels) {
 			if (p.transform == manager.rosterPanel) {
 				// Available Characters
-				string[] roster = SavedData.UnlockedCharacters.Split(SavedData.Separator[0]);
+				string[] roster = SavedData.Characters.Split(SavedData.Separator[0]);
+				string[] unlocks = SavedData.UnlockedCharacters.Split(SavedData.Separator[0]);
+				
 				GameObject go;
 				
 				foreach (string s in roster) {
 					if (s != "") {
-						go = Instantiate(Resources.Load("Prefabs/Loadout Characters/"+s)) as GameObject;
-						p.AddItem(go.transform);
+						bool unlocked = false;
+						
+						foreach (string t in unlocks) {
+							if (t == s) {
+								unlocked = true;
+								break;
+							}
+						}
+						
+						// Load locked/unlocked textures
+						if (unlocked) {
+							go = Instantiate(Resources.Load("Prefabs/Loadout Characters/"+s)) as GameObject;
+							p.AddItem(go.transform);
+						}
+						else {
+							go = Instantiate(Resources.Load("Prefabs/Loadout Characters/"+s+"Locked")) as GameObject;
+							p.AddItem(go.transform);
+						}
 					}
 				}
 			}				

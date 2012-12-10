@@ -6,6 +6,7 @@ public class SavedData {
 	
 	private static string inventory = "Inventory";
 	private static string itemLoadout = "ItemLoadout";
+	private static string characters = "Characters";
 	private static string unlockedCharacters = "UnlockedCharacters";
 	private static string characterLoadout = "CharacterLoadout";
 	
@@ -29,6 +30,11 @@ public class SavedData {
 	public static string CharacterLoadout {
 		get { return PlayerPrefs.GetString(SavedData.characterLoadout); }
 		set { PlayerPrefs.SetString(SavedData.characterLoadout, value); }
+	}
+	
+	public static string Characters {
+		get { return PlayerPrefs.GetString(SavedData.characters); }
+		set { PlayerPrefs.SetString(SavedData.characters, value); }
 	}
 	
 	public static string UnlockedCharacters {

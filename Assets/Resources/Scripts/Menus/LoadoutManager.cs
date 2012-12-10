@@ -8,7 +8,7 @@ public class LoadoutManager : MonoBehaviour {
 	InventoryPanel inventory;
 	InventoryPanel roster;
 	
-	GUIText btnAccept;
+	GUITexture btnAccept;
 	
 	void OnEnable() {
 		if (inventoryPanel != null) {
@@ -17,7 +17,7 @@ public class LoadoutManager : MonoBehaviour {
 		if (rosterPanel != null) {
 			roster = rosterPanel.GetComponent<InventoryPanel>();
 			
-			btnAccept = GameObject.Find ("AcceptButton").transform.guiText;
+			btnAccept = GameObject.Find ("BtnNext").transform.guiTexture;
 			btnAccept.enabled = false;
 		}
 	}
@@ -43,7 +43,6 @@ public class LoadoutManager : MonoBehaviour {
 		
 		if (roster != null) {
 			SavedData.CharacterLoadout	 = GetDataString(roster.SelectedItems);
-			SavedData.UnlockedCharacters = GetDataString(roster.Items);
 		}
 		
 		PowerupSpawner.loadoutChange = true;
