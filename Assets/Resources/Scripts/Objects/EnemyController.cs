@@ -16,14 +16,17 @@ public class EnemyController : MonoBehaviour {
 	protected bool stunned = false;
 	
 	protected Animation anim;
+	protected string enemyName;
 	
 	void Start() {
+		enemyName = transform.name.Substring(0, transform.name.Length-7);
+		
 		arrivalComponent = transform.GetComponent<ArrivalBehaviour>();
 		
 		anim = transform.GetComponentInChildren<Animation>();
 		
 		foreach (AnimationState state in anim) {
-			if (state.name == "run") state.speed = 0.75f;
+			if (state.name == "run_"+enemyName) state.speed = 0.75f;
 		}
 	}
 	
@@ -31,11 +34,11 @@ public class EnemyController : MonoBehaviour {
 		if (!stunned) {
 			
 			if (cooling && arrivalComponent.Steering == Vector3.zero) {
-				if (anim.IsPlaying("run")) anim.CrossFadeQueued("endRun", 0f, QueueMode.PlayNow);
-				else anim.CrossFadeQueued("idle", 0.05f, QueueMode.CompleteOthers);
+				if (anim.IsPlaying("run_"+enemyName)) anim.CrossFadeQueued("endRun_"+enemyName, 0f, QueueMode.PlayNow);
+				else anim.CrossFadeQueued("idle_"+enemyName, 0.05f, QueueMode.CompleteOthers);
 			}
 			else {
-				anim.Play("run");
+				anim.Play("run_"+enemyName);
 			}
 			
 			transform.GetComponent<Boid>().Speed = transform.GetComponent<Boid>().maxSpeed*speedModifier;
@@ -62,15 +65,12 @@ public class EnemyController : MonoBehaviour {
 	}
 	
 	protected virtual void Attack() {
-		anim.Stop("run");
-		anim.Stop("idle");
-		anim.CrossFadeQueued("toAttack", 0.1f, QueueMode.PlayNow);
-		anim.CrossFadeQueued("attack", 0.1f, QueueMode.CompleteOthers);
-		//anim.CrossFadeQueued("idle", 0.05f, QueueMode.CompleteOthers);
+		anim.Stop("run_"+enemyName);
+		anim.Stop("idle_"+enemyName);
+		anim.CrossFadeQueued("toAttack_"+enemyName, 0.1f, QueueMode.PlayNow);
+		anim.CrossFadeQueued("attack_"+enemyName, 0.1f, QueueMode.CompleteOthers);
 		
 		Invoke ("AttackDelay", 0.5f);
-//		if (arrivalComponent.targetObject == Game.Player.transform) Game.Player.TakeDamage(strength);
-//		else arrivalComponent.targetObject.GetComponent<CompanionController>().TakeDamage(strength);
 		
 		cooling = true;
 		Invoke("Cooldown", attackCooldown/speedModifier);
@@ -102,7 +102,7 @@ public class EnemyController : MonoBehaviour {
 		}
 		
 		health -= damage;
-		anim.CrossFadeQueued("hit", 0.05f,QueueMode.PlayNow); 
+		anim.CrossFadeQueued("hit_"+enemyName, 0.05f,QueueMode.PlayNow); 
 		
 		if (health <= 0) {
 			Game.EnemiesKilled++;

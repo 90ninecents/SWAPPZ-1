@@ -65,7 +65,7 @@ public class CompanionController : MonoBehaviour {
 				pc.anim.CrossFadeQueued("run", 0.1f, QueueMode.PlayNow);
 			}
 			else if (arrivalComponentP.Steering == Vector3.zero) {
-				pc.anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
+				pc.anim.CrossFadeQueued("idle", 0.1f, QueueMode.CompleteOthers);
 			}
 		}
 		
@@ -75,7 +75,7 @@ public class CompanionController : MonoBehaviour {
 			}
 			else if (!cooling && (transform.position-target.transform.position).magnitude <= attackRadius) {
 				int attackNumber = Random.Range(1,3);
-				pc.anim.CrossFadeQueued("attack"+attackNumber,0,QueueMode.PlayNow);
+				pc.anim.CrossFadeQueued("attack"+attackNumber+"",0,QueueMode.PlayNow);
 				pc.anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
 				
 				target.TakeDamage(strength, transform);

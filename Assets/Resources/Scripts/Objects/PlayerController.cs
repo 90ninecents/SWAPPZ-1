@@ -51,10 +51,13 @@ public class PlayerController : MonoBehaviour {
 	public float XPPercentage { get { return (float)xp/xpTNL; } }
 	
 	public Animation anim;
+	string playerName;
 	
 	void Awake() {
 		health = healthMax;
 		anim = transform.GetComponentInChildren<Animation>();
+		
+		playerName = transform.name.Substring(0, transform.name.Length-7);
 	}
 	
 	void OnEnable() {		
@@ -78,12 +81,12 @@ public class PlayerController : MonoBehaviour {
 			transform.position += transform.forward*5f;
 		}
 		else {
-			if (!anim.IsPlaying("attack1") && !anim.IsPlaying("attack2") && !anim.IsPlaying("attack3")) boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
-			if (Game.Joystick.GetDrive() != Vector3.zero && !anim.IsPlaying("run")) {
-				anim.CrossFadeQueued("run", 0.1f, QueueMode.PlayNow);
+			if (!anim.IsPlaying("attack1_"+playerName) && !anim.IsPlaying("attack2_"+playerName) && !anim.IsPlaying("attack3_"+playerName)) boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
+			if (Game.Joystick.GetDrive() != Vector3.zero && !anim.IsPlaying("run_"+playerName)) {
+				anim.CrossFadeQueued("run_"+playerName, 0.1f, QueueMode.PlayNow);
 			}
-			else if (Game.Joystick.GetDrive() == Vector3.zero && (anim.IsPlaying ("run") || !anim.isPlaying)) {
-				anim.CrossFadeQueued("idle",0.15f,QueueMode.CompleteOthers);
+			else if (Game.Joystick.GetDrive() == Vector3.zero && (anim.IsPlaying ("run_"+playerName) || !anim.isPlaying)) {
+				anim.CrossFadeQueued("idle_"+playerName,0.15f,QueueMode.CompleteOthers);
 			}
 		}
 	}
@@ -105,8 +108,10 @@ public class PlayerController : MonoBehaviour {
 	
 	public void ExecuteAttack(int attackNumber = 1) {
 		if (!cooling) {
-			anim.CrossFadeQueued("attack"+attackNumber,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];
-			anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
+			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];
+			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
+			AudioSource aus = Resources.Load("Sounds/sword_swing");
+			aus.Play();
 			
 			CancelInvoke("BreakCombo");
 			
@@ -120,8 +125,8 @@ public class PlayerController : MonoBehaviour {
 						currentCombo = "";
 						if (comboMeter < comboMax) comboMeter += Mathf.RoundToInt(comboPoints*comboModifier);
 						
-						anim.CrossFadeQueued("attack3",0,QueueMode.PlayNow).speed = attackSpeeds[2];
-						anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
+						anim.CrossFadeQueued("attack3_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[2];
+						anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
 					}
 					match = true;
 				}
@@ -139,6 +144,7 @@ public class PlayerController : MonoBehaviour {
 				
 				// If enemy hit:
 				if (enemy != null) {
+					print (enemy.name);
 					enemy.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), transform);
 					// Get XP on hit
 					if (xp < xpTNL) ReceiveXP(enemy.xpGain);
@@ -227,7 +233,7 @@ public class PlayerController : MonoBehaviour {
 	public void TakeDamage(int damage) {
 		if (!invincible) {
 			health -= Mathf.RoundToInt(damage-(armor*armorModifier));
-			if (anim.IsPlaying("idle")) anim.CrossFadeQueued("hit", 0.05f, QueueMode.PlayNow);
+			if (anim.IsPlaying("idle_"+playerName)) anim.CrossFadeQueued("hit_"+playerName, 0.05f, QueueMode.PlayNow);
 			
 			if (health <= 0) {
 				// trigger game over

@@ -57,6 +57,7 @@ public class Game : MonoBehaviour {
 			// First character = player
 			if (s == characters[0]) {
 				GameObject g = Resources.Load("Prefabs/Loadout Characters/"+s) as GameObject;
+				//GameObject g = Resources.Load("Prefabs/Loadout Characters/CharacterMichelangelo") as GameObject;
 				
 				GameObject go = Instantiate(g.GetComponent<InventoryItem>().itemPrefab) as GameObject;
 				
