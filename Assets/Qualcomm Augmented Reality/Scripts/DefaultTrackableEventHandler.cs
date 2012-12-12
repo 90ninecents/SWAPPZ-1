@@ -17,6 +17,8 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
     GameObject ninja;
 	bool scanned = false;
 	
+	GUITexture reticle;
+	
     #region PRIVATE_MEMBER_VARIABLES
  
     private TrackableBehaviour mTrackableBehaviour;
@@ -34,6 +36,8 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
         {
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
         }
+		
+		reticle = GameObject.Find ("Reticle").GetComponent<GUITexture>();
 
         OnTrackingLost();
     }
@@ -75,6 +79,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
         foreach (Renderer component in rendererComponents) {
             component.enabled = true;
         }
+		reticle.enabled = false;
 		
 		if (!scanned) {
 			// Unlock scanned character
@@ -102,6 +107,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
         foreach (Renderer component in rendererComponents) {
             component.enabled = false;
         }
+		reticle.enabled = true;
 
        if (Idle_test_ani != null) Idle_test_ani.Stop();
     }

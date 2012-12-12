@@ -9,7 +9,9 @@ public class EnemyController : MonoBehaviour {
 	
 	public static float speedModifier = 1.0f;
 	
+	Boid boidComponent;
 	protected ArrivalBehaviour arrivalComponent;
+	protected SeparationBehaviour separationComponent;
 	
 	public int xpGain = 100;
 	protected bool cooling = false;
@@ -18,7 +20,7 @@ public class EnemyController : MonoBehaviour {
 	protected Animation anim;
 	protected string enemyName;
 	
-	void Start() {
+	void Start() {		
 		enemyName = transform.name.Substring(0, transform.name.Length-7);
 		
 		arrivalComponent = transform.GetComponent<ArrivalBehaviour>();
@@ -30,9 +32,8 @@ public class EnemyController : MonoBehaviour {
 		}
 	}
 	
-	void Update() {
+	void Update() {		
 		if (!stunned) {
-			
 			if (cooling && arrivalComponent.Steering == Vector3.zero) {
 				if (anim.IsPlaying("run_"+enemyName)) anim.CrossFadeQueued("endRun_"+enemyName, 0f, QueueMode.PlayNow);
 				else anim.CrossFadeQueued("idle_"+enemyName, 0.05f, QueueMode.CompleteOthers);

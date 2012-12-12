@@ -31,14 +31,14 @@ public class CompanionController : MonoBehaviour {
 	}
 	
 	void OnEnable() {
-		pc.anim.Play("idle");
+		pc.anim.Play("idle_"+pc.playerName);
 			
 		boidComponent.Speed = boidComponent.maxSpeed;
 		
 		boidComponent.GetBehaviour("ToEnemy").SetWeight(0);
 		boidComponent.GetBehaviour("ToPlayer").SetWeight(1);
 		boidComponent.GetBehaviour("ToTracker").SetWeight(0);
-		boidComponent.GetBehaviour("ObstacleAvoidance").SetWeight(1);
+		boidComponent.GetBehaviour("ObstacleAvoidance").SetWeight(10);
 		boidComponent.GetBehaviour("Separation").SetWeight(1);
 		
 		(boidComponent.GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = Game.Player.transform;
@@ -61,29 +61,29 @@ public class CompanionController : MonoBehaviour {
 	void Update() {
 		if (target == null) {
 			if (Game.EnemyGroup.childCount > 0) FindTarget();
-			if (arrivalComponentP.Steering != Vector3.zero && !pc.anim.IsPlaying("run")) {
-				pc.anim.CrossFadeQueued("run", 0.1f, QueueMode.PlayNow);
+			if (arrivalComponentP.Steering != Vector3.zero && !pc.anim.IsPlaying("run_"+pc.playerName)) {
+				pc.anim.CrossFadeQueued("run_"+pc.playerName, 0.1f, QueueMode.PlayNow);
 			}
 			else if (arrivalComponentP.Steering == Vector3.zero) {
-				pc.anim.CrossFadeQueued("idle", 0.1f, QueueMode.CompleteOthers);
+				pc.anim.CrossFadeQueued("idle_"+pc.playerName, 0.1f, QueueMode.CompleteOthers);
 			}
 		}
 		
 		else {
-			if (arrivalComponentE.Steering != Vector3.zero && !pc.anim.IsPlaying("run")) {
-				pc.anim.CrossFadeQueued("run", 0.1f, QueueMode.PlayNow);
+			if (arrivalComponentE.Steering != Vector3.zero && !pc.anim.IsPlaying("run_"+pc.playerName)) {
+				pc.anim.CrossFadeQueued("run_"+pc.playerName, 0.1f, QueueMode.PlayNow);
 			}
 			else if (!cooling && (transform.position-target.transform.position).magnitude <= attackRadius) {
 				int attackNumber = Random.Range(1,3);
-				pc.anim.CrossFadeQueued("attack"+attackNumber+"",0,QueueMode.PlayNow);
-				pc.anim.CrossFadeQueued("idle",0.1f,QueueMode.CompleteOthers);
+				pc.anim.CrossFadeQueued("attack"+attackNumber+"_"+pc.playerName,0,QueueMode.PlayNow);
+				pc.anim.CrossFadeQueued("idle_"+pc.playerName,0.1f,QueueMode.CompleteOthers);
 				
 				target.TakeDamage(strength, transform);
 				cooling = true;
 				InvokeRepeating("Cooldown", attackCooldown, attackCooldown);
 			}
 			else if (cooling) {
-				pc.anim.CrossFadeQueued("idle",0.15f,QueueMode.CompleteOthers);
+				pc.anim.CrossFadeQueued("idle_"+pc.playerName,0.15f,QueueMode.CompleteOthers);
 				Vector3 aim = arrivalComponentE.targetObject.position-transform.position;
 				aim.y = 0;
 				

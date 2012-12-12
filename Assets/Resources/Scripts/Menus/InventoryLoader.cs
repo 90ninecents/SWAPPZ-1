@@ -6,7 +6,7 @@ public class InventoryLoader : MonoBehaviour {
 	
 	void Start() {
 		
-		//SavedData.UnlockedCharacters = "CharacterLeonardo|CharacterDonatello";
+		//SavedData.UnlockedCharacters = "CharacterLeonardo|CharacterDonatello|CharacterMichelangelo|CharacterRaphael";
 		
 		LoadoutManager manager = transform.GetComponent<LoadoutManager>();
 		

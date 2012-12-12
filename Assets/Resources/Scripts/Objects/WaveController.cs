@@ -5,7 +5,7 @@ public class WaveController : MonoBehaviour {
 	// Controls the release of waves (GameObjects containing spawners)
 	
 	public GameObject[] waves;		// set in inspector
-	public GUITexture waveCounter;
+	public GUIText waveCounter;
 	int waveNumber = 0;
 	public float checkFrequencyInSeconds = 0.5f;
 
@@ -20,7 +20,7 @@ public class WaveController : MonoBehaviour {
 	void LaunchWave() {
 		waves[waveNumber-1].SetActiveRecursively(true);
 		if (waveCounter != null) {
-			waveCounter.texture = Resources.Load ("Textures/UI/Wave_Count_0"+(waveNumber)) as Texture;
+			waveCounter.text = "Wave "+waveNumber;
 			waveCounter.GetComponent<SlidingTexture>().StartSlide();
 		}
 		

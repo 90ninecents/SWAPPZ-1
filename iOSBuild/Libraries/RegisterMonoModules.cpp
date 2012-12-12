@@ -334,6 +334,10 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_AudioClip_Construct_Internal ();
 	void Register_UnityEngine_AudioClip_Init_Internal ();
 	Register_UnityEngine_AudioClip_Init_Internal ();
+	void Register_UnityEngine_AudioSource_set_clip ();
+	Register_UnityEngine_AudioSource_set_clip ();
+	void Register_UnityEngine_AudioSource_Play ();
+	Register_UnityEngine_AudioSource_Play ();
 	void Register_UnityEngine_AudioSource_PlayOneShot ();
 	Register_UnityEngine_AudioSource_PlayOneShot ();
 	void Register_UnityEngine_Behaviour_get_enabled ();
@@ -580,8 +584,10 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_GUIText_set_alignment ();
 	void Register_UnityEngine_GUIText_set_anchor ();
 	Register_UnityEngine_GUIText_set_anchor ();
-	void Register_UnityEngine_GUITexture_set_texture ();
-	Register_UnityEngine_GUITexture_set_texture ();
+	void Register_UnityEngine_GUITexture_INTERNAL_get_color ();
+	Register_UnityEngine_GUITexture_INTERNAL_get_color ();
+	void Register_UnityEngine_GUITexture_INTERNAL_set_color ();
+	Register_UnityEngine_GUITexture_INTERNAL_set_color ();
 	void Register_UnityEngine_GUITexture_INTERNAL_get_pixelInset ();
 	Register_UnityEngine_GUITexture_INTERNAL_get_pixelInset ();
 	void Register_UnityEngine_GUITexture_INTERNAL_set_pixelInset ();
@@ -836,8 +842,6 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Rigidbody_INTERNAL_CALL_AddForce ();
 	void Register_UnityEngine_Rigidbody_INTERNAL_set_rotation ();
 	Register_UnityEngine_Rigidbody_INTERNAL_set_rotation ();
-	void Register_UnityEngine_Rigidbody_INTERNAL_CALL_SweepTest ();
-	Register_UnityEngine_Rigidbody_INTERNAL_CALL_SweepTest ();
 	void Register_UnityEngine_Screen_get_width ();
 	Register_UnityEngine_Screen_get_width ();
 	void Register_UnityEngine_Screen_get_height ();

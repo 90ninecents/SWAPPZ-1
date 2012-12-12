@@ -51,9 +51,22 @@ public class PlayerController : MonoBehaviour {
 	public float XPPercentage { get { return (float)xp/xpTNL; } }
 	
 	public Animation anim;
-	string playerName;
+	public string playerName;
+	
+	AudioSource audioPlayer;
+	Dictionary<string, AudioClip> audioClips;
+	
+	
+	public AudioSource AudioPlayer { get { return audioPlayer; } }
 	
 	void Awake() {
+		audioPlayer = Camera.main.gameObject.AddComponent<AudioSource>();
+		audioClips = new Dictionary<string, AudioClip>();
+		
+		audioClips.Add("swordSwing", Resources.Load("Sounds/sword_swing") as AudioClip);
+		audioClips.Add("swordHit1", Resources.Load("Sounds/sword_strike_1") as AudioClip);
+		audioClips.Add("swordHit2", Resources.Load("Sounds/sword_strike_2") as AudioClip);
+		
 		health = healthMax;
 		anim = transform.GetComponentInChildren<Animation>();
 		
@@ -110,8 +123,6 @@ public class PlayerController : MonoBehaviour {
 		if (!cooling) {
 			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];
 			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
-			AudioSource aus = Resources.Load("Sounds/sword_swing");
-			aus.Play();
 			
 			CancelInvoke("BreakCombo");
 			
@@ -136,15 +147,16 @@ public class PlayerController : MonoBehaviour {
 			}
 			
 			// Check for object to be hit by attack 
+			Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+25, transform.position.z), transform.forward);
 			RaycastHit hit;
 			
-			if (rigidbody.SweepTest(transform.forward, out hit, attackRadius*sizeModifier)) {
+			//if (rigidbody.SweepTest(transform.forward, out hit, attackRadius*sizeModifier)) {
+			if (Physics.Raycast(ray, out hit, 1000)) {
 				EnemyController enemy = hit.collider.transform.GetComponent<EnemyController>();
 				BreakableObject obj = hit.collider.transform.GetComponent<BreakableObject>();
 				
 				// If enemy hit:
 				if (enemy != null) {
-					print (enemy.name);
 					enemy.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), transform);
 					// Get XP on hit
 					if (xp < xpTNL) ReceiveXP(enemy.xpGain);
@@ -154,7 +166,20 @@ public class PlayerController : MonoBehaviour {
 					obj.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier));
 				}
 				
-				if (enemy!=null || obj!=null) Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier));
+				if (enemy!=null || obj!=null) {
+					Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier));
+					
+					audioPlayer.clip = audioClips["swordHit"+Random.Range(1,3)];
+					audioPlayer.Play();
+				}
+				else {
+					audioPlayer.clip = audioClips["swordSwing"];
+					audioPlayer.Play();
+				}
+			}
+			else {
+				audioPlayer.clip = audioClips["swordSwing"];
+				audioPlayer.Play();
 			}
 			
 			if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
