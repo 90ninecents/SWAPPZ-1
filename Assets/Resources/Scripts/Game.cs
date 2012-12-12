@@ -31,6 +31,7 @@ public class Game : MonoBehaviour {
 	
 	int coins;
 	int enemiesKilled = 0;
+	int levelTimeInSeconds = 0;		// Measures time taken to complete level
 	
 	public static PlayerController Player { get { return instance.player; } }
 	public static Joystick Joystick { get { return instance.joystick; } }
@@ -42,6 +43,7 @@ public class Game : MonoBehaviour {
 	public static int EnemiesKilled { get { return instance.enemiesKilled; }
 									  set { instance.enemiesKilled = value; } }
 	public static float TimeBetweenWaves { get { return instance.timeBetweenWaves; } }
+	public static int LevelTimeInSeconds { get { return instance.levelTimeInSeconds; } }
 	
 	// Use this for initialization
 	void Start () {
@@ -86,6 +88,9 @@ public class Game : MonoBehaviour {
 		damageCounter = damageCounterObject.GetComponent<DamageCounter>();
 		
 		if (powerupSpawners.Length > 0) InvokeRepeating("SpawnPowerup", powerupSpawnInterval, powerupSpawnInterval);
+		
+		levelTimeInSeconds = 0;
+		InvokeRepeating("TimeTick", 1, 1);
 	}
 	
 	void OnEnable() {
@@ -217,6 +222,17 @@ public class Game : MonoBehaviour {
 		}
 	}
 	
+	public static void EndGame() {
+		instance.CancelInvoke("TimeTick");
+		instance.CancelInvoke("SpawnPowerup");
+		
+		SavedData.LevelTime = LevelTimeInSeconds;
+		SavedData.LevelCoins = Coins;
+		SavedData.LevelKills = EnemiesKilled;
+		
+		Application.LoadLevelAsync("LevelStatsScene");
+	}
+	
 	void SpawnPowerup() {
 		// Pick random powerup spawner
 		int index = Random.Range(0, powerupSpawners.Length);
@@ -229,5 +245,9 @@ public class Game : MonoBehaviour {
 	
 	public static bool SpawnCoin() {
 		return (EnemiesKilled%instance.enemyKillsPerCoin == 0);
+	}
+	
+	void TimeTick() {
+		levelTimeInSeconds++;
 	}
 }

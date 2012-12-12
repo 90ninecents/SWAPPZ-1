@@ -17,6 +17,12 @@ public class SavedData {
 	
 	private static string currentLevel = "CurLevel";
 	
+	private static string levelCoins = "LevelCoins";
+	private static string levelKills = "LevelKills";
+	private static string levelTime = "LevelTime";
+	
+	private static string totalCoins = "TotalCoins";
+	
 	public static string Inventory {
 		get { return PlayerPrefs.GetString(SavedData.inventory); }
 		set { PlayerPrefs.SetString(SavedData.inventory, value); }
@@ -57,5 +63,26 @@ public class SavedData {
 	public static string CurrentLevel {
 		get { return PlayerPrefs.GetString(SavedData.currentLevel); }
 		set { PlayerPrefs.SetString(SavedData.currentLevel, value); }
+	}
+	
+	public static int Coins {
+		get { return PlayerPrefs.GetInt(SavedData.totalCoins); }
+		set { PlayerPrefs.SetInt(SavedData.totalCoins, value); }
+	}
+	
+	public static int LevelCoins {
+		get { return PlayerPrefs.GetInt(SavedData.levelCoins); }
+		set { PlayerPrefs.SetInt(SavedData.levelCoins, value);
+			  PlayerPrefs.SetInt(SavedData.totalCoins, SavedData.Coins+value); }
+	}
+	
+	public static int LevelKills {
+		get { return PlayerPrefs.GetInt(SavedData.levelKills); }
+		set { PlayerPrefs.SetInt(SavedData.levelKills, value); }
+	}
+	
+	public static int LevelTime {
+		get { return PlayerPrefs.GetInt(SavedData.levelTime); }
+		set { PlayerPrefs.SetInt(SavedData.levelTime, value); }
 	}
 }

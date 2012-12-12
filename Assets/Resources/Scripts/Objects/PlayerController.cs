@@ -151,7 +151,7 @@ public class PlayerController : MonoBehaviour {
 			RaycastHit hit;
 			
 			//if (rigidbody.SweepTest(transform.forward, out hit, attackRadius*sizeModifier)) {
-			if (Physics.Raycast(ray, out hit, 1000)) {
+			if (Physics.Raycast(ray, out hit, attackRadius*sizeModifier)) {
 				EnemyController enemy = hit.collider.transform.GetComponent<EnemyController>();
 				BreakableObject obj = hit.collider.transform.GetComponent<BreakableObject>();
 				
@@ -262,6 +262,7 @@ public class PlayerController : MonoBehaviour {
 			
 			if (health <= 0) {
 				// trigger game over
+				Game.EndGame();
 				health = 0;
 			}
 			else if (!IsInvoking("HealthTick")) {
