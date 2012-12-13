@@ -5,15 +5,14 @@ public class InventoryLoader : MonoBehaviour {
 	// Add this to the parent of inventory panels that require loading on startup
 	
 	void Start() {
-		
-		//SavedData.UnlockedCharacters = "CharacterLeonardo|CharacterDonatello|CharacterMichelangelo|CharacterRaphael";
+		SavedData.Inventory = "ItemCake|ItemXP|ItemSizeUp|ItemSpeed|ItemPizzaFull|ItemInvincibility|ItemCombo|ItemCake|ItemXP|ItemSizeUp|ItemSpeed|ItemPizzaFull|ItemInvincibility|ItemCombo|ItemCake|ItemXP|ItemSizeUp|ItemSpeed|ItemPizzaFull|ItemInvincibility|ItemCombo";
 		
 		LoadoutManager manager = transform.GetComponent<LoadoutManager>();
 		
 		InventoryPanel[] panels = transform.GetComponentsInChildren<InventoryPanel>();
 		
 		foreach (InventoryPanel p in panels) {
-			if (p.transform == manager.rosterPanel) {
+			if (p == manager.roster) {
 				// Available Characters
 				string[] roster = SavedData.Characters.Split(SavedData.Separator[0]);
 				string[] unlocks = SavedData.UnlockedCharacters.Split(SavedData.Separator[0]);
@@ -44,7 +43,7 @@ public class InventoryLoader : MonoBehaviour {
 				}
 			}				
 			
-			else if (p.transform == manager.inventoryPanel) {
+			else if (p == manager.inventory) {
 				// Inventory
 				string[] inventory = SavedData.Inventory.Split(SavedData.Separator[0]);
 				GameObject go;

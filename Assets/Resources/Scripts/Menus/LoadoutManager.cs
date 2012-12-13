@@ -2,21 +2,15 @@ using UnityEngine;
 using System.Collections;
 
 public class LoadoutManager : MonoBehaviour {
-	public Transform inventoryPanel;
-	public Transform rosterPanel;
 	
-	InventoryPanel inventory;
-	InventoryPanel roster;
+	public InventoryPanel inventory;
+	public InventoryPanel roster;
+	public InventoryPanel backgrounds;
 	
 	GUITexture btnAccept;
 	
 	void OnEnable() {
-		if (inventoryPanel != null) {
-			inventory = inventoryPanel.GetComponent<InventoryPanel>();
-		}
-		if (rosterPanel != null) {
-			roster = rosterPanel.GetComponent<InventoryPanel>();
-			
+		if (roster != null) {
 			btnAccept = GameObject.Find ("BtnNext").transform.guiTexture;
 			btnAccept.enabled = false;
 		}
