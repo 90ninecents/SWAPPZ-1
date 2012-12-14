@@ -812,6 +812,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Quaternion_INTERNAL_CALL_Internal_ToEulerRad ();
 	void Register_UnityEngine_Quaternion_INTERNAL_CALL_Internal_FromEulerRad ();
 	Register_UnityEngine_Quaternion_INTERNAL_CALL_Internal_FromEulerRad ();
+	void Register_UnityEngine_Random_Range ();
+	Register_UnityEngine_Random_Range ();
 	void Register_UnityEngine_Random_RandomRangeInt ();
 	Register_UnityEngine_Random_RandomRangeInt ();
 	void Register_UnityEngine_Renderer_set_enabled ();

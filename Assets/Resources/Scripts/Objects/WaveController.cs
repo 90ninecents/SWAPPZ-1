@@ -34,9 +34,9 @@ public class WaveController : MonoBehaviour {
 			waves[waveNumber].SetActiveRecursively(false);
 			waveNumber++;
 			
-			//if (waveNumber != 1) {
+			if (waveNumber != 1) {
 				SpawnRewardCoins(coinsOnWaveEnd);
-			//}
+			}
 			
 			CancelInvoke("CheckWave");
 			Invoke("LaunchWave", Game.TimeBetweenWaves);
@@ -50,18 +50,27 @@ public class WaveController : MonoBehaviour {
 		// Pick random location in view to spawn coins
 		
 		Vector2 randVec;
+		Vector3 pos = new Vector3();
+		
 		for (int i = 0; i < num; i++) {
-			print (i);
-			randVec = new Vector2(Random.Range(0.0f,1.0f)*Screen.width, Random.Range(0.0f,1.0f)*Screen.height);
+			bool go = false;
 			
-			Ray ray = Camera.main.ScreenPointToRay(randVec);
-			RaycastHit hit;
-			
-			if (Physics.Raycast(ray, out hit, 1000, 1 << 13)) {
-				GameObject coin = Object.Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
-				coin.transform.position = hit.point;
+			while (!go) {
+				randVec = new Vector2(Random.Range(0.0f,1.0f)*Screen.width, Random.Range(0.0f,1.0f)*Screen.height);
 				
+				Ray ray = Camera.main.ScreenPointToRay(randVec);
+				RaycastHit hit;
+				
+				if (Physics.Raycast(ray, out hit, 1000, 1 << 13)) {
+					 pos = new Vector3(hit.point.x, hit.point.y+5, hit.point.z);
+					if (Physics.OverlapSphere(pos, 10).Length == 1) {
+						go = true;
+					}
+				}
 			}
+			GameObject coin = Object.Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
+			coin.transform.position = pos;
+			coin.GetComponent<Coin>().SetTimes(6, 2.5f);
 		}
 	}
 }
