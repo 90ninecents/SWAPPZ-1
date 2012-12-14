@@ -14,8 +14,28 @@ public class LoadoutManager : MonoBehaviour {
 			btnAccept = GameObject.Find ("BtnNext").transform.guiTexture;
 			btnAccept.enabled = false;
 		}
+		if (inventory != null) {
+			Gesture.onTouchUpE += CheckHighlights;
+		}
 	}
 	
+	void OnDisable() {
+		if (inventory != null) {
+			SavedData.ItemLoadout = GetDataString(inventory.SelectedItems);
+			SavedData.Inventory   = GetDataString(inventory.Items);
+			
+			Gesture.onTouchUpE -= CheckHighlights;
+		}
+		
+		if (roster != null) {
+			SavedData.CharacterLoadout	 = GetDataString(roster.SelectedItems);
+		}
+		
+		PowerupSpawner.loadoutChange = true;
+		
+		Gesture.onTouchUpE -= CheckHighlights;
+	}
+		
 	void Update() {
 		if (roster != null) {
 			btnAccept.enabled = false;
@@ -29,17 +49,16 @@ public class LoadoutManager : MonoBehaviour {
 		}
 	}
 	
-	void OnDisable() {
-		if (inventory != null) {
-			SavedData.ItemLoadout = GetDataString(inventory.SelectedItems);
-			SavedData.Inventory   = GetDataString(inventory.Items);
-		}
+	void CheckHighlights(Vector2 touchPos) {
+		Ray ray = Camera.main.ScreenPointToRay(touchPos);
+		RaycastHit[] hits = Physics.RaycastAll(ray, 1000.0f);
 		
-		if (roster != null) {
-			SavedData.CharacterLoadout	 = GetDataString(roster.SelectedItems);
+		foreach (RaycastHit hit in hits) {
+			HighlightableItem hitem = hit.transform.GetComponent<HighlightableItem>();
+			if (hitem != null) {
+				hitem.ToggleSelected();
+			}
 		}
-		
-		PowerupSpawner.loadoutChange = true;
 	}
 	
 	string GetDataString(Transform[] itemList) {

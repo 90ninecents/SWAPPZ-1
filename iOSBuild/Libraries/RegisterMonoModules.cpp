@@ -784,6 +784,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Physics_INTERNAL_get_gravity ();
 	void Register_UnityEngine_Physics_INTERNAL_CALL_Internal_Raycast ();
 	Register_UnityEngine_Physics_INTERNAL_CALL_Internal_Raycast ();
+	void Register_UnityEngine_Physics_INTERNAL_CALL_RaycastAll ();
+	Register_UnityEngine_Physics_INTERNAL_CALL_RaycastAll ();
 	void Register_UnityEngine_Physics_INTERNAL_CALL_OverlapSphere ();
 	Register_UnityEngine_Physics_INTERNAL_CALL_OverlapSphere ();
 	void Register_UnityEngine_PlayerPrefs_TrySetInt ();

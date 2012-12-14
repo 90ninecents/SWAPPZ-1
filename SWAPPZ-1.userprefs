@@ -1,10 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/Game.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/Menus/InventoryPanel.cs">
     <Files>
-      <File FileName="Assets/Resources/Scripts/Game.cs" Line="223" Column="40" />
-      <File FileName="Assets/Resources/Scripts/Objects/PlayerController.cs" Line="265" Column="20" />
-      <File FileName="Assets/Resources/Scripts/SavedData.cs" Line="75" Column="63" />
+      <File FileName="Assets/Resources/Scripts/Menus/InventoryLoader.cs" Line="8" Column="262" />
+      <File FileName="Assets/Resources/Scripts/Menus/LoadoutManager.cs" Line="7" Column="9" />
+      <File FileName="Assets/Resources/Scripts/Menus/InventoryPanel.cs" Line="58" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
