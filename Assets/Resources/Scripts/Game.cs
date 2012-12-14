@@ -201,7 +201,6 @@ public class Game : MonoBehaviour {
 		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);
 		
 		if (damageCounterObject != null) {
-			damageCounterObject.parent = playerObject;
 			damageCounterObject.position = new Vector3(0,damageCounterObject.position.y,0);
 		}
 	}
@@ -216,8 +215,9 @@ public class Game : MonoBehaviour {
 		EnemyController.speedModifier *= 4;
 	}
 	
-	public static void DisplayDamage(float damage) {
+	public static void DisplayDamage(float damage, Transform hitObject) {
 		if (instance.damageCounter != null) {
+			instance.damageCounterObject.position = hitObject.position;
 			instance.damageCounter.Show(""+damage);
 		}
 	}

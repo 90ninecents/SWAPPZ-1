@@ -167,7 +167,8 @@ public class PlayerController : MonoBehaviour {
 				}
 				
 				if (enemy!=null || obj!=null) {
-					Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier));
+					if (enemy != null) Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), enemy.transform);
+					else Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), obj.transform);
 					
 					audioPlayer.clip = audioClips["swordHit"+Random.Range(1,3)];
 					audioPlayer.Play();
@@ -185,9 +186,12 @@ public class PlayerController : MonoBehaviour {
 			if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
 			
 			cooling = true;
-			dashing = true;
-			Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
 			Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber]*speedModifier);
+			
+			if (attackNumber == 2) {
+				dashing = true;
+				Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
+			}
 		}
 	}
 	
