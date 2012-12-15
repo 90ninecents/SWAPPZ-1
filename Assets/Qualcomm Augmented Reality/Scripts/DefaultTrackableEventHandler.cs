@@ -99,8 +99,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
     }
 
 
-    private void OnTrackingLost()
-    {
+    private void OnTrackingLost() {
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>();
 
         // Disable rendering:
@@ -112,9 +111,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
        if (Idle_test_ani != null) Idle_test_ani.Stop();
     }
 	
-	void OnTrack()
-	{
-		//Idle_test_ani.Play();
+	void OnTrack() {
 	}
 
     #endregion // PRIVATE_METHODS

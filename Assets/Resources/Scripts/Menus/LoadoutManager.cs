@@ -5,9 +5,15 @@ public class LoadoutManager : MonoBehaviour {
 	
 	public InventoryPanel inventory;
 	public InventoryPanel roster;
-	public InventoryPanel backgrounds;
 	
 	GUITexture btnAccept;
+	
+	void Awake() {
+		GameObject popup = GameObject.Find("ARPopup");
+		foreach (PopupTrigger pt in gameObject.GetComponentsInChildren<PopupTrigger>()) {
+			pt.popupGroupObject = popup;
+		}
+	}
 	
 	void OnEnable() {
 		if (roster != null) {

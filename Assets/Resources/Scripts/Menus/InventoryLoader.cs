@@ -39,6 +39,8 @@ public class InventoryLoader : MonoBehaviour {
 							go = Instantiate(Resources.Load("Prefabs/Loadout Characters/"+s+"Locked")) as GameObject;
 							p.AddItem(go.transform, false);
 						}
+						
+						go.transform.parent = transform;
 					}
 				}
 			}				

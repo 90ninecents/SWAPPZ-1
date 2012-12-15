@@ -85,4 +85,8 @@ public class SavedData {
 		get { return PlayerPrefs.GetInt(SavedData.levelTime); }
 		set { PlayerPrefs.SetInt(SavedData.levelTime, value); }
 	}
+	
+	public static void ClearData() {
+		PlayerPrefs.DeleteAll();
+	}
 }
