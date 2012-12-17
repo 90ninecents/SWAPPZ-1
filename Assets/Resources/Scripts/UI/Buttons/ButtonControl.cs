@@ -18,27 +18,28 @@ public class ButtonControl : MonoBehaviour {
 			Ray ray = Camera.main.ScreenPointToRay(touchPos);
 		
 			foreach (Transform t in transform) {
-				
-				if (t.guiTexture != null) {
-					if (t.guiTexture.enabled &&
-						t.guiTexture.GetScreenRect().Contains(touchPos)) {
-						t.GetComponent<Button>().Fire();
-						break;
+				if (t.GetComponent<Button>() != null && t.gameObject.active) {
+					if (t.guiTexture != null) {
+						if (t.guiTexture.enabled &&
+							t.guiTexture.GetScreenRect().Contains(touchPos)) {
+							t.GetComponent<Button>().Fire();
+							break;
+						}
+					}
+					else if (t.guiText != null) {
+						if (t.guiText.enabled &&
+							t.guiText.GetScreenRect().Contains(touchPos)) {
+							t.GetComponent<Button>().Fire();
+							break;
+						}
+					}
+					else if (t.collider != null) {
+						if (t.collider.bounds.IntersectRay(ray)) {
+							t.GetComponent<Button>().Fire();
+							break;
+						}
 					}
 				}
-				else if (t.guiText != null) {
-					if (t.guiText.enabled &&
-						t.guiText.GetScreenRect().Contains(touchPos)) {
-						t.GetComponent<Button>().Fire();
-						break;
-					}
-				}
-				else if (t.collider != null) {
-					if (t.collider.bounds.IntersectRay(ray)) {
-						t.GetComponent<Button>().Fire();
-						break;
-					}
-				}	
 			}
 		}
 		

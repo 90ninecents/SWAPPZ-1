@@ -8,12 +8,6 @@ public class LoadoutManager : MonoBehaviour {
 	
 	GUITexture btnAccept;
 	
-	void Awake() {
-		GameObject popup = GameObject.Find("ARPopup");
-		foreach (PopupTrigger pt in gameObject.GetComponentsInChildren<PopupTrigger>()) {
-			pt.popupGroupObject = popup;
-		}
-	}
 	
 	void OnEnable() {
 		if (roster != null) {
@@ -42,7 +36,7 @@ public class LoadoutManager : MonoBehaviour {
 		Gesture.onTouchUpE -= CheckHighlights;
 	}
 		
-	void Update() {
+	void Update() {		
 		if (roster != null) {
 			btnAccept.enabled = false;
 			

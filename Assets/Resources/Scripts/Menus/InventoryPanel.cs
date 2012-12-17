@@ -7,7 +7,9 @@ public class InventoryPanel : MonoBehaviour {
 	  * in a series of rows and columns as specified in the inspector
 	  */
 	
-	//debugging
+	public GameObject lockedPopup;
+	public GameObject unlockedPopup;
+	
 	public int rows = 2;
 	public int columns = 2;
 	
@@ -60,6 +62,9 @@ public class InventoryPanel : MonoBehaviour {
 	
 	void OnEnable () {
 		Gesture.onTouchUpE += OnTouchUp;
+		
+		if (lockedPopup != null && lockedPopup.active == true) lockedPopup.SetActiveRecursively(false);
+		if (unlockedPopup != null && unlockedPopup.active == true) unlockedPopup.SetActiveRecursively(false);
 	}
 	
 	void OnDisable () {
@@ -82,7 +87,6 @@ public class InventoryPanel : MonoBehaviour {
 			}
 			
 			if (go) {
-				
 				bool found = false;
 				
 				// If already selected, deselect
@@ -91,6 +95,9 @@ public class InventoryPanel : MonoBehaviour {
 						selectedItems[i].localScale /= sizeIncrease;
 						selectedItems[i] = null;
 						found = true;
+						
+						if (unlockedPopup != null) unlockedPopup.SetActiveRecursively(false);
+						
 						break;
 					}
 				}
@@ -105,7 +112,15 @@ public class InventoryPanel : MonoBehaviour {
 							break;
 						}
 					}
+					
+					// popup on selectable tap
+					if (unlockedPopup != null) unlockedPopup.SetActiveRecursively(true);
 				}
+			}
+			
+			else {
+				// popup on unselectable tap
+				if (lockedPopup != null) lockedPopup.SetActiveRecursively(true);
 			}
 			
 		}
