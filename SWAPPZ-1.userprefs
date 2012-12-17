@@ -1,6 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/UI/Buttons/ButtonControl.cs">
+    <Files>
+      <File FileName="Assets/Resources/Scripts/Menus/InventoryPanel.cs" Line="99" Column="76" />
+      <File FileName="Assets/Resources/Scripts/UI/Buttons/ButtonControl.cs" Line="21" Column="64" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
