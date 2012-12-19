@@ -46,7 +46,7 @@ public class Game : MonoBehaviour {
 	public static int LevelTimeInSeconds { get { return instance.levelTimeInSeconds; } }
 	
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		if (instance == null) instance = this;
 		
 		// Load chosen companions
@@ -85,7 +85,7 @@ public class Game : MonoBehaviour {
 		
 		player = playerObject.GetComponent<PlayerController>();
 		joystick = joystickObject.GetComponent<Joystick>();
-		damageCounter = damageCounterObject.GetComponent<DamageCounter>();
+		if (damageCounterObject != null) damageCounter = damageCounterObject.GetComponent<DamageCounter>();
 		
 		if (powerupSpawners.Length > 0) InvokeRepeating("SpawnPowerup", powerupSpawnInterval, powerupSpawnInterval);
 		
@@ -196,7 +196,7 @@ public class Game : MonoBehaviour {
 		
 		
 		// Update camera and touch tracker
-		Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(playerObject);
+		if (Camera.main.GetComponent<ThirdPersonCamera>() != null) Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(playerObject);
 		
 		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);
 		

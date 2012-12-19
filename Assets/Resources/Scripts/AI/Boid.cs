@@ -37,7 +37,7 @@ public class Boid : MonoBehaviour {
 		behaviours.Remove(b);
 	}
 	
-	public SteeringBehaviour GetBehaviour(string identifier) {
+	public SteeringBehaviour GetBehaviour(string identifier) {		
 		foreach (SteeringBehaviour b in behaviours) {
 			if (b.identifier == identifier) {
 				return b;

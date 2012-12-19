@@ -189,8 +189,10 @@ public class PlayerController : MonoBehaviour {
 			Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber]*speedModifier);
 			
 			if (attackNumber == 2) {
-				dashing = true;
-				Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
+				if (boidComponent.maxSpeed > 0) {
+					dashing = true;
+					Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
+				}
 			}
 		}
 	}

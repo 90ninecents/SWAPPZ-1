@@ -12,12 +12,14 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
                                             ITrackableEventHandler
 {
 	public TrackableBehaviour mtrackableBehaviour;
-	Animation Idle_test_ani;
 	
     GameObject ninja;
 	bool scanned = false;
 	
 	GUITexture reticle;
+	GUIText text;
+	public GameObject[] activeOnTrack;
+	public GameObject[] activeOnLost;
 	
     #region PRIVATE_MEMBER_VARIABLES
  
@@ -37,8 +39,6 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
         }
 		
-		reticle = GameObject.Find ("Reticle").GetComponent<GUITexture>();
-
         OnTrackingLost();
     }
 
@@ -79,7 +79,13 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
         foreach (Renderer component in rendererComponents) {
             component.enabled = true;
         }
-		reticle.enabled = false;
+		
+		foreach (GameObject go in activeOnTrack) {
+			go.SetActiveRecursively(true);
+		}
+		foreach (GameObject go in activeOnLost) {
+			go.SetActiveRecursively(false);
+		}
 		
 		if (!scanned) {
 			// Unlock scanned character
@@ -106,9 +112,15 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
         foreach (Renderer component in rendererComponents) {
             component.enabled = false;
         }
-		reticle.enabled = true;
+		
+		foreach (GameObject go in activeOnTrack) {
+			go.SetActiveRecursively(false);
+		}
+		foreach (GameObject go in activeOnLost) {
+			go.SetActiveRecursively(true);
+		}
 
-       if (Idle_test_ani != null) Idle_test_ani.Stop();
+       //if (Idle_test_ani != null) Idle_test_ani.Stop();
     }
 	
 	void OnTrack() {

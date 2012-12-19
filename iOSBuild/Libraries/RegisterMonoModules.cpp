@@ -158,8 +158,6 @@ void RegisterMonoModules()
 
 void RegisterAllStrippedInternalCalls ()
 {
-	void Register_UnityEngine_Animation_INTERNAL_CALL_Stop ();
-	Register_UnityEngine_Animation_INTERNAL_CALL_Stop ();
 	void Register_UnityEngine_Animation_Internal_StopByName ();
 	Register_UnityEngine_Animation_Internal_StopByName ();
 	void Register_UnityEngine_Animation_get_isPlaying ();
