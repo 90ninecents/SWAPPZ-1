@@ -59,6 +59,10 @@ public class PlayerController : MonoBehaviour {
 	
 	public AudioSource AudioPlayer { get { return audioPlayer; } }
 	
+	public Transform weapon1;
+	public Transform weapon2;
+	int frameCount = 0;
+	
 	void Awake() {
 		audioPlayer = Camera.main.gameObject.AddComponent<AudioSource>();
 		audioClips = new Dictionary<string, AudioClip>();
@@ -71,6 +75,10 @@ public class PlayerController : MonoBehaviour {
 		anim = transform.GetComponentInChildren<Animation>();
 		
 		playerName = transform.name.Substring(0, transform.name.Length-7);
+		
+		if (playerName == "Michelangelo") {
+			weapon1.gameObject.active = false;
+		}
 	}
 	
 	void OnEnable() {		
@@ -95,11 +103,34 @@ public class PlayerController : MonoBehaviour {
 		}
 		else {
 			if (!anim.IsPlaying("attack1_"+playerName) && !anim.IsPlaying("attack2_"+playerName) && !anim.IsPlaying("attack3_"+playerName)) boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
+			
 			if (Game.Joystick.GetDrive() != Vector3.zero && !anim.IsPlaying("run_"+playerName)) {
 				anim.CrossFadeQueued("run_"+playerName, 0.1f, QueueMode.PlayNow);
 			}
 			else if (Game.Joystick.GetDrive() == Vector3.zero && (anim.IsPlaying ("run_"+playerName) || !anim.isPlaying)) {
 				anim.CrossFadeQueued("idle_"+playerName,0.15f,QueueMode.CompleteOthers);
+			}
+			
+			
+			// Enable/Disable Mikey's nunchucks
+			if (playerName == "Michelangelo") {
+				if (anim.IsPlaying("attack1_"+playerName)) {
+					frameCount++;
+					
+					if (frameCount > 160*Time.timeScale) {
+						weapon1.gameObject.active = true;
+						weapon2.gameObject.active = false;
+					}
+					else {
+						weapon2.gameObject.active = true;
+						weapon1.gameObject.active = false;
+					}
+				}
+				else {
+					weapon1.gameObject.active = true;
+					weapon2.gameObject.active = false;
+					frameCount = 0;
+				}
 			}
 		}
 	}
@@ -121,7 +152,7 @@ public class PlayerController : MonoBehaviour {
 	
 	public void ExecuteAttack(int attackNumber = 1) {
 		if (!cooling) {
-			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];
+			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
 			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
 			
 			CancelInvoke("BreakCombo");
@@ -132,7 +163,6 @@ public class PlayerController : MonoBehaviour {
 			for (int i = 0; i < combos.Length; i++) {
 				if (combos[i].StartsWith(currentCombo)) {
 					if (combos[i] == currentCombo) {
-						Debug.Log("combo #"+i+" performed");
 						currentCombo = "";
 						if (comboMeter < comboMax) comboMeter += Mathf.RoundToInt(comboPoints*comboModifier);
 						

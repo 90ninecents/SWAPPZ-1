@@ -9,7 +9,7 @@ public class LoadoutManager : MonoBehaviour {
 	GUITexture btnAccept;
 	
 	
-	void OnEnable() {
+	void OnEnable() {		
 		if (roster != null) {
 			btnAccept = GameObject.Find ("BtnNext").transform.guiTexture;
 			btnAccept.enabled = false;

@@ -198,6 +198,7 @@ public class Game : MonoBehaviour {
 		// Update camera and touch tracker
 		if (Camera.main.GetComponent<ThirdPersonCamera>() != null) Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(playerObject);
 		
+		//touchTracker.GetComponent<TouchTracker>().playerObject = playerObject.gameObject;
 		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);
 		
 		if (damageCounterObject != null) {
