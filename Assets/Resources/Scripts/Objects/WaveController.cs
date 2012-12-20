@@ -6,6 +6,7 @@ public class WaveController : MonoBehaviour {
 	
 	public GameObject[] waves;		// set in inspector
 	public GUIText waveCounter;
+	public GUITexture movePopup;
 	int waveNumber = 0;
 	public float checkFrequencyInSeconds = 0.5f;
 	public int coinsOnWaveEnd = 5;
@@ -17,6 +18,8 @@ public class WaveController : MonoBehaviour {
 		foreach (GameObject go in waves) {
 			go.SetActiveRecursively(false);
 		}
+		
+		if (movePopup != null) movePopup.enabled = false;
 		
 		InvokeRepeating("CheckWave", 0, checkFrequencyInSeconds);
 		Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[0].transform);
@@ -50,10 +53,26 @@ public class WaveController : MonoBehaviour {
 			}
 			
 			CancelInvoke("CheckWave");
-			//Invoke("LaunchWave", Game.TimeBetweenWaves);
 		}
-		else if (Game.EnemyGroup.GetChildCount() == 0 && waveNumber < waves.Length) {
+		else if (Game.EnemyGroup.GetChildCount() == 0 && waveNumber == waves.Length) {
+			movePopup.enabled = true;
+			CancelInvoke("CheckWave");
+			InvokeRepeating("CheckPopupEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
+		}
+	}
+	
+	void CheckPopupEnd() {
+		if (movePopup.enabled == false) {
 			SpawnRewardCoins(coinsOnLevelEnd);
+			CancelInvoke("CheckPopupEnd");
+			InvokeRepeating("CheckLevelEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
+		}
+	}
+	
+	void CheckLevelEnd() {
+		if (GameObject.FindSceneObjectsOfType(typeof(Coin)).Length == 0) {
+			CancelInvoke("CheckLevelEnd");
+			Game.EndGame(true);
 		}
 	}
 	
@@ -81,7 +100,7 @@ public class WaveController : MonoBehaviour {
 			}
 			GameObject coin = Object.Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
 			coin.transform.position = pos;
-			coin.GetComponent<Coin>().SetTimes(6, 2.5f);
+			coin.GetComponent<Coin>().SetTimes(7.5f, 2.5f);
 		}
 		
 		

@@ -6,16 +6,19 @@ public class ThirdPersonCamera : MonoBehaviour {
 	public Vector3 offset;
 	Vector3 defaultPos;
 	Vector3 lastPos;
+	public float maxCenterOffset = 50.0f;
 	
 	public Vector3 movementAxes = new Vector3(1,1,1);
 	
 	public void SetTarget(Transform t) {
 		target = t;
-		if (offset == Vector3.zero) offset = transform.position-target.position;
+	//	if (offset == Vector3.zero) offset = transform.position-target.position;
 		defaultPos.x = target.position.x;
 		defaultPos.y = offset.y;
 		defaultPos.z = offset.z;
 		lastPos = defaultPos;
+		
+		transform.position = defaultPos;
 	}
 	
 	void Update() {
@@ -29,14 +32,14 @@ public class ThirdPersonCamera : MonoBehaviour {
 		
 		//pos = Vector3.zero;
 		if (target != Game.Player.transform) {
-			pos.z = defaultPos.z + (offset.z - Mathf.Abs(Game.Player.transform.position.x-target.position.x));
+			pos.z = defaultPos.z + (offset.z - Mathf.Abs(Game.Player.transform.position.x-target.position.x)) + (maxCenterOffset/2) - (maxCenterOffset/10);
 			
-			if (Mathf.Abs(pos.z - lastPos.z) > 0.01f && Mathf.Abs(Game.Player.transform.position.x-target.position.x) > 100) {
+			if (Mathf.Abs(pos.z - lastPos.z) > 0.01f && Mathf.Abs(Game.Player.transform.position.x-target.position.x) > maxCenterOffset) {
 				transform.Translate(new Vector3(0,0, (pos.z - lastPos.z)), Space.Self);
 				lastPos = pos;
 			}
 			
-			else if (Mathf.Abs(Game.Player.transform.position.x-target.position.x) <= 100) {
+			else if (Mathf.Abs(Game.Player.transform.position.x-target.position.x) <= maxCenterOffset) {
 				transform.position = defaultPos;
 				lastPos = defaultPos;
 			}

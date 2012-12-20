@@ -224,7 +224,7 @@ public class Game : MonoBehaviour {
 		}
 	}
 	
-	public static void EndGame() {
+	public static void EndGame(bool won) {
 		instance.CancelInvoke("TimeTick");
 		instance.CancelInvoke("SpawnPowerup");
 		

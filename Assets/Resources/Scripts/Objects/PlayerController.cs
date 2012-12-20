@@ -301,7 +301,7 @@ public class PlayerController : MonoBehaviour {
 			
 			if (health <= 0) {
 				// trigger game over
-				Game.EndGame();
+				Game.EndGame(false);
 				health = 0;
 			}
 			else if (!IsInvoking("HealthTick")) {
