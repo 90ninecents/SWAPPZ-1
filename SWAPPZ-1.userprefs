@@ -2,8 +2,10 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/Objects/WaveController.cs">
     <Files>
-      <File FileName="Assets/Resources/Scripts/Game.cs" Line="210" Column="26" />
-      <File FileName="Assets/Resources/Scripts/Objects/WaveController.cs" Line="61" Column="30" />
+      <File FileName="Assets/Resources/Scripts/Game.cs" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/Objects/WaveController.cs" Line="55" Column="30" />
+      <File FileName="Assets/Resources/Scripts/UI/Buttons/TapDismissButton.cs" Line="9" Column="47" />
+      <File FileName="Assets/Resources/Scripts/UI/Buttons/SceneButton.cs" Line="7" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

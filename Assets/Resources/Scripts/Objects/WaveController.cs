@@ -108,7 +108,7 @@ public class WaveController : MonoBehaviour {
 	}
 	
 	void Update() {
-		if (!IsInvoking("CheckWave") && waveNumber > 1) {
+		if (!IsInvoking() && waveNumber > 1) {
 			if (Mathf.Abs (Camera.main.transform.position.x - waves[waveNumber-1].transform.position.x) < 10.0f) {
 				LaunchWave();
 				arrow.enabled = false;
