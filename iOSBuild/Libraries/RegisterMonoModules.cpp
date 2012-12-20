@@ -772,6 +772,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Object_set_name ();
 	void Register_UnityEngine_Object_DestroyObject ();
 	Register_UnityEngine_Object_DestroyObject ();
+	void Register_UnityEngine_Object_FindSceneObjectsOfType ();
+	Register_UnityEngine_Object_FindSceneObjectsOfType ();
 	void Register_UnityEngine_Object_ToString ();
 	Register_UnityEngine_Object_ToString ();
 	void Register_UnityEngine_ParticleSystem_get_isPlaying ();
