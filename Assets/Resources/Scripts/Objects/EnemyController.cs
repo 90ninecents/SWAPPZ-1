@@ -114,6 +114,7 @@ public class EnemyController : MonoBehaviour {
 			}
 				
 			Destroy(gameObject);
+			Destroy (this);
 		}
 	}
 }

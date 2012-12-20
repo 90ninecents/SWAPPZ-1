@@ -10,6 +10,8 @@ public class WaveController : MonoBehaviour {
 	public float checkFrequencyInSeconds = 0.5f;
 	public int coinsOnWaveEnd = 5;
 	public int coinsOnLevelEnd = 20;
+	
+	GUITexture arrow;
 
 	void Start () {
 		foreach (GameObject go in waves) {
@@ -17,13 +19,18 @@ public class WaveController : MonoBehaviour {
 		}
 		
 		InvokeRepeating("CheckWave", 0, checkFrequencyInSeconds);
+		Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[0].transform);
+		
+		Invoke("LaunchWave", Game.TimeBetweenWaves);
+		
+		arrow = GameObject.Find ("ProgressArrow").guiTexture;
 	}
 	
 	void LaunchWave() {
 		waves[waveNumber-1].SetActiveRecursively(true);
 		
 		// snap camera to wave center
-		//Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[waveNumber-1].transform);
+		if (waveNumber != 1) Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[waveNumber-1].transform);
 		
 		if (waveCounter != null) {
 			waveCounter.text = "Wave "+waveNumber;
@@ -43,7 +50,7 @@ public class WaveController : MonoBehaviour {
 			}
 			
 			CancelInvoke("CheckWave");
-			Invoke("LaunchWave", Game.TimeBetweenWaves);
+			//Invoke("LaunchWave", Game.TimeBetweenWaves);
 		}
 		else if (Game.EnemyGroup.GetChildCount() == 0 && waveNumber < waves.Length) {
 			SpawnRewardCoins(coinsOnLevelEnd);
@@ -79,5 +86,17 @@ public class WaveController : MonoBehaviour {
 		
 		
 		Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
+	}
+	
+	void Update() {
+		if (!IsInvoking("CheckWave") && waveNumber > 1) {
+			if (Mathf.Abs (Camera.main.transform.position.x - waves[waveNumber-1].transform.position.x) < 10.0f) {
+				LaunchWave();
+				arrow.enabled = false;
+			}
+			else {
+				arrow.enabled = true;
+			}
+		}
 	}
 }

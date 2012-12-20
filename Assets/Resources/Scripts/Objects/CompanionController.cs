@@ -65,6 +65,11 @@ public class CompanionController : MonoBehaviour {
 	void Update() {
 		if (target == null) {
 			if (Game.EnemyGroup.childCount > 0) FindTarget();
+			else if (boidComponent.GetBehaviour("ToEnemy").weight > 0){
+				boidComponent.GetBehaviour("ToEnemy").SetWeight(0);
+				boidComponent.GetBehaviour("ToPlayer").SetWeight(1);
+			}
+			
 			if (arrivalComponentP.Steering != Vector3.zero && !pc.anim.IsPlaying("run_"+pc.playerName)) {
 				pc.anim.CrossFadeQueued("run_"+pc.playerName, 0.1f, QueueMode.PlayNow);
 			}

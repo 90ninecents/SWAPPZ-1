@@ -63,8 +63,9 @@ public class Game : MonoBehaviour {
 				
 				GameObject go = Instantiate(g.GetComponent<InventoryItem>().itemPrefab) as GameObject;
 				
-				go.transform.position = new Vector3(0,30,0);
 				go.transform.parent = playerGroupObject;
+				go.transform.localPosition = new Vector3(0,10,0);
+				
 				SwitchPlayer(go);
 			}
 			// others = companions
@@ -75,8 +76,8 @@ public class Game : MonoBehaviour {
 				
 				companion.GetComponent<CompanionController>().enabled = true;
 				companion.GetComponent<PlayerController>().enabled = false;
-				companion.transform.position = new Vector3(0,10,0);
 				companion.transform.parent = playerGroupObject;
+				companion.transform.localPosition = new Vector3(0,10,0);
 				//companions.Add(companion);
 			}
 		}
