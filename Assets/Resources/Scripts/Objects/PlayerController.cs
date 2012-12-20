@@ -63,6 +63,9 @@ public class PlayerController : MonoBehaviour {
 	public Transform weapon2;
 	int frameCount = 0;
 	
+	public int FrameCount { get { return frameCount; }
+							set { frameCount = value; } }
+	
 	void Awake() {
 		audioPlayer = Camera.main.gameObject.AddComponent<AudioSource>();
 		audioClips = new Dictionary<string, AudioClip>();
@@ -216,7 +219,7 @@ public class PlayerController : MonoBehaviour {
 			if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
 			
 			cooling = true;
-			Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber]*speedModifier);
+			Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber-1]*speedModifier);
 			
 			if (attackNumber == 2) {
 				if (boidComponent.maxSpeed > 0) {

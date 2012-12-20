@@ -25,7 +25,7 @@ public class CompanionController : MonoBehaviour {
 		arrivalComponentE = boidComponent.GetBehaviour("ToEnemy") as ArrivalBehaviour;
 		arrivalComponentP = boidComponent.GetBehaviour("ToPlayer") as ArrivalBehaviour;
 		
-		strength = pc.attackStrengths[0]/4;
+		strength = pc.attackStrengths[0];
 		attackRadius = pc.attackRadius*2;
 		attackCooldown = pc.attackCooldown*10;
 	}
@@ -45,6 +45,10 @@ public class CompanionController : MonoBehaviour {
 		
 		boidComponent.maxSpeed -= 15;
 		boidComponent.Speed = boidComponent.maxSpeed;
+		
+		if (pc.playerName == "Michelangelo") {
+			pc.weapon1.gameObject.active = false;
+		}
 	}
 	
 	void OnDisable() {
@@ -75,7 +79,7 @@ public class CompanionController : MonoBehaviour {
 			}
 			else if (!cooling && (transform.position-target.transform.position).magnitude <= attackRadius) {
 				int attackNumber = Random.Range(1,3);
-				pc.anim.CrossFadeQueued("attack"+attackNumber+"_"+pc.playerName,0,QueueMode.PlayNow);
+				pc.anim.CrossFadeQueued("attack"+attackNumber+"_"+pc.playerName,0,QueueMode.PlayNow).speed = pc.attackSpeeds[attackNumber-1];
 				pc.anim.CrossFadeQueued("idle_"+pc.playerName,0.1f,QueueMode.CompleteOthers);
 				
 				target.TakeDamage(strength, transform);
@@ -89,6 +93,28 @@ public class CompanionController : MonoBehaviour {
 				
 				transform.rigidbody.rotation = Quaternion.LookRotation(aim);
 			}
+			
+			// Enable/Disable Mikey's nunchucks
+			if (pc.playerName == "Michelangelo") {
+				if (pc.anim.IsPlaying("attack1_"+pc.playerName)) {
+					pc.FrameCount++;
+					
+					if (pc.FrameCount > 160*Time.timeScale) {
+						pc.weapon1.gameObject.active = true;
+						pc.weapon2.gameObject.active = false;
+					}
+					else {
+						pc.weapon2.gameObject.active = true;
+						pc.weapon1.gameObject.active = false;
+					}
+				}
+				else {
+					pc.weapon1.gameObject.active = true;
+					pc.weapon2.gameObject.active = false;
+					pc.FrameCount = 0;
+				}
+			}
+			
 		}
 	}
 	

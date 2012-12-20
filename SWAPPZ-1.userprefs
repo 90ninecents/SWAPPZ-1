@@ -1,8 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Qualcomm Augmented Reality/Scripts/DefaultTrackableEventHandler.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/Objects/WaveController.cs">
     <Files>
-      <File FileName="Assets/Qualcomm Augmented Reality/Scripts/DefaultTrackableEventHandler.cs" Line="88" Column="4" />
+      <File FileName="Assets/Resources/Scripts/UI/TouchTracker.cs" Line="14" Column="22" />
+      <File FileName="Assets/Resources/Scripts/Objects/PlayerController.cs" Line="66" Column="16" />
+      <File FileName="Assets/Resources/Scripts/Objects/WaveController.cs" Line="46" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -21,6 +21,10 @@ public class WaveController : MonoBehaviour {
 	
 	void LaunchWave() {
 		waves[waveNumber-1].SetActiveRecursively(true);
+		
+		// snap camera to wave center
+		//Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[waveNumber-1].transform);
+		
 		if (waveCounter != null) {
 			waveCounter.text = "Wave "+waveNumber;
 			waveCounter.GetComponent<SlidingTexture>().StartSlide();
@@ -72,5 +76,8 @@ public class WaveController : MonoBehaviour {
 			coin.transform.position = pos;
 			coin.GetComponent<Coin>().SetTimes(6, 2.5f);
 		}
+		
+		
+		Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
 	}
 }
