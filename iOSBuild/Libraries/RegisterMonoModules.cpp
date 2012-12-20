@@ -746,6 +746,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_MeshFilter_get_mesh ();
 	void Register_UnityEngine_MeshFilter_set_mesh ();
 	Register_UnityEngine_MeshFilter_set_mesh ();
+	void Register_UnityEngine_MonoBehaviour_Internal_IsInvokingAll ();
+	Register_UnityEngine_MonoBehaviour_Internal_IsInvokingAll ();
 	void Register_UnityEngine_MonoBehaviour_Invoke ();
 	Register_UnityEngine_MonoBehaviour_Invoke ();
 	void Register_UnityEngine_MonoBehaviour_InvokeRepeating ();
