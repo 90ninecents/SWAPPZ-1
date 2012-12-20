@@ -16,8 +16,6 @@ public class ThirdPersonCamera : MonoBehaviour {
 		defaultPos.y = offset.y;
 		defaultPos.z = offset.z;
 		lastPos = defaultPos;
-		
-		print ("fuck");
 	}
 	
 	void Update() {
