@@ -297,7 +297,13 @@ public class PlayerController : MonoBehaviour {
 	public void TakeDamage(int damage) {
 		if (!invincible) {
 			health -= Mathf.RoundToInt(damage-(armor*armorModifier));
-			if (anim.IsPlaying("idle_"+playerName)) anim.CrossFadeQueued("hit_"+playerName, 0.05f, QueueMode.PlayNow);
+			if (anim.IsPlaying("idle_"+playerName)) {
+				GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 01 Particle System")) as GameObject;
+				particle.transform.position = transform.position+new Vector3(0,40,0);
+				Destroy(particle, 1.0f);
+				
+				anim.CrossFadeQueued("hit_"+playerName, 0.05f, QueueMode.PlayNow);
+			}
 			
 			if (health <= 0) {
 				// trigger game over
