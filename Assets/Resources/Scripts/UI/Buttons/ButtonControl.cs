@@ -22,6 +22,7 @@ public class ButtonControl : MonoBehaviour {
 					if (t.guiTexture != null) {
 						if (t.guiTexture.enabled &&
 							t.guiTexture.GetScreenRect().Contains(touchPos)) {
+							t.GetComponent<Button>().PreFire();
 							t.GetComponent<Button>().Fire();
 							break;
 						}
@@ -29,12 +30,14 @@ public class ButtonControl : MonoBehaviour {
 					else if (t.guiText != null) {
 						if (t.guiText.enabled &&
 							t.guiText.GetScreenRect().Contains(touchPos)) {
+							t.GetComponent<Button>().PreFire();
 							t.GetComponent<Button>().Fire();
 							break;
 						}
 					}
 					else if (t.collider != null) {
 						if (t.collider.bounds.IntersectRay(ray)) {
+							t.GetComponent<Button>().PreFire();
 							t.GetComponent<Button>().Fire();
 							break;
 						}

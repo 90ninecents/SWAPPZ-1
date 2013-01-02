@@ -10,7 +10,7 @@ public class SceneButton : Button {
 		GameObject[] allObjects = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
 		
 		foreach (GameObject go in allObjects) {
-			if (!(go == Camera.main.gameObject) && !(go == loader) && (!go.transform.parent == loader)) go.SetActiveRecursively(false);
+			if (!(go == Camera.main.gameObject) && !(go == loader) && (!go.transform.parent == loader) && !(go == MusicPlayer.music.gameObject)) go.SetActiveRecursively(false);
 		}
 		
 		Application.LoadLevelAsync(sceneName);

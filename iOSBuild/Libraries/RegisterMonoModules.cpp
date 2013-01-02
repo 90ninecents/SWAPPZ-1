@@ -336,6 +336,10 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_AudioSource_set_clip ();
 	void Register_UnityEngine_AudioSource_Play ();
 	Register_UnityEngine_AudioSource_Play ();
+	void Register_UnityEngine_AudioSource_INTERNAL_CALL_Stop ();
+	Register_UnityEngine_AudioSource_INTERNAL_CALL_Stop ();
+	void Register_UnityEngine_AudioSource_get_isPlaying ();
+	Register_UnityEngine_AudioSource_get_isPlaying ();
 	void Register_UnityEngine_AudioSource_PlayOneShot ();
 	Register_UnityEngine_AudioSource_PlayOneShot ();
 	void Register_UnityEngine_Behaviour_get_enabled ();
@@ -772,6 +776,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Object_get_name ();
 	void Register_UnityEngine_Object_set_name ();
 	Register_UnityEngine_Object_set_name ();
+	void Register_UnityEngine_Object_DontDestroyOnLoad ();
+	Register_UnityEngine_Object_DontDestroyOnLoad ();
 	void Register_UnityEngine_Object_DestroyObject ();
 	Register_UnityEngine_Object_DestroyObject ();
 	void Register_UnityEngine_Object_FindSceneObjectsOfType ();
