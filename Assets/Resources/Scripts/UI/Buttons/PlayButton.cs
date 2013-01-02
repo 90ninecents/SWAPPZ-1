@@ -7,7 +7,6 @@ public class PlayButton : SceneButton {
 	}
 	
 	public override void PreFire() {
-		MusicPlayer.music.Stop();
-		Destroy(MusicPlayer.music);
+		AudioManager.StopChannel("Background");
 	}
 }

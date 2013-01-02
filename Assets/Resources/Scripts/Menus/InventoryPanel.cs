@@ -109,6 +109,8 @@ public class InventoryPanel : MonoBehaviour {
 							items[i].localScale *= sizeIncrease;
 							selectedItems[i] = items[i];
 							
+							AudioManager.PlayAudio("ButtonSelect", "Effects");
+							
 							break;
 						}
 					}

@@ -21,30 +21,36 @@ public class ButtonControl : MonoBehaviour {
 				if (t.GetComponent<Button>() != null && t.gameObject.active) {
 					if (t.guiTexture != null) {
 						if (t.guiTexture.enabled &&
-							t.guiTexture.GetScreenRect().Contains(touchPos)) {
-							t.GetComponent<Button>().PreFire();
-							t.GetComponent<Button>().Fire();
+							t.guiTexture.GetScreenRect().Contains(touchPos)) {							
+							TriggerButton(t);
 							break;
 						}
 					}
 					else if (t.guiText != null) {
 						if (t.guiText.enabled &&
 							t.guiText.GetScreenRect().Contains(touchPos)) {
-							t.GetComponent<Button>().PreFire();
-							t.GetComponent<Button>().Fire();
+							TriggerButton(t);
 							break;
 						}
 					}
 					else if (t.collider != null) {
 						if (t.collider.bounds.IntersectRay(ray)) {
-							t.GetComponent<Button>().PreFire();
-							t.GetComponent<Button>().Fire();
+							TriggerButton(t);
 							break;
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	void TriggerButton(Transform t) {
+		if (t.GetComponent<AttackButton>() == null) {
+			if (t.name == "BtnBack") AudioManager.PlayAudio("ButtonBack", "Effects");
+			else AudioManager.PlayAudio("ButtonForward", "Effects");
+		}
 		
+		t.GetComponent<Button>().PreFire();
+		t.GetComponent<Button>().Fire();
 	}
 }

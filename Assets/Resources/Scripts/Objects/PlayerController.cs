@@ -203,17 +203,14 @@ public class PlayerController : MonoBehaviour {
 					if (enemy != null) Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), enemy.transform);
 					else Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), obj.transform);
 					
-					audioPlayer.clip = audioClips["swordHit"+Random.Range(1,3)];
-					audioPlayer.Play();
+					AudioManager.PlayAudio("Sword"+Random.Range(1,6), "BattlePlayers");
 				}
 				else {
-					audioPlayer.clip = audioClips["swordSwing"];
-					audioPlayer.Play();
+					AudioManager.PlayAudio("Sword"+Random.Range(1,6), "BattlePlayers");
 				}
 			}
 			else {
-				audioPlayer.clip = audioClips["swordSwing"];
-				audioPlayer.Play();
+				AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), "BattlePlayers");
 			}
 			
 			if (currentCombo != "") Invoke("BreakCombo", comboCooldown);

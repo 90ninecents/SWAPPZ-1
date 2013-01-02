@@ -342,6 +342,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_AudioSource_get_isPlaying ();
 	void Register_UnityEngine_AudioSource_PlayOneShot ();
 	Register_UnityEngine_AudioSource_PlayOneShot ();
+	void Register_UnityEngine_AudioSource_set_playOnAwake ();
+	Register_UnityEngine_AudioSource_set_playOnAwake ();
 	void Register_UnityEngine_Behaviour_get_enabled ();
 	Register_UnityEngine_Behaviour_get_enabled ();
 	void Register_UnityEngine_Behaviour_set_enabled ();
