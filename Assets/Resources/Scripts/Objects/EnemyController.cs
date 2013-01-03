@@ -66,9 +66,9 @@ public class EnemyController : MonoBehaviour {
 	}
 	
 	protected virtual void Attack() {
-		if (transform.name.StartsWith("Foot Clan Double Sword")) AudioManager.PlayAudio("Sword"+Random.Range(1,6), "BattleEnemies");
-		else if (transform.name.StartsWith("Foot Clan Single Sword")) AudioManager.PlayAudio("Punch"+Random.Range(1,5), "BattleEnemies");
-		else AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), "BattleEnemies", 10f);
+		if (transform.name.StartsWith("Foot Clan Double Sword")) AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel, 0.5f);
+		else if (transform.name.StartsWith("Foot Clan Single Sword")) AudioManager.PlayAudio("Punch"+Random.Range(1,5), AudioManager.UnusedChannel, 0.5f);
+		//else AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), AudioManager.UnusedChannel, 0.5f);
 		
 		anim.Stop("run_"+enemyName);
 		anim.Stop("idle_"+enemyName);

@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
 	public int armor = 100;				// Affected by powerups
 	
 	public float healthRegenRate = 1.0f;
+	public int healthRegenAmount = 50;
 	
 	float strengthModifier = 1.0f;		// Affected by powerups
 	float speedModifier = 1.0f;			// Affected by powerups; modifies both movement speed and attack speed
@@ -203,14 +204,14 @@ public class PlayerController : MonoBehaviour {
 					if (enemy != null) Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), enemy.transform);
 					else Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), obj.transform);
 					
-					AudioManager.PlayAudio("Sword"+Random.Range(1,6), "BattlePlayers");
+					AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
 				}
 				else {
-					AudioManager.PlayAudio("Sword"+Random.Range(1,6), "BattlePlayers");
+					AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
 				}
 			}
 			else {
-				AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), "BattlePlayers");
+				AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), AudioManager.UnusedChannel);
 			}
 			
 			if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
@@ -314,7 +315,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void HealthTick() {
-		if (health < healthMax) health++;
+		if (health < healthMax) health += healthRegenAmount;
 		if (health >= healthMax) {
 			CancelInvoke("HealthTick");
 			health = healthMax;

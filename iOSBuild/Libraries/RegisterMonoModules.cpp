@@ -332,12 +332,18 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_AudioClip_Construct_Internal ();
 	void Register_UnityEngine_AudioClip_Init_Internal ();
 	Register_UnityEngine_AudioClip_Init_Internal ();
+	void Register_UnityEngine_AudioSource_set_volume ();
+	Register_UnityEngine_AudioSource_set_volume ();
+	void Register_UnityEngine_AudioSource_get_clip ();
+	Register_UnityEngine_AudioSource_get_clip ();
 	void Register_UnityEngine_AudioSource_set_clip ();
 	Register_UnityEngine_AudioSource_set_clip ();
 	void Register_UnityEngine_AudioSource_Play ();
 	Register_UnityEngine_AudioSource_Play ();
 	void Register_UnityEngine_AudioSource_INTERNAL_CALL_Stop ();
 	Register_UnityEngine_AudioSource_INTERNAL_CALL_Stop ();
+	void Register_UnityEngine_AudioSource_get_isPlaying ();
+	Register_UnityEngine_AudioSource_get_isPlaying ();
 	void Register_UnityEngine_AudioSource_PlayOneShot ();
 	Register_UnityEngine_AudioSource_PlayOneShot ();
 	void Register_UnityEngine_AudioSource_set_loop ();

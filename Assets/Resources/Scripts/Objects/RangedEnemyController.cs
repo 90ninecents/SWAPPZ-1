@@ -9,7 +9,7 @@ public class RangedEnemyController : EnemyController {
 	FleeBehaviour fleeComponent;
 	
 	protected override void Attack() {
-		AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), "BattleEnemies", 10f);
+		AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), AudioManager.UnusedChannel, 0.5f);
 		
 		anim.Stop("run_"+enemyName);
 		anim.Stop("idle_"+enemyName);
