@@ -338,10 +338,10 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_AudioSource_Play ();
 	void Register_UnityEngine_AudioSource_INTERNAL_CALL_Stop ();
 	Register_UnityEngine_AudioSource_INTERNAL_CALL_Stop ();
-	void Register_UnityEngine_AudioSource_get_isPlaying ();
-	Register_UnityEngine_AudioSource_get_isPlaying ();
 	void Register_UnityEngine_AudioSource_PlayOneShot ();
 	Register_UnityEngine_AudioSource_PlayOneShot ();
+	void Register_UnityEngine_AudioSource_set_loop ();
+	Register_UnityEngine_AudioSource_set_loop ();
 	void Register_UnityEngine_AudioSource_set_playOnAwake ();
 	Register_UnityEngine_AudioSource_set_playOnAwake ();
 	void Register_UnityEngine_Behaviour_get_enabled ();
