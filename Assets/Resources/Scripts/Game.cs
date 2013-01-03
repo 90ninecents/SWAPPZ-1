@@ -18,10 +18,12 @@ public class Game : MonoBehaviour {
 	public int enemyKillsPerCoin = 5;
 	
 	public float timeBetweenWaves = 5;
-	
+	// -----
 	PlayerController player;
 	Joystick joystick;
 	DamageCounter damageCounter;
+	
+	bool won = false;
 	// -----
 	
 	static List<GameObject> availablePowerups;
@@ -44,6 +46,7 @@ public class Game : MonoBehaviour {
 									  set { instance.enemiesKilled = value; } }
 	public static float TimeBetweenWaves { get { return instance.timeBetweenWaves; } }
 	public static int LevelTimeInSeconds { get { return instance.levelTimeInSeconds; } }
+	public static bool LastLevelWon { get { return instance.won; } }
 	
 	// Use this for initialization
 	void Awake () {
@@ -225,6 +228,8 @@ public class Game : MonoBehaviour {
 	}
 	
 	public static void EndGame(bool won) {
+		instance.won = won;
+		
 		instance.CancelInvoke("TimeTick");
 		instance.CancelInvoke("SpawnPowerup");
 		
