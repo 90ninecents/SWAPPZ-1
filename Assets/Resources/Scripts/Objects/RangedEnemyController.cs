@@ -16,11 +16,15 @@ public class RangedEnemyController : EnemyController {
 		anim.CrossFadeQueued("toAttack_"+enemyName, 0.1f, QueueMode.PlayNow);
 		anim.CrossFadeQueued("attack_"+enemyName, 0.1f, QueueMode.CompleteOthers);
 		
+		cooling = true;
+		Invoke("Cooldown", attackCooldown/speedModifier);
+		
+		Invoke("AttackDelay", 0.5f);
+	}
+	
+	protected override void AttackDelay() {
 		GameObject go = Instantiate(projectile) as GameObject;
 		go.transform.position = transform.position+(transform.forward*transform.localScale.z)+new Vector3(0,10,0);
 		go.GetComponent<Projectile>().Launch(projectileSpeed*speedModifier, transform.forward, strength, attackReach);
-		
-		cooling = true;
-		Invoke("Cooldown", attackCooldown/speedModifier);
 	}
 }

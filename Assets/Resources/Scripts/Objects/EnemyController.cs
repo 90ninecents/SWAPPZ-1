@@ -81,7 +81,7 @@ public class EnemyController : MonoBehaviour {
 		Invoke("Cooldown", attackCooldown/speedModifier);
 	}
 	
-	protected void AttackDelay() {
+	protected virtual void AttackDelay() {
 		if (arrivalComponent.targetObject == Game.Player.transform) Game.Player.TakeDamage(strength);
 		else arrivalComponent.targetObject.GetComponent<CompanionController>().TakeDamage(strength);
 	}
