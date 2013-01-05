@@ -107,6 +107,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		else {
 			if (!anim.IsPlaying("attack1_"+playerName) && !anim.IsPlaying("attack2_"+playerName) && !anim.IsPlaying("attack3_"+playerName)) boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
+			else boidComponent.Speed = 0;
 			
 			if (Game.Joystick.GetDrive() != Vector3.zero && !anim.IsPlaying("run_"+playerName)) {
 				anim.CrossFadeQueued("run_"+playerName, 0.1f, QueueMode.PlayNow);
@@ -114,7 +115,6 @@ public class PlayerController : MonoBehaviour {
 			else if (Game.Joystick.GetDrive() == Vector3.zero && (anim.IsPlaying ("run_"+playerName) || !anim.isPlaying)) {
 				anim.CrossFadeQueued("idle_"+playerName,0.15f,QueueMode.CompleteOthers);
 			}
-			
 			
 			// Enable/Disable Mikey's nunchucks
 			if (playerName == "Michelangelo") {
