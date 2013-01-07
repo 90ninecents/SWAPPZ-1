@@ -27,6 +27,8 @@ public class EnemyController : MonoBehaviour {
 		
 		anim = transform.GetComponentInChildren<Animation>();
 		
+		boidComponent = transform.GetComponent<Boid>();
+		
 		foreach (AnimationState state in anim) {
 			if (state.name == "run_"+enemyName) state.speed = 0.75f;
 		}
@@ -42,7 +44,7 @@ public class EnemyController : MonoBehaviour {
 				anim.Play("run_"+enemyName);
 			}
 			
-			transform.GetComponent<Boid>().Speed = transform.GetComponent<Boid>().maxSpeed*speedModifier;
+			boidComponent.Speed = boidComponent.maxSpeed*speedModifier;
 			
 			if (arrivalComponent.targetObject == null) {
 				arrivalComponent.targetObject = Game.Player.transform;
@@ -62,6 +64,9 @@ public class EnemyController : MonoBehaviour {
 		}
 		else {
 			// play stunned animations
+			//boidComponent.Speed = 0;
+			arrivalComponent.SetWeight(0);
+			if (!anim.IsPlaying("idle_"+enemyName)) anim.CrossFadeQueued("idle_"+enemyName, 0.05f, QueueMode.PlayNow);
 		}
 	}
 	
@@ -98,6 +103,7 @@ public class EnemyController : MonoBehaviour {
 	
 	void EndStun() {
 		stunned = false;
+		arrivalComponent.SetWeight(1);
 	}
 	
 	public void TakeDamage(int damage, Transform attacker) {		
@@ -108,7 +114,7 @@ public class EnemyController : MonoBehaviour {
 		
 		health -= damage;
 		anim.CrossFadeQueued("hit_"+enemyName, 0.05f,QueueMode.PlayNow);
-		GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 01 Particle System")) as GameObject;
+		GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 0"+Random.Range(1,3)+" Particle System")) as GameObject;
 		particle.transform.position = transform.position+new Vector3(0,40,0);
 		Destroy(particle, 1.0f);
 		

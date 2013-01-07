@@ -1,7 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-public class Powerup : MonoBehaviour {	
+public class Powerup : MonoBehaviour {
+	public GameObject effect;
+	public bool playEffectOnAwake = false;
+	
 	public float armorModifier = 1.0f;
 	public float damageModifier = 1.0f;
 	public float speedModifier = 1.0f;
@@ -25,6 +28,15 @@ public class Powerup : MonoBehaviour {
 	bool expired = false;
 	
 	public bool Expired { get { return expired; } }
+	
+	void Start() {
+		if (effect != null) {
+			effect = Instantiate(effect) as GameObject;
+			effect.transform.position = new Vector3(transform.position.x, 0, transform.position.z);
+			//effect.transform.parent = transform;
+			effect.SetActiveRecursively(playEffectOnAwake);
+		}
+	}
 	
 	public void CountDown() {
 		life++;

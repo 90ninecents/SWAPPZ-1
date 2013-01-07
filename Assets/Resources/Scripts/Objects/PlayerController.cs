@@ -242,6 +242,14 @@ public class PlayerController : MonoBehaviour {
 	public void CollectPowerup(Powerup p) {
 		Destroy(p.gameObject);
 		
+		if (p.effect != null) {
+			if (p.playEffectOnAwake) Destroy(p.effect);
+			else {
+				p.effect.SetActiveRecursively(true);
+				Destroy(p.effect, 3.0f);
+			}
+		}
+		
 		// Assuming a powerup that affects enemies/restores life has no other benefits
 		if (p.destroyEnemies) {
 			Game.DestroyEnemies(p.effectRadius);
@@ -296,7 +304,7 @@ public class PlayerController : MonoBehaviour {
 		if (!invincible) {
 			health -= Mathf.RoundToInt(damage-(armor*armorModifier));
 			if (anim.IsPlaying("idle_"+playerName)) {
-				GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 01 Particle System")) as GameObject;
+				GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 0"+Random.Range(1,3)+" Particle System")) as GameObject;
 				particle.transform.position = transform.position+new Vector3(0,40,0);
 				Destroy(particle, 1.0f);
 				
