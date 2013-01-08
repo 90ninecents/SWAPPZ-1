@@ -25,6 +25,8 @@ public class RangedEnemyController : EnemyController {
 	protected override void AttackDelay() {
 		GameObject go = Instantiate(projectile) as GameObject;
 		go.transform.position = transform.position+(transform.forward*transform.localScale.z)+new Vector3(0,35,0);
+		go.transform.Translate(transform.forward*25, Space.World);
+		go.transform.Translate(transform.right*-5, Space.World);
 		go.GetComponent<Projectile>().Launch(projectileSpeed*speedModifier, transform.forward, strength, attackReach);
 	}
 }
