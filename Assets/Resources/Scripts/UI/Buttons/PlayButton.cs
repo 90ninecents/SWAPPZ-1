@@ -7,6 +7,6 @@ public class PlayButton : SceneButton {
 	}
 	
 	public override void PreFire() {
-		AudioManager.StopChannel("Background");
+		//AudioManager.StopChannel("Background");
 	}
 }
