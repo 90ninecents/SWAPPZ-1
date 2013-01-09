@@ -54,14 +54,11 @@ public class PlayerController : MonoBehaviour {
 	public Animation anim;
 	public string playerName;
 	
-	AudioSource audioPlayer;
-	Dictionary<string, AudioClip> audioClips;
-	
-	
-	public AudioSource AudioPlayer { get { return audioPlayer; } }
-	
 	public Transform weapon1;
+	GameObject weaponTrail1;
 	public Transform weapon2;
+	GameObject weaponTrail2;
+	
 	int frameCount = 0;
 	
 	public int FrameCount { get { return frameCount; }
@@ -72,6 +69,15 @@ public class PlayerController : MonoBehaviour {
 		anim = transform.GetComponentInChildren<Animation>();
 		
 		playerName = transform.name.Substring(0, transform.name.Length-7);
+		
+		if (weapon1 != null) {
+			weaponTrail1 = weapon1.GetChild(0).gameObject;
+			weaponTrail1.SetActiveRecursively(false);
+		}
+		if (weapon2 != null) {
+			weaponTrail2 = weapon2.GetChild(0).gameObject;
+			weaponTrail2.SetActiveRecursively(false);
+		}
 		
 		if (playerName == "Michelangelo") {
 			weapon1.gameObject.active = false;
@@ -153,6 +159,9 @@ public class PlayerController : MonoBehaviour {
 		if (!cooling) {
 			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
 			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
+			
+			ToggleTrailRendering();
+			Invoke("ToggleTrailRendering", attackSpeeds[attackNumber-1]/2);
 			
 			CancelInvoke("BreakCombo");
 			
@@ -303,7 +312,7 @@ public class PlayerController : MonoBehaviour {
 				particle.transform.position = transform.position+new Vector3(0,40,0);
 				Destroy(particle, 1.0f);
 				
-				anim.CrossFadeQueued("hit_"+playerName, 0.05f, QueueMode.PlayNow);
+				if (!anim.IsPlaying("run_"+playerName)) anim.CrossFadeQueued("hit_"+playerName, 0.05f, QueueMode.PlayNow);
 			//}
 			
 			if (health <= 0) {
@@ -372,5 +381,10 @@ public class PlayerController : MonoBehaviour {
 	
 	public void ReceiveXP(int amount) {
 		xp += Mathf.RoundToInt(amount*xpModifier);
+	}
+	
+	void ToggleTrailRendering() {
+		if (weaponTrail1 != null) weaponTrail1.SetActiveRecursively(!weaponTrail1.active);
+		if (weaponTrail2 != null) weaponTrail2.SetActiveRecursively(!weaponTrail2.active);
 	}
 }
