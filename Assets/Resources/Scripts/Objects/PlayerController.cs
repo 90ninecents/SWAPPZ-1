@@ -67,14 +67,7 @@ public class PlayerController : MonoBehaviour {
 	public int FrameCount { get { return frameCount; }
 							set { frameCount = value; } }
 	
-	void Awake() {
-		audioPlayer = Camera.main.gameObject.AddComponent<AudioSource>();
-		audioClips = new Dictionary<string, AudioClip>();
-		
-		audioClips.Add("swordSwing", Resources.Load("Sounds/sword_swing") as AudioClip);
-		audioClips.Add("swordHit1", Resources.Load("Sounds/sword_strike_1") as AudioClip);
-		audioClips.Add("swordHit2", Resources.Load("Sounds/sword_strike_2") as AudioClip);
-		
+	void Awake() {		
 		health = healthMax;
 		anim = transform.GetComponentInChildren<Animation>();
 		
@@ -101,39 +94,41 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void Update() {
-		if (dashing) {
-			Game.TouchTracker.position += transform.forward*5f;
-			transform.position += transform.forward*5f;
-		}
-		else {
-			if (!anim.IsPlaying("attack1_"+playerName) && !anim.IsPlaying("attack2_"+playerName) && !anim.IsPlaying("attack3_"+playerName)) boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
-			else boidComponent.Speed = 0;
-			
-			if (Game.Joystick.GetDrive() != Vector3.zero && !anim.IsPlaying("run_"+playerName)) {
-				anim.CrossFadeQueued("run_"+playerName, 0.1f, QueueMode.PlayNow);
+		if (health > 0) {
+			if (dashing) {
+				Game.TouchTracker.position += transform.forward*5f;
+				transform.position += transform.forward*5f;
 			}
-			else if (Game.Joystick.GetDrive() == Vector3.zero && (anim.IsPlaying ("run_"+playerName) || !anim.isPlaying)) {
-				anim.CrossFadeQueued("idle_"+playerName,0.15f,QueueMode.CompleteOthers);
-			}
-			
-			// Enable/Disable Mikey's nunchucks
-			if (playerName == "Michelangelo") {
-				if (anim.IsPlaying("attack1_"+playerName)) {
-					frameCount++;
-					
-					if (frameCount > 160*Time.timeScale) {
-						weapon1.gameObject.active = true;
-						weapon2.gameObject.active = false;
+			else {
+				if (!anim.IsPlaying("attack1_"+playerName) && !anim.IsPlaying("attack2_"+playerName) && !anim.IsPlaying("attack3_"+playerName)) boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
+				else boidComponent.Speed = 0;
+				
+				if (Game.Joystick.GetDrive() != Vector3.zero && !anim.IsPlaying("run_"+playerName)) {
+					anim.CrossFadeQueued("run_"+playerName, 0.1f, QueueMode.PlayNow);
+				}
+				else if (Game.Joystick.GetDrive() == Vector3.zero && (anim.IsPlaying ("run_"+playerName) || !anim.isPlaying)) {
+					anim.CrossFadeQueued("idle_"+playerName,0.15f,QueueMode.CompleteOthers);
+				}
+				
+				// Enable/Disable Mikey's nunchucks
+				if (playerName == "Michelangelo") {
+					if (anim.IsPlaying("attack1_"+playerName)) {
+						frameCount++;
+						
+						if (frameCount > 160*Time.timeScale) {
+							weapon1.gameObject.active = true;
+							weapon2.gameObject.active = false;
+						}
+						else {
+							weapon2.gameObject.active = true;
+							weapon1.gameObject.active = false;
+						}
 					}
 					else {
-						weapon2.gameObject.active = true;
-						weapon1.gameObject.active = false;
+						weapon1.gameObject.active = true;
+						weapon2.gameObject.active = false;
+						frameCount = 0;
 					}
-				}
-				else {
-					weapon1.gameObject.active = true;
-					weapon2.gameObject.active = false;
-					frameCount = 0;
 				}
 			}
 		}
@@ -301,7 +296,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	public void TakeDamage(int damage) {
-		if (!invincible) {
+		if (!invincible && health > 0) {
 			health -= Mathf.RoundToInt(damage-(armor*armorModifier));
 			//if (anim.IsPlaying("idle_"+playerName)) {
 				GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 0"+Random.Range(1,3)+" Particle System")) as GameObject;
@@ -313,13 +308,22 @@ public class PlayerController : MonoBehaviour {
 			
 			if (health <= 0) {
 				// trigger game over
-				Game.EndGame(false);
-				health = 0;
+				CancelInvoke("HealthTick");
+				health = 0;				
+				
+				transform.GetChild(0).localPosition = new Vector3(0,24.0f,0);
+				anim.CrossFadeQueued("death_"+playerName, 0.05f, QueueMode.PlayNow);
+				Game.PacifyEnemies();
+				Invoke("EndGame", 2.5f);
 			}
 			else if (!IsInvoking("HealthTick")) {
 				InvokeRepeating("HealthTick", healthRegenRate/regenModifier, healthRegenRate/regenModifier);
 			}
 		}
+	}
+	
+	void EndGame() {
+		Game.EndGame(false);
 	}
 	
 	void HealthTick() {

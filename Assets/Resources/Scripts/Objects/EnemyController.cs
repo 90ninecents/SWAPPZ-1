@@ -16,6 +16,7 @@ public class EnemyController : MonoBehaviour {
 	public int xpGain = 100;
 	protected bool cooling = false;
 	protected bool stunned = false;
+	protected bool passive = false;
 	
 	protected Animation anim;
 	protected string enemyName;
@@ -35,7 +36,7 @@ public class EnemyController : MonoBehaviour {
 	}
 	
 	void Update() {		
-		if (!stunned) {
+		if (!stunned && !passive) {
 			if (cooling && arrivalComponent.Steering == Vector3.zero) {
 				if (anim.IsPlaying("run_"+enemyName)) anim.CrossFadeQueued("endRun_"+enemyName, 0f, QueueMode.PlayNow);
 				else anim.CrossFadeQueued("idle_"+enemyName, 0.05f, QueueMode.CompleteOthers);
@@ -99,6 +100,10 @@ public class EnemyController : MonoBehaviour {
 		stunned = true;
 		
 		Invoke("EndStun", duration);
+	}
+	
+	public void SetPassive(bool flag) {
+		passive = flag;
 	}
 	
 	void EndStun() {
