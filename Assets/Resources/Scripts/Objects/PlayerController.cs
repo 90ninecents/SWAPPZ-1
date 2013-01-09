@@ -55,9 +55,9 @@ public class PlayerController : MonoBehaviour {
 	public string playerName;
 	
 	public Transform weapon1;
-	GameObject weaponTrail1;
+	ParticleSystem weaponTrail1;
 	public Transform weapon2;
-	GameObject weaponTrail2;
+	ParticleSystem weaponTrail2;
 	
 	int frameCount = 0;
 	
@@ -71,12 +71,12 @@ public class PlayerController : MonoBehaviour {
 		playerName = transform.name.Substring(0, transform.name.Length-7);
 		
 		if (weapon1 != null) {
-			weaponTrail1 = weapon1.GetChild(0).gameObject;
-			weaponTrail1.SetActiveRecursively(false);
+			weaponTrail1 = weapon1.GetComponentInChildren<ParticleSystem>();
+			weaponTrail1.Stop();
 		}
 		if (weapon2 != null) {
-			weaponTrail2 = weapon2.GetChild(0).gameObject;
-			weaponTrail2.SetActiveRecursively(false);
+			weaponTrail2 = weapon2.GetComponentInChildren<ParticleSystem>();
+			weaponTrail2.Stop();
 		}
 		
 		if (playerName == "Michelangelo") {
@@ -161,7 +161,7 @@ public class PlayerController : MonoBehaviour {
 			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
 			
 			ToggleTrailRendering();
-			Invoke("ToggleTrailRendering", attackSpeeds[attackNumber-1]/2);
+			Invoke("ToggleTrailRendering", attackSpeeds[attackNumber-1]/5);
 			
 			CancelInvoke("BreakCombo");
 			
@@ -384,7 +384,19 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void ToggleTrailRendering() {
-		if (weaponTrail1 != null) weaponTrail1.SetActiveRecursively(!weaponTrail1.active);
-		if (weaponTrail2 != null) weaponTrail2.SetActiveRecursively(!weaponTrail2.active);
+		if (weaponTrail1 != null) {
+			if (weaponTrail1.isPlaying) {
+				weaponTrail1.Stop ();
+				weaponTrail1.Clear();
+			}
+			else weaponTrail1.Play();
+		}
+		if (weaponTrail2 != null) {
+			if (weaponTrail2.isPlaying) {
+				weaponTrail2.Stop ();
+				weaponTrail2.Clear();
+			}
+			else weaponTrail2.Play();
+		}
 	}
 }
