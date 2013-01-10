@@ -160,8 +160,8 @@ public class PlayerController : MonoBehaviour {
 			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
 			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
 			
-			ToggleTrailRendering();
-			Invoke("ToggleTrailRendering", attackSpeeds[attackNumber-1]/5);
+			//ToggleTrailRendering();
+			//Invoke("ToggleTrailRendering", attackSpeeds[attackNumber-1]/3);
 			
 			CancelInvoke("BreakCombo");
 			
