@@ -76,7 +76,6 @@ public class InventoryPanel : MonoBehaviour {
 		RaycastHit hit;
 			
 		if (Physics.Raycast(ray, out hit, 1500)) {
-			
 			bool go = false;
 			// Check if hit object is selectable
 			foreach (Transform t in selectableItems) {
@@ -123,8 +122,7 @@ public class InventoryPanel : MonoBehaviour {
 			else {
 				// popup on unselectable tap
 				if (lockedPopup != null) lockedPopup.SetActiveRecursively(true);
-			}
-			
+			}			
 		}
 	}
 	

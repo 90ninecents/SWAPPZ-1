@@ -53,10 +53,19 @@ public class LoadoutManager : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay(touchPos);
 		RaycastHit[] hits = Physics.RaycastAll(ray, 1000.0f);
 		
+		HighlightableItem hitem;
+		bool selectable = false;
 		foreach (RaycastHit hit in hits) {
-			HighlightableItem hitem = hit.transform.GetComponent<HighlightableItem>();
-			if (hitem != null) {
-				hitem.ToggleSelected();
+			if (hit.transform.GetComponent<InventoryItem>() != null) {
+				selectable = true;
+				break;
+			}
+		}
+		
+		if (selectable) {
+			foreach (RaycastHit hit in hits) {
+				hitem = hit.transform.GetComponent<HighlightableItem>();
+				if (hitem != null) hitem.ToggleSelected();
 			}
 		}
 	}
