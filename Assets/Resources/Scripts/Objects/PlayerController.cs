@@ -160,9 +160,6 @@ public class PlayerController : MonoBehaviour {
 			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
 			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
 			
-			//ToggleTrailRendering();
-			//Invoke("ToggleTrailRendering", attackSpeeds[attackNumber-1]/3);
-			
 			CancelInvoke("BreakCombo");
 			
 			currentCombo += ""+attackNumber;
@@ -176,13 +173,27 @@ public class PlayerController : MonoBehaviour {
 						
 						anim.CrossFadeQueued("attack3_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[2];
 						anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
+						
+						ToggleTrail1();
+						Invoke("ToggleTrail1", attackSpeeds[2]/3);
+						
+						ToggleTrail2();
+						Invoke("ToggleTrail2", attackSpeeds[2]/3);
 					}
 					match = true;
 				}
 			}
+			
+			if (currentCombo != "") {
+				Invoke("ToggleTrail"+attackNumber, 0);
+				Invoke("ToggleTrail"+attackNumber, attackSpeeds[attackNumber-1]/3);
+			}
+			
 			if (!match) {
 				currentCombo = currentCombo.Remove(0,1);
 			}
+			
+
 			
 			// Check for object to be hit by attack 
 			Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+25, transform.position.z), transform.forward);
@@ -383,20 +394,28 @@ public class PlayerController : MonoBehaviour {
 		xp += Mathf.RoundToInt(amount*xpModifier);
 	}
 	
-	void ToggleTrailRendering() {
+	void ToggleTrail1() {
 		if (weaponTrail1 != null) {
 			if (weaponTrail1.isPlaying) {
 				weaponTrail1.Stop ();
 				weaponTrail1.Clear();
 			}
-			else weaponTrail1.Play();
+			else {
+				weaponTrail1.Clear();
+				weaponTrail1.Play();
+			}
 		}
+	}
+	void ToggleTrail2() {
 		if (weaponTrail2 != null) {
 			if (weaponTrail2.isPlaying) {
 				weaponTrail2.Stop ();
 				weaponTrail2.Clear();
 			}
-			else weaponTrail2.Play();
+			else {
+				weaponTrail2.Clear();
+				weaponTrail2.Play();
+			}
 		}
 	}
 }
