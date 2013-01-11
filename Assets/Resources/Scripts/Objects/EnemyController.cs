@@ -80,6 +80,7 @@ public class EnemyController : MonoBehaviour {
 		anim.Stop("idle_"+enemyName);
 		anim.CrossFadeQueued("toAttack_"+enemyName, 0.1f, QueueMode.PlayNow);
 		anim.CrossFadeQueued("attack_"+enemyName, 0.1f, QueueMode.CompleteOthers);
+		//anim.CrossFadeQueued("idle_"+enemyName, 0.1f, QueueMode.CompleteOthers);
 		
 		Invoke ("AttackDelay", 0.5f);
 		

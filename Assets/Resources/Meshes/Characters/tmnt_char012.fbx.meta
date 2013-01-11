@@ -14,6 +14,15 @@ ModelImporter:
     7400010: idle3 //// tmnt_char012
     7400012: idle4 //// tmnt_char012
     7400014: idle5 //// tmnt_char012
+    7400016: ' //// tmnt_char012'
+    7400018: idle_FootClanThrowingStar //// tmnt_char012
+    7400020: idle_Foot Clan Throwing Star //// tmnt_char012
+    7400022: startRun_Foot Clan Throwing Star //// tmnt_char012
+    7400024: run_Foot Clan Throwing Star //// tmnt_char012
+    7400026: endRun_Foot Clan Throwing Star //// tmnt_char012
+    7400028: attack_Foot Clan Throwing Star //// tmnt_char012
+    7400030: toAttack_Foot Clan Throwing Star //// tmnt_char012
+    7400032: run_Foot Clan Throwing Star //// tmnt_char012
   serializedVersion: 10
   materials:
     importMaterials: 1
@@ -29,39 +38,34 @@ ModelImporter:
     animationScaleError: .5
     animationWrapMode: 0
     clipAnimations:
-    - name: idle
+    - name: idle_Foot Clan Throwing Star
       firstFrame: 1
-      lastFrame: 25
+      lastFrame: 17
       wrapMode: 0
       loop: 0
-    - name: idle0
-      firstFrame: 26
-      lastFrame: 50
+    - name: startRun_Foot Clan Throwing Star
+      firstFrame: 18
+      lastFrame: 19
       wrapMode: 0
       loop: 0
-    - name: idle1
-      firstFrame: 51
-      lastFrame: 75
+    - name: run_Foot Clan Throwing Star
+      firstFrame: 20
+      lastFrame: 36
       wrapMode: 0
       loop: 0
-    - name: idle2
-      firstFrame: 76
-      lastFrame: 100
+    - name: endRun_Foot Clan Throwing Star
+      firstFrame: 37
+      lastFrame: 39
       wrapMode: 0
       loop: 0
-    - name: idle3
-      firstFrame: 101
-      lastFrame: 125
+    - name: attack_Foot Clan Throwing Star
+      firstFrame: 117
+      lastFrame: 139
       wrapMode: 0
       loop: 0
-    - name: idle4
-      firstFrame: 126
-      lastFrame: 150
-      wrapMode: 0
-      loop: 0
-    - name: idle5
-      firstFrame: 151
-      lastFrame: 175
+    - name: toAttack_Foot Clan Throwing Star
+      firstFrame: 117
+      lastFrame: 139
       wrapMode: 0
       loop: 0
   meshes:

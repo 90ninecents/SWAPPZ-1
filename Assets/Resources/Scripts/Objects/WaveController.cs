@@ -99,7 +99,7 @@ public class WaveController : MonoBehaviour {
 				}
 			}
 			GameObject coin = Object.Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
-			coin.transform.position = pos;
+			coin.transform.position = pos+new Vector3(0,10,0);
 			coin.GetComponent<Coin>().SetTimes(7.5f, 2.5f);
 		}
 		

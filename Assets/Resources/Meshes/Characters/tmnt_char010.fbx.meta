@@ -7,6 +7,19 @@ ModelImporter:
     4300004: polySurface38
     7400000: Take 001 //// tmnt_char013
     7400002: Take 001 //// OrigNinja
+    7400004: Take 001 //// tmnt_char010
+    7400006: idle //// tmnt_char010
+    7400008: idle0 //// tmnt_char010
+    7400010: idle1 //// tmnt_char010
+    7400012: idle2 //// tmnt_char010
+    7400014: idle3 //// tmnt_char010
+    7400016: idle4 //// tmnt_char010
+    7400018: idle_Foot Clan Single Sword //// tmnt_char010
+    7400020: startRun_Foot Clan Single Sword //// tmnt_char010
+    7400022: run_Foot Clan Single Sword //// tmnt_char010
+    7400024: endRun_Foot Clan Single Sword //// tmnt_char010
+    7400026: toAttack_Foot Clan Single Sword //// tmnt_char010
+    7400028: attack_Foot Clan Single Sword //// tmnt_char010
   serializedVersion: 10
   materials:
     importMaterials: 1
@@ -21,7 +34,37 @@ ModelImporter:
     animationPositionError: .5
     animationScaleError: .5
     animationWrapMode: 0
-    clipAnimations: []
+    clipAnimations:
+    - name: idle_Foot Clan Single Sword
+      firstFrame: 1
+      lastFrame: 17
+      wrapMode: 0
+      loop: 0
+    - name: startRun_Foot Clan Single Sword
+      firstFrame: 18
+      lastFrame: 19
+      wrapMode: 0
+      loop: 0
+    - name: run_Foot Clan Single Sword
+      firstFrame: 20
+      lastFrame: 36
+      wrapMode: 0
+      loop: 0
+    - name: endRun_Foot Clan Single Sword
+      firstFrame: 37
+      lastFrame: 39
+      wrapMode: 0
+      loop: 0
+    - name: toAttack_Foot Clan Single Sword
+      firstFrame: 40
+      lastFrame: 43
+      wrapMode: 0
+      loop: 0
+    - name: attack_Foot Clan Single Sword
+      firstFrame: 44
+      lastFrame: 70
+      wrapMode: 0
+      loop: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1

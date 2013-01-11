@@ -41,7 +41,7 @@ Foot Clan Fists char 010 frames
 
 40>43 - Idle to Punch attack
 44>58 - punch attack Left (tmnt_char010_ani004)
-59>66 - Punch attack to Idle
+59>70 - Punch attack to Idle // 59 -> 66
 
 67>89 - Hurt Animation (tmnt_char010_ani007)
 
