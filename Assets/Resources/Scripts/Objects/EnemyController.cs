@@ -36,7 +36,7 @@ public class EnemyController : MonoBehaviour {
 	}
 	
 	void Update() {		
-		if (!stunned && !passive) {
+		if (!stunned && !passive && health > 0) {
 			if (cooling && arrivalComponent.Steering == Vector3.zero) {
 				if (anim.IsPlaying("run_"+enemyName)) anim.CrossFadeQueued("endRun_"+enemyName, 0f, QueueMode.PlayNow);
 				else anim.CrossFadeQueued("idle_"+enemyName, 0.05f, QueueMode.CompleteOthers);
@@ -112,28 +112,34 @@ public class EnemyController : MonoBehaviour {
 		arrivalComponent.SetWeight(1);
 	}
 	
-	public void TakeDamage(int damage, Transform attacker) {		
-		if (attacker != arrivalComponent.targetObject) {
-			arrivalComponent.targetObject = attacker;
-			//Debug.Log ("switch");
-		}
-		
-		health -= damage;
-		anim.CrossFadeQueued("hit_"+enemyName, 0.05f,QueueMode.PlayNow);
-		GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 0"+Random.Range(1,3)+" Particle System")) as GameObject;
-		particle.transform.position = transform.position+new Vector3(0,40,0);
-		Destroy(particle, 1.0f);
-		
-		if (health <= 0) {
-			Game.EnemiesKilled++;
-			
-			if (Game.SpawnCoin()) {
-				GameObject coin = Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
-				coin.transform.position = transform.position+new Vector3(0,15,0);
+	public void TakeDamage(int damage, Transform attacker) {
+		if (health > 0) {
+			if (attacker != arrivalComponent.targetObject) {
+				arrivalComponent.targetObject = attacker;
+				//Debug.Log ("switch");
 			}
+			
+			health -= damage;
+			anim.CrossFadeQueued("hit_"+enemyName, 0/*.05f*/,QueueMode.PlayNow);
+			GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 0"+Random.Range(1,3)+" Particle System")) as GameObject;
+			particle.transform.position = transform.position+new Vector3(0,40,0);
+			Destroy(particle, 1.0f);
+			
+			if (health <= 0) {
+				Game.EnemiesKilled++;
 				
-			Destroy(gameObject);
-			Destroy (this);
+				if (Game.SpawnCoin()) {
+					GameObject coin = Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
+					coin.transform.position = transform.position+new Vector3(0,15,0);
+				}
+				
+				CancelInvoke("AttackDelay");
+				//arrivalComponent.SetWeight(0);
+				//anim.Stop();
+				//anim.CrossFadeQueued("death_"+enemyName, 0.05f, QueueMode.PlayNow);
+				Destroy(gameObject);
+				Destroy (this);
+			}
 		}
 	}
 }

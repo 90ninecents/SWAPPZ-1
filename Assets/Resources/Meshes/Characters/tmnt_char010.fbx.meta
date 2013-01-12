@@ -20,6 +20,8 @@ ModelImporter:
     7400024: endRun_Foot Clan Single Sword //// tmnt_char010
     7400026: toAttack_Foot Clan Single Sword //// tmnt_char010
     7400028: attack_Foot Clan Single Sword //// tmnt_char010
+    7400030: hit_Foot Clan Single Sword //// tmnt_char010
+    7400032: death_Foot Clan Single Sword //// tmnt_char010
   serializedVersion: 10
   materials:
     importMaterials: 1
@@ -63,6 +65,16 @@ ModelImporter:
     - name: attack_Foot Clan Single Sword
       firstFrame: 44
       lastFrame: 70
+      wrapMode: 0
+      loop: 0
+    - name: hit_Foot Clan Single Sword
+      firstFrame: 77
+      lastFrame: 89
+      wrapMode: 0
+      loop: 0
+    - name: death_Foot Clan Single Sword
+      firstFrame: 0
+      lastFrame: 200
       wrapMode: 0
       loop: 0
   meshes:

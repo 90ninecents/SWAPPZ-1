@@ -45,6 +45,8 @@ public class InventoryLoader : MonoBehaviour {
 			
 			else if (p == manager.inventory) {
 				// Inventory
+				SavedData.Inventory = "ItemArmor|ItemCombo|ItemFlashBomb|ItemInvincibility|ItemNuke|ItemPizzaFull|ItemSizeUp|ItemSlow|ItemSpeed|ItemSpinAttack|ItemXP";
+				
 				string[] inventory = SavedData.Inventory.Split(SavedData.Separator[0]);
 				GameObject go;
 				

@@ -28,7 +28,7 @@ public class LoadoutManager : MonoBehaviour {
 		}
 		
 		if (roster != null) {
-			SavedData.CharacterLoadout	 = GetDataString(roster.SelectedItems);
+			SavedData.CharacterLoadout = GetDataString(roster.SelectedItems);
 		}
 		
 		PowerupSpawner.loadoutChange = true;

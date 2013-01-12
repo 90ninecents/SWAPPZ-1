@@ -23,6 +23,8 @@ ModelImporter:
     7400028: attack_Foot Clan Throwing Star //// tmnt_char012
     7400030: toAttack_Foot Clan Throwing Star //// tmnt_char012
     7400032: run_Foot Clan Throwing Star //// tmnt_char012
+    7400034: hit_Foot Clan Throwing Star //// tmnt_char012
+    7400036: death_Foot Clan Throwing Star //// tmnt_char012
   serializedVersion: 10
   materials:
     importMaterials: 1
@@ -60,12 +62,22 @@ ModelImporter:
       loop: 0
     - name: attack_Foot Clan Throwing Star
       firstFrame: 117
-      lastFrame: 139
+      lastFrame: 150
       wrapMode: 0
       loop: 0
     - name: toAttack_Foot Clan Throwing Star
-      firstFrame: 117
-      lastFrame: 139
+      firstFrame: 111
+      lastFrame: 116
+      wrapMode: 0
+      loop: 0
+    - name: hit_Foot Clan Throwing Star
+      firstFrame: 67
+      lastFrame: 89
+      wrapMode: 0
+      loop: 0
+    - name: death_Foot Clan Throwing Star
+      firstFrame: 90
+      lastFrame: 110
       wrapMode: 0
       loop: 0
   meshes:
