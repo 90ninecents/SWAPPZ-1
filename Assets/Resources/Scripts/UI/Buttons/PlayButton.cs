@@ -1,12 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-public class PlayButton : SceneButton {	
-	void Awake() {
-		sceneName = SavedData.CurrentLevel;
-	}
+public class PlayButton : Button {
 	
-	public override void PreFire() {
-		//AudioManager.StopChannel("Background");
+	public override void Fire() {
+		GameObject loader = Instantiate(Resources.Load("Prefabs/UI/LoadingGraphic")) as GameObject;
+		
+		GameObject[] allObjects = GameObject.FindObjectsOfType(typeof(GameObject)) as GameObject[];
+		
+		foreach (GameObject go in allObjects) {
+			if (!(go == Camera.main.gameObject) && !(go == loader) && (!go.transform.parent == loader) && !(go == AudioManager.instance.gameObject)) go.SetActiveRecursively(false);
+		}
+		
+		Application.LoadLevelAsync(SavedData.CurrentLevel);
 	}
 }

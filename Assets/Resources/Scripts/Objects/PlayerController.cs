@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour {
 	float sizeModifier = 1.0f;			// Affects model size, attack radius
 	float comboModifier = 1.0f;
 	
+	int maxSizeIncrease = 2;			// The maximum size increase that can be gained through powerups
+	
 	bool invincible = false;			// Affected by powerups
 
 	int comboMeter = 0;					// Current combo points
@@ -196,39 +198,36 @@ public class PlayerController : MonoBehaviour {
 
 			
 			// Check for object to be hit by attack 
-			Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+25, transform.position.z), transform.forward);
-			RaycastHit hit;
+//			Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+25, transform.position.z), transform.forward);
+//			RaycastHit hit;
 			
-			//if (rigidbody.SweepTest(transform.forward, out hit, attackRadius*sizeModifier)) {
-			if (Physics.Raycast(ray, out hit, attackRadius*sizeModifier)) {
-				EnemyController enemy = hit.collider.transform.GetComponent<EnemyController>();
-				BreakableObject obj = hit.collider.transform.GetComponent<BreakableObject>();
-				
-				// If enemy hit:
+			//Vector3.Angle(transform.forward, toEnemy);
+			
+			Collider[] collisions = Physics.OverlapSphere(transform.position, attackRadius*sizeModifier);
+			
+			Vector3 toEnemy;
+			EnemyController enemy;
+			bool hit = false;
+			
+			foreach (Collider c in collisions) {
+				enemy = c.transform.GetComponent<EnemyController>();
 				if (enemy != null) {
-					enemy.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), transform);
-					// Get XP on hit
-					if (xp < xpTNL) ReceiveXP(enemy.xpGain);
-				}
-				// If breakable object hit:
-				else if (obj != null) {
-					obj.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier));
-				}
-				
-				if (enemy!=null || obj!=null) {
-					if (enemy != null) Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), enemy.transform);
-					else Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), obj.transform);
+					toEnemy = transform.position-enemy.transform.position;
 					
-					AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
-				}
-				else {
-					AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
+					if (Mathf.Abs(Vector3.Angle(transform.forward, toEnemy)) >= 130) {
+						enemy.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), transform);
+						// Get XP on hit
+						if (xp < xpTNL) ReceiveXP(enemy.xpGain);
+						
+						Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), enemy.transform);
+						hit = true;
+					}
 				}
 			}
-			else {
-				AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), AudioManager.UnusedChannel);
-			}
-			
+			if (hit) AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
+			else AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), AudioManager.UnusedChannel);
+	
+			// Combo/dashing/cooldowns
 			if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
 			
 			cooling = true;
@@ -240,6 +239,49 @@ public class PlayerController : MonoBehaviour {
 					Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
 				}
 			}
+			
+			//if (rigidbody.SweepTest(transform.forward, out hit, attackRadius*sizeModifier)) {
+//			if (Physics.Raycast(ray, out hit, attackRadius*sizeModifier)) {
+//				EnemyController enemy = hit.collider.transform.GetComponent<EnemyController>();
+//				BreakableObject obj = hit.collider.transform.GetComponent<BreakableObject>();
+//				
+//				// If enemy hit:
+//				if (enemy != null) {
+//					enemy.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), transform);
+//					// Get XP on hit
+//					if (xp < xpTNL) ReceiveXP(enemy.xpGain);
+//				}
+//				// If breakable object hit:
+//				else if (obj != null) {
+//					obj.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier));
+//				}
+//				
+//				if (enemy!=null || obj!=null) {
+//					if (enemy != null) Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), enemy.transform);
+//					else Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), obj.transform);
+//					
+//					AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
+//				}
+//				else {
+//					AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
+//				}
+//			}
+//			else {
+//				AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), AudioManager.UnusedChannel);
+//			}
+//			
+//			if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
+//			
+//			cooling = true;
+//			Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber-1]*speedModifier);
+//			
+//			if (attackNumber == 2) {
+//				if (boidComponent.maxSpeed > 0) {
+//					dashing = true;
+//					Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
+//				}
+//			}
+
 		}
 	}
 	
