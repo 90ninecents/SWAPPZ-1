@@ -45,11 +45,17 @@ public class InventoryPanel : MonoBehaviour {
 		selectableItems = new Transform[numItems];
 		slots = new Vector2[numItems];
 		
-		float xSpace = transform.localScale.x/columns;
-		float ySpace = transform.localScale.y/rows;
+//		float xSpace = transform.localScale.x/columns;
+//		float ySpace = transform.localScale.y/rows;
+//		
+//		float xStart = transform.position.x-(transform.localScale.x/2)+(xSpace/2);
+//		float yStart = transform.position.y+(transform.localScale.y/2)-(ySpace/2);
 		
-		float xStart = transform.position.x-(transform.localScale.x/2)+(xSpace/2);
-		float yStart = transform.position.y+(transform.localScale.y/2)-(ySpace/2);
+		float xSpace = (transform.collider.bounds.extents.x*2)/columns;
+		float ySpace = (transform.collider.bounds.extents.y*2)/rows;
+		
+		float xStart = transform.position.x-(transform.collider.bounds.extents.x)+(xSpace/2);
+		float yStart = transform.position.y+(transform.collider.bounds.extents.y)-(ySpace/2);
 		
 		int count = 0;
 		for (int r = 0; r < rows; r++) {
@@ -139,8 +145,7 @@ public class InventoryPanel : MonoBehaviour {
 			}
 			
 			// if empty slot found, add to slot
-			if (index >= 0) {				
-				Vector3 pos = new Vector3(slots[index].x, slots[index].y, item.position.z);
+			if (index >= 0) {Vector3 pos = new Vector3(slots[index].x, slots[index].y, item.position.z);
 				item.transform.position = pos;
 				
 				Vector3 diff = item.transform.collider.bounds.center - pos;
@@ -153,6 +158,7 @@ public class InventoryPanel : MonoBehaviour {
 				itemCount++;
 				
 				lastAdded = item;
+				item.parent = transform;
 			}
 		}
 		
@@ -171,5 +177,9 @@ public class InventoryPanel : MonoBehaviour {
 				break;
 			}
 		}
+	}
+	
+	void Update() {
+		
 	}
 }

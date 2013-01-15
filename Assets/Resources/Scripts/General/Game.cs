@@ -188,18 +188,65 @@ public class Game : MonoBehaviour {
 		}
 	}
 	
+//	public void SwitchPlayer(GameObject go) {
+//		
+//		if (playerObject != null) {
+//			// Reset previous player character (if applicable)
+//			player.enabled = false;
+//			playerObject.GetComponent<CompanionController>().enabled = true;
+//		}
+//		
+//		// Update all companions (and enemies?) to point at new player
+//		foreach (Transform t in playerGroupObject) {
+//			(t.gameObject.GetComponent<Boid>().GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = go.transform;
+//		}
+//		
+//		// Set up new player character
+//		playerObject = go.transform;
+//		Boid b = playerObject.GetComponent<Boid>();
+//		b.GetBehaviour("ToTracker").SetWeight(1);
+//		(b.GetBehaviour("ToTracker") as ArrivalBehaviour).targetObject = touchTracker;
+//		
+//		// Disable companion AI
+//		playerObject.GetComponent<CompanionController>().enabled = false;
+//		
+//		// Enable player control
+//		player = playerObject.GetComponent<PlayerController>();
+//		player.enabled = true;
+//		
+//		
+//		// Update camera and touch tracker
+//		if (Camera.main.GetComponent<ThirdPersonCamera>() != null) Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(playerObject);
+//		
+//		//touchTracker.GetComponent<TouchTracker>().playerObject = playerObject.gameObject;
+//		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);
+//		
+//		if (damageCounterObject != null) {
+//			damageCounterObject.position = new Vector3(0,damageCounterObject.position.y,0);
+//		}
+//	}
+	
+	public static void ChangePlayer(string characterName) {
+		GameObject go = Instantiate(Resources.Load ("Prefabs/Player Characters/"+characterName)) as GameObject;
+		go.transform.parent = PlayerGroup;
+		go.transform.localPosition = new Vector3(0,0,0);
+		
+		instance.SwitchPlayer(go);
+	}
+	
 	void SwitchPlayer(GameObject go) {
 		
 		if (playerObject != null) {
 			// Reset previous player character (if applicable)
-			player.enabled = false;
-			playerObject.GetComponent<CompanionController>().enabled = true;
+			//player.enabled = false;
+			//playerObject.GetComponent<CompanionController>().enabled = true;
+			Destroy(playerObject.gameObject);
 		}
 		
 		// Update all companions (and enemies?) to point at new player
-		foreach (Transform t in playerGroupObject) {
-			(t.gameObject.GetComponent<Boid>().GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = go.transform;
-		}
+//		foreach (Transform t in playerGroupObject) {
+//			(t.gameObject.GetComponent<Boid>().GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = go.transform;
+//		}
 		
 		// Set up new player character
 		playerObject = go.transform;

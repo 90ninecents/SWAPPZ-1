@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 195c5b72009ef424daf50a2810ad0e5b
+guid: 53bdcbcba3f5144d6bde802f4df8314c
 ModelImporter:
   fileIDToRecycleName:
     4300000: tmnt_char002_Body
@@ -23,7 +23,7 @@ ModelImporter:
     clipAnimations: []
   meshes:
     lODScreenPercentages: []
-    globalScale: 1.5
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     swapUVChannels: 0
