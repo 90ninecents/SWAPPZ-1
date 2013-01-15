@@ -10,7 +10,11 @@ public class Billboard : MonoBehaviour {
 	}
 	
 	void Update () {
+		float prevZ = transform.rotation.eulerAngles.z;
+		
 		transform.LookAt(Camera.main.transform);
 		transform.RotateAround(new Vector3(0,0,0), 180);
+		
+		transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,transform.rotation.eulerAngles.y,prevZ);
 	}
 }

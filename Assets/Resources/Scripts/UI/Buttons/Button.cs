@@ -8,9 +8,10 @@ public class Button : MonoBehaviour {
 	Texture downTexture;
 	
 	void Awake() {
-		 if (guiTexture != null) upTexture = guiTexture.texture;
-		else upTexture = renderer.material.mainTexture;
-		downTexture = Resources.Load("Textures/UI/Buttons/"+upTexture.name.Substring(0, upTexture.name.Length-2)+"Down") as Texture;
+		if (guiTexture != null) upTexture = guiTexture.texture;
+		else if (renderer != null) upTexture = renderer.material.mainTexture;
+		
+		if (upTexture != null) downTexture = Resources.Load("Textures/UI/Buttons/"+upTexture.name.Substring(0, upTexture.name.Length-2)+"Down") as Texture;
 	}
 	
 	public virtual void Fire() {
@@ -25,12 +26,12 @@ public class Button : MonoBehaviour {
 		down = !down;
 		
 		if (down && downTexture != null) {
-			 if (guiTexture != null) guiTexture.texture = downTexture;
-			else renderer.material.mainTexture = downTexture;
+			if (guiTexture != null) guiTexture.texture = downTexture;
+			else if (renderer != null) renderer.material.mainTexture = downTexture;
 		}
 		else if (!down && downTexture != null) {
-			 if (guiTexture != null) guiTexture.texture = upTexture;
-			else renderer.material.mainTexture = upTexture;
+			if (guiTexture != null) guiTexture.texture = upTexture;
+			else if (renderer != null) renderer.material.mainTexture = upTexture;
 		}
 	}
 }

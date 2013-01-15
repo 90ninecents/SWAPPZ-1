@@ -600,6 +600,10 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_GUITexture_INTERNAL_get_color ();
 	void Register_UnityEngine_GUITexture_INTERNAL_set_color ();
 	Register_UnityEngine_GUITexture_INTERNAL_set_color ();
+	void Register_UnityEngine_GUITexture_get_texture ();
+	Register_UnityEngine_GUITexture_get_texture ();
+	void Register_UnityEngine_GUITexture_set_texture ();
+	Register_UnityEngine_GUITexture_set_texture ();
 	void Register_UnityEngine_GUITexture_INTERNAL_get_pixelInset ();
 	Register_UnityEngine_GUITexture_INTERNAL_get_pixelInset ();
 	void Register_UnityEngine_GUITexture_INTERNAL_set_pixelInset ();
