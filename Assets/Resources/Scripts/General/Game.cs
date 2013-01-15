@@ -236,10 +236,13 @@ public class Game : MonoBehaviour {
 	
 	void SwitchPlayer(GameObject go) {
 		
+		Vector3 newPos = new Vector3(0,0,0);
+		
 		if (playerObject != null) {
 			// Reset previous player character (if applicable)
 			//player.enabled = false;
 			//playerObject.GetComponent<CompanionController>().enabled = true;
+			newPos = playerObject.localPosition;
 			Destroy(playerObject.gameObject);
 		}
 		
@@ -250,6 +253,8 @@ public class Game : MonoBehaviour {
 		
 		// Set up new player character
 		playerObject = go.transform;
+		playerObject.localPosition = newPos+new Vector3(0,100,0);
+		
 		Boid b = playerObject.GetComponent<Boid>();
 		b.GetBehaviour("ToTracker").SetWeight(1);
 		(b.GetBehaviour("ToTracker") as ArrivalBehaviour).targetObject = touchTracker;
@@ -263,7 +268,7 @@ public class Game : MonoBehaviour {
 		
 		
 		// Update camera and touch tracker
-		if (Camera.main.GetComponent<ThirdPersonCamera>() != null) Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(playerObject);
+		//if (Camera.main.GetComponent<ThirdPersonCamera>() != null) Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(playerObject);
 		
 		//touchTracker.GetComponent<TouchTracker>().playerObject = playerObject.gameObject;
 		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);

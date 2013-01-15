@@ -90,7 +90,7 @@ public class EnemyController : MonoBehaviour {
 	
 	protected virtual void AttackDelay() {
 		if (arrivalComponent.targetObject == Game.Player.transform) Game.Player.TakeDamage(strength);
-		else arrivalComponent.targetObject.GetComponent<CompanionController>().TakeDamage(strength);
+		//else arrivalComponent.targetObject.GetComponent<CompanionController>().TakeDamage(strength);
 	}
 	
 	protected void Cooldown() {
