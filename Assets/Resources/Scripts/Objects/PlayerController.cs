@@ -338,7 +338,9 @@ public class PlayerController : MonoBehaviour {
 			comboModifier 	 *= p.comboModifier;
 			
 			sizeModifier 	 *= p.sizeModifier;
-			transform.localScale *= p.sizeModifier;
+			
+			if (sizeModifier > maxSizeIncrease) sizeModifier = maxSizeIncrease;
+			else transform.localScale *= p.sizeModifier;
 			
 			if (IsInvoking("HealthTick")) {
 				CancelInvoke("HealthTick");
