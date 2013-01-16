@@ -51,6 +51,8 @@ public class PlayerController : MonoBehaviour {
 	
 	public float ComboPercentage { get { return (float)comboMeter/comboMax; } }
 	public float HealthPercentage { get {return (float)health/healthMax; } }
+	public int Health { get { return health; } 
+						set { health = value; if (health > healthMax) health = healthMax; } }
 	public float XPPercentage { get { return (float)xp/xpTNL; } }
 	
 	public Animation anim;

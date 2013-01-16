@@ -237,12 +237,15 @@ public class Game : MonoBehaviour {
 	void SwitchPlayer(GameObject go) {
 		
 		Vector3 newPos = new Vector3(0,0,0);
+		float prevHealth = 1.0f;
+		
 		
 		if (playerObject != null) {
 			// Reset previous player character (if applicable)
 			//player.enabled = false;
 			//playerObject.GetComponent<CompanionController>().enabled = true;
 			newPos = playerObject.localPosition;
+			prevHealth = player.HealthPercentage;
 			Destroy(playerObject.gameObject);
 		}
 		
@@ -265,6 +268,8 @@ public class Game : MonoBehaviour {
 		// Enable player control
 		player = playerObject.GetComponent<PlayerController>();
 		player.enabled = true;
+		
+		player.Health = (int)(player.healthMax*prevHealth);
 		
 		
 		// Update camera and touch tracker
