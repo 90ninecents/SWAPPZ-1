@@ -14,7 +14,7 @@ public class Game : MonoBehaviour {
 	public Transform playerGroupObject;
 	public Transform damageCounterObject;
 	
-	public float powerupSpawnInterval = 2.0f;		// Seconds between attempting to spawn a powerup
+	public float powerupSpawnInterval = 0.1f;		// Seconds between attempting to spawn a powerup
 	public int enemyKillsPerCoin = 5;
 	
 	public float timeBetweenWaves = 5;
@@ -28,7 +28,6 @@ public class Game : MonoBehaviour {
 	
 	static List<GameObject> availablePowerups;
 	static PowerupSpawner[] powerupSpawners;
-	//static List<GameObject> companions;
 	static GUITexture[] uiList;
 	
 	int coins;
@@ -188,44 +187,6 @@ public class Game : MonoBehaviour {
 		}
 	}
 	
-//	public void SwitchPlayer(GameObject go) {
-//		
-//		if (playerObject != null) {
-//			// Reset previous player character (if applicable)
-//			player.enabled = false;
-//			playerObject.GetComponent<CompanionController>().enabled = true;
-//		}
-//		
-//		// Update all companions (and enemies?) to point at new player
-//		foreach (Transform t in playerGroupObject) {
-//			(t.gameObject.GetComponent<Boid>().GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = go.transform;
-//		}
-//		
-//		// Set up new player character
-//		playerObject = go.transform;
-//		Boid b = playerObject.GetComponent<Boid>();
-//		b.GetBehaviour("ToTracker").SetWeight(1);
-//		(b.GetBehaviour("ToTracker") as ArrivalBehaviour).targetObject = touchTracker;
-//		
-//		// Disable companion AI
-//		playerObject.GetComponent<CompanionController>().enabled = false;
-//		
-//		// Enable player control
-//		player = playerObject.GetComponent<PlayerController>();
-//		player.enabled = true;
-//		
-//		
-//		// Update camera and touch tracker
-//		if (Camera.main.GetComponent<ThirdPersonCamera>() != null) Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(playerObject);
-//		
-//		//touchTracker.GetComponent<TouchTracker>().playerObject = playerObject.gameObject;
-//		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);
-//		
-//		if (damageCounterObject != null) {
-//			damageCounterObject.position = new Vector3(0,damageCounterObject.position.y,0);
-//		}
-//	}
-	
 	public static void ChangePlayer(string characterName) {
 		GameObject go = Instantiate(Resources.Load ("Prefabs/Player Characters/"+characterName)) as GameObject;
 		go.transform.parent = PlayerGroup;
@@ -242,17 +203,10 @@ public class Game : MonoBehaviour {
 		
 		if (playerObject != null) {
 			// Reset previous player character (if applicable)
-			//player.enabled = false;
-			//playerObject.GetComponent<CompanionController>().enabled = true;
 			newPos = playerObject.localPosition;
 			prevHealth = player.HealthPercentage;
 			Destroy(playerObject.gameObject);
 		}
-		
-		// Update all companions (and enemies?) to point at new player
-//		foreach (Transform t in playerGroupObject) {
-//			(t.gameObject.GetComponent<Boid>().GetBehaviour("ToPlayer") as ArrivalBehaviour).targetObject = go.transform;
-//		}
 		
 		// Set up new player character
 		playerObject = go.transform;
@@ -271,11 +225,7 @@ public class Game : MonoBehaviour {
 		
 		player.Health = (int)(player.healthMax*prevHealth);
 		
-		
-		// Update camera and touch tracker
-		//if (Camera.main.GetComponent<ThirdPersonCamera>() != null) Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(playerObject);
-		
-		//touchTracker.GetComponent<TouchTracker>().playerObject = playerObject.gameObject;
+		// Update touch tracker
 		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);
 		
 		if (damageCounterObject != null) {

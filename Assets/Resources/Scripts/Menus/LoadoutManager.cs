@@ -4,7 +4,8 @@ using System.Collections;
 public class LoadoutManager : MonoBehaviour {
 	
 	public InventoryPanel inventory;
-	public InventoryPanel roster;
+	//public InventoryPanel roster;
+	public Carousel roster;
 	
 	GUITexture btnAccept;
 	
@@ -28,7 +29,7 @@ public class LoadoutManager : MonoBehaviour {
 		}
 		
 		if (roster != null) {
-			SavedData.CharacterLoadout = GetDataString(roster.SelectedItems);
+			SavedData.CharacterLoadout = roster.SelectedItem.name;
 		}
 		
 		PowerupSpawner.loadoutChange = true;
@@ -38,14 +39,19 @@ public class LoadoutManager : MonoBehaviour {
 		
 	void Update() {		
 		if (roster != null) {
-			btnAccept.enabled = false;
 			
-			foreach (Transform t in roster.SelectedItems) {
-				if (t != null) {
-					btnAccept.enabled = true;
-					break;
-				}
+			if (roster.SelectedItem.name.Substring(roster.SelectedItem.name.Length-6, 6) != "Locked") {
+				btnAccept.enabled = true;
 			}
+			else btnAccept.enabled = false;
+//			btnAccept.enabled = false;
+//			
+//			foreach (Transform t in roster.SelectedItems) {
+//				if (t != null) {
+//					btnAccept.enabled = true;
+//					break;
+//				}
+//			}
 		}
 	}
 	

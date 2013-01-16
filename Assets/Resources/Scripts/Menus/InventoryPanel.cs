@@ -45,12 +45,6 @@ public class InventoryPanel : MonoBehaviour {
 		selectableItems = new Transform[numItems];
 		slots = new Vector2[numItems];
 		
-//		float xSpace = transform.localScale.x/columns;
-//		float ySpace = transform.localScale.y/rows;
-//		
-//		float xStart = transform.position.x-(transform.localScale.x/2)+(xSpace/2);
-//		float yStart = transform.position.y+(transform.localScale.y/2)-(ySpace/2);
-		
 		float xSpace = (transform.collider.bounds.extents.x*2)/columns;
 		float ySpace = (transform.collider.bounds.extents.y*2)/rows;
 		
