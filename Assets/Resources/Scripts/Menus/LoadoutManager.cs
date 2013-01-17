@@ -11,7 +11,7 @@ public class LoadoutManager : MonoBehaviour {
 	
 	
 	void OnEnable() {		
-		if (roster != null) {
+		if (roster != null && GameObject.Find ("BtnNext") != null) {
 			btnAccept = GameObject.Find ("BtnNext").transform.guiTexture;
 			btnAccept.enabled = false;
 		}
@@ -38,7 +38,7 @@ public class LoadoutManager : MonoBehaviour {
 	}
 		
 	void Update() {		
-		if (roster != null) {
+		if (roster != null && btnAccept != null) {
 			
 			if (roster.SelectedItem.name.Substring(roster.SelectedItem.name.Length-6, 6) != "Locked") {
 				btnAccept.enabled = true;

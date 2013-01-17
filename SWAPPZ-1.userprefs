@@ -1,6 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/Menus/InventoryLoader.cs">
+    <Files>
+      <File FileName="Assets/Resources/Scripts/Menus/StatsManager.cs" Line="15" Column="68" />
+      <File FileName="Assets/Resources/Scripts/Effects/Carousel.cs" Line="100" Column="92" />
+      <File FileName="Assets/Resources/Scripts/Menus/LoadoutManager.cs" Line="14" Column="60" />
+      <File FileName="Assets/Resources/Scripts/Menus/InventoryLoader.cs" Line="92" Column="51" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>

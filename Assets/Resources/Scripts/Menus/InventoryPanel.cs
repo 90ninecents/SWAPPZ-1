@@ -152,7 +152,7 @@ public class InventoryPanel : MonoBehaviour {
 				itemCount++;
 				
 				lastAdded = item;
-				item.parent = transform;
+				//item.parent = transform;
 			}
 		}
 		

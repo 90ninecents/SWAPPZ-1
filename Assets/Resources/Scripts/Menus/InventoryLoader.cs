@@ -61,11 +61,12 @@ public class InventoryLoader : MonoBehaviour {
 					go = Instantiate(Resources.Load("Prefabs/Loadout Items/"+s)) as GameObject;
 					p.AddItem(go.transform);
 				}
+				
 			}
 		}
 		
 		
-		if (c != null) {
+		else if (c != null) {
 			// Available Characters
 			string[] roster = SavedData.Characters.Split(SavedData.Separator[0]);
 			string[] unlocks = SavedData.UnlockedCharacters.Split(SavedData.Separator[0]);
@@ -90,6 +91,7 @@ public class InventoryLoader : MonoBehaviour {
 						
 						go.transform.position = c.items[i].position;
 						go.transform.localScale = c.items[i].localScale;
+						go.transform.rotation = c.items[i].rotation;
 						
 						Destroy(c.items[i].GetChild(0).gameObject);
 						go.transform.GetChild(0).parent = c.items[i];
@@ -103,6 +105,7 @@ public class InventoryLoader : MonoBehaviour {
 						
 						go.transform.position = c.items[i].position;
 						go.transform.localScale = c.items[i].localScale;
+						go.transform.rotation = c.items[i].rotation;
 						
 						Destroy(c.items[i].GetChild(0).gameObject);
 						go.transform.GetChild(0).parent = c.items[i];

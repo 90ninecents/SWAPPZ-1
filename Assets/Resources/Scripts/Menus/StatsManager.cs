@@ -11,6 +11,9 @@ public class StatsManager : MonoBehaviour {
 		coinCounter.text = ""+Game.Coins;
 		killCounter.text = ""+Game.EnemiesKilled;
 		timeCounter.text = FormatTime(Game.LevelTimeInSeconds);
+		
+		if (Game.LastLevelWon) AudioManager.PlayAudio("Win", "Background");
+		else AudioManager.PlayAudio("Lose", "Background");
 	}
 	
 	string FormatTime(int seconds) {

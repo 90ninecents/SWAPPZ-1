@@ -12,6 +12,8 @@ public class Carousel : MonoBehaviour {
 	
 	Transform selectedItem;
 	public Transform SelectedItem { get { return selectedItem; } }
+	
+	Vector3 inheritedRotation;
 
 	// Use this for initialization
 	void Awake () {
@@ -33,12 +35,14 @@ public class Carousel : MonoBehaviour {
 		Gesture.onTouchDownE += OnTouch;
 		Gesture.onDraggingE += OnDrag;
 		Gesture.onDraggingEndE += OnDragEnd;
+		
+		inheritedRotation = transform.rotation.eulerAngles;
 	}
 	
 	void OnDisable() {
 		Gesture.onTouchDownE -= OnTouch;
 		Gesture.onDraggingE -= OnDrag;
-		Gesture.onDraggingEndE += OnDragEnd;
+		Gesture.onDraggingEndE -= OnDragEnd;
 	}
 	
 	
@@ -66,7 +70,7 @@ public class Carousel : MonoBehaviour {
 	
 	void OnDrag(DragInfo di) {
 		if (dragging) {
-			if (vertical) transform.RotateAroundLocal(new Vector3(1,0,0), -di.delta.y/100);
+			if (vertical) transform.RotateAroundLocal(new Vector3(1,0,0), di.delta.y/100);
 			else transform.RotateAroundLocal(new Vector3(0,1,0), -di.delta.x/100);
 		}
 		else {
@@ -78,8 +82,8 @@ public class Carousel : MonoBehaviour {
 		if (dragging) {
 			// snap to nearest portrait
 			float absRotation;
-			if (vertical) absRotation = transform.rotation.eulerAngles.x;
-			else absRotation = transform.rotation.eulerAngles.y;
+			if (vertical) absRotation = transform.rotation.eulerAngles.x-inheritedRotation.x;
+			else absRotation = transform.rotation.eulerAngles.y-inheritedRotation.y;
 			
 			if (absRotation < 0) absRotation += 360;
 			
@@ -92,8 +96,8 @@ public class Carousel : MonoBehaviour {
 			// 226-315 = 270
 			else if (absRotation >= 225 && absRotation <= 315) absRotation = 270;
 			
-			if (vertical) transform.rotation = Quaternion.Euler(absRotation,transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z);
-			else transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,absRotation,transform.rotation.eulerAngles.z);
+			if (vertical) transform.rotation = Quaternion.Euler(absRotation+inheritedRotation.x,transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z);
+			else transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,absRotation+inheritedRotation.y,transform.rotation.eulerAngles.z);
 		
 			SetSelectedItem();
 			dragging = false;
