@@ -6,6 +6,7 @@ public class Carousel : MonoBehaviour {
 	int numberOfSlots = 4;
 	public bool vertical = true;
 	public Transform[] items;
+	public bool fullScreen = false;
 	
 	bool dragging = false;
 	
@@ -42,6 +43,16 @@ public class Carousel : MonoBehaviour {
 	
 	
 	void OnTouch(Vector2 touchPos) {
+		if (fullScreen) {
+			if (vertical) {
+				touchPos.y = transform.position.y+Screen.height/2;
+			}
+			else {
+				touchPos.x = transform.position.x+Screen.width/2;
+			}
+		}
+		
+		
 		Ray ray = Camera.main.ScreenPointToRay(touchPos);
 		RaycastHit[] hits = Physics.RaycastAll(ray);
 		
@@ -57,6 +68,9 @@ public class Carousel : MonoBehaviour {
 		if (dragging) {
 			if (vertical) transform.RotateAroundLocal(new Vector3(1,0,0), -di.delta.y/100);
 			else transform.RotateAroundLocal(new Vector3(0,1,0), -di.delta.x/100);
+		}
+		else {
+			OnTouch(di.pos);
 		}
 	}
 	
@@ -80,10 +94,10 @@ public class Carousel : MonoBehaviour {
 			
 			if (vertical) transform.rotation = Quaternion.Euler(absRotation,transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z);
 			else transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,absRotation,transform.rotation.eulerAngles.z);
-		}
 		
-		SetSelectedItem();
-		dragging = false;
+			SetSelectedItem();
+			dragging = false;
+		}
 	}
 	
 	void SetSelectedItem() {
@@ -102,5 +116,10 @@ public class Carousel : MonoBehaviour {
 		}
 		
 		selectedItem = result;
+	}
+	
+	public void RotateTo(float angle) {
+		if (vertical) transform.rotation = Quaternion.Euler(angle,transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z);
+		else transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,angle,transform.rotation.eulerAngles.z);
 	}
 }

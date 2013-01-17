@@ -102,23 +102,19 @@ public class InventoryLoader : MonoBehaviour {
 						go = Instantiate(Resources.Load("Prefabs/Loadout Characters/"+s+"Locked")) as GameObject;
 						
 						go.transform.position = c.items[i].position;
-						print (go.transform.localScale);
 						go.transform.localScale = c.items[i].localScale;
-						print (go.transform.localScale);
 						
 						Destroy(c.items[i].GetChild(0).gameObject);
 						go.transform.GetChild(0).parent = c.items[i];
 						Destroy(go);
 						
 						c.items[i].name = s+"Locked";
-						//p.AddItem(go.transform, false);
 					}
-					
-					//go.transform.parent = transform;
 				}
 				
 				i++;
 			}
+			c.RotateTo(270);
 		}
 		
 	}
