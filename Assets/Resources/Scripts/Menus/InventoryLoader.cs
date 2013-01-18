@@ -3,51 +3,16 @@ using System.Collections;
 
 public class InventoryLoader : MonoBehaviour {
 	// Add this to the parent of inventory panels that require loading on startup
+	LoadoutManager manager;
 	
-	void Start() {
-		LoadoutManager manager = transform.GetComponent<LoadoutManager>();
-		
-		//InventoryPanel[] panels = transform.GetComponentsInChildren<InventoryPanel>();
+	void Awake() {		
+		manager = transform.GetComponent<LoadoutManager>();
 		
 		InventoryPanel p = null;
 		Carousel c = null;
 		
 		if (manager.inventory != null) p = manager.inventory;
 		if (manager.roster != null) c = manager.roster;
-		
-//		foreach (InventoryPanel p in panels) {
-//			if (p == manager.roster) {
-//				// Available Characters
-//				string[] roster = SavedData.Characters.Split(SavedData.Separator[0]);
-//				string[] unlocks = SavedData.UnlockedCharacters.Split(SavedData.Separator[0]);
-//				
-//				GameObject go;
-//				
-//				foreach (string s in roster) {
-//					if (s != "") {
-//						bool unlocked = false;
-//						
-//						foreach (string t in unlocks) {
-//							if (t == s) {
-//								unlocked = true;
-//								break;
-//							}
-//						}
-//						
-//						// Load locked/unlocked textures
-//						if (unlocked) {
-//							go = Instantiate(Resources.Load("Prefabs/Loadout Characters/"+s)) as GameObject;
-//							p.AddItem(go.transform);
-//						}
-//						else {
-//							go = Instantiate(Resources.Load("Prefabs/Loadout Characters/"+s+"Locked")) as GameObject;
-//							p.AddItem(go.transform, false);
-//						}
-//						
-//						go.transform.parent = transform;
-//					}
-//				}
-//			}				
 			
 		if (p != null) {
 			// Inventory
@@ -88,37 +53,67 @@ public class InventoryLoader : MonoBehaviour {
 					// Load locked/unlocked textures
 					if (unlocked) {
 						go = Instantiate(Resources.Load("Prefabs/Loadout Characters/"+s)) as GameObject;
-						
-						go.transform.position = c.items[i].position;
-						go.transform.localScale = c.items[i].localScale;
-						go.transform.rotation = c.items[i].rotation;
-						
-						Destroy(c.items[i].GetChild(0).gameObject);
-						go.transform.GetChild(0).parent = c.items[i];
-						Destroy(go);
-						
 						c.items[i].name = s;
-						//p.AddItem(go.transform);
 					}
 					else {
 						go = Instantiate(Resources.Load("Prefabs/Loadout Characters/"+s+"Locked")) as GameObject;
-						
-						go.transform.position = c.items[i].position;
-						go.transform.localScale = c.items[i].localScale;
-						go.transform.rotation = c.items[i].rotation;
-						
-						Destroy(c.items[i].GetChild(0).gameObject);
-						go.transform.GetChild(0).parent = c.items[i];
-						Destroy(go);
-						
 						c.items[i].name = s+"Locked";
 					}
+					
+					print (go.transform.GetChild(0).name+" "+go.transform.GetChild(0).localScale);
+					
+					go.transform.parent = transform;
+
+					go.transform.localScale = c.items[i].localScale;
+					go.transform.position = c.items[i].position;
+					go.transform.rotation = c.items[i].rotation;
+					
+					Destroy(c.items[i].GetChild(0).gameObject);
+					go.transform.GetChild(0).parent = c.items[i];
+					Destroy(go);
 				}
 				
 				i++;
 			}
-			c.RotateTo(270);
+			
+			
+			
+			
+			//UpdateRoster();
+			c.RotateTo(270);			
 		}
 		
+		if (manager.roster != null) {
+				foreach (Transform item in manager.roster.items) {
+					print (item.name+" "+item.GetChild(0).localScale);
+				}
+			}
+		
+		
+	}
+	
+	void UpdateRoster() {
+		if (manager.roster != null) {
+			foreach (Transform item in manager.roster.items) {
+				print (item.name+" SCALE");
+				item.GetChild(0).localScale = new Vector3(1,1,1);
+				
+				item.GetChild(0).localPosition = new Vector3(0,0,0);
+			}
+		}
+	}
+	
+	void Update() {
+		if (manager.roster != null) {
+			foreach (Transform item in manager.roster.items) {
+//				print (item.name+" "+item.GetChild(0).localScale+", "+item.GetChild(0).localPosition);
+//				
+//				item.GetChild(0).localScale = new Vector3(1,1,1);
+//				
+//				item.GetChild(0).localPosition = new Vector3(0,0,0);
+				
+				print (item.name+" "+item.GetChild(0).localScale+", "+item.GetChild(0).localPosition);
+			}
+		}
 	}
 }
