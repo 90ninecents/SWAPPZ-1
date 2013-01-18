@@ -199,12 +199,7 @@ public class PlayerController : MonoBehaviour {
 			
 
 			
-			// Check for object to be hit by attack 
-//			Ray ray = new Ray(new Vector3(transform.position.x, transform.position.y+25, transform.position.z), transform.forward);
-//			RaycastHit hit;
-			
-			//Vector3.Angle(transform.forward, toEnemy);
-			
+			// Check for object to be hit by attack			
 			Collider[] collisions = Physics.OverlapSphere(transform.position, attackRadius*sizeModifier);
 			
 			Vector3 toEnemy;
@@ -241,48 +236,6 @@ public class PlayerController : MonoBehaviour {
 					Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
 				}
 			}
-			
-			//if (rigidbody.SweepTest(transform.forward, out hit, attackRadius*sizeModifier)) {
-//			if (Physics.Raycast(ray, out hit, attackRadius*sizeModifier)) {
-//				EnemyController enemy = hit.collider.transform.GetComponent<EnemyController>();
-//				BreakableObject obj = hit.collider.transform.GetComponent<BreakableObject>();
-//				
-//				// If enemy hit:
-//				if (enemy != null) {
-//					enemy.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), transform);
-//					// Get XP on hit
-//					if (xp < xpTNL) ReceiveXP(enemy.xpGain);
-//				}
-//				// If breakable object hit:
-//				else if (obj != null) {
-//					obj.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier));
-//				}
-//				
-//				if (enemy!=null || obj!=null) {
-//					if (enemy != null) Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), enemy.transform);
-//					else Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), obj.transform);
-//					
-//					AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
-//				}
-//				else {
-//					AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
-//				}
-//			}
-//			else {
-//				AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), AudioManager.UnusedChannel);
-//			}
-//			
-//			if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
-//			
-//			cooling = true;
-//			Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber-1]*speedModifier);
-//			
-//			if (attackNumber == 2) {
-//				if (boidComponent.maxSpeed > 0) {
-//					dashing = true;
-//					Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
-//				}
-//			}
 
 		}
 	}
@@ -364,20 +317,19 @@ public class PlayerController : MonoBehaviour {
 	public void TakeDamage(int damage) {
 		if (!invincible && health > 0) {
 			health -= Mathf.RoundToInt(damage-(armor*armorModifier));
-			//if (anim.IsPlaying("idle_"+playerName)) {
-				GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 0"+Random.Range(1,3)+" Particle System")) as GameObject;
-				particle.transform.position = transform.position+new Vector3(0,40,0);
-				Destroy(particle, 1.0f);
-				
-				if (!anim.IsPlaying("run_"+playerName)) anim.CrossFadeQueued("hit_"+playerName, 0.05f, QueueMode.PlayNow);
-			//}
+			
+			GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 0"+Random.Range(1,3)+" Particle System")) as GameObject;
+			particle.transform.position = transform.position+new Vector3(0,40,0);
+			Destroy(particle, 1.0f);
+			
+			if (!anim.IsPlaying("run_"+playerName)) anim.CrossFadeQueued("hit_"+playerName, 0.05f, QueueMode.PlayNow);
+			
 			
 			if (health <= 0) {
 				// trigger game over
 				CancelInvoke("HealthTick");
 				health = 0;				
 				
-				transform.GetChild(0).localPosition = new Vector3(0,24.0f,0);
 				anim.CrossFadeQueued("death_"+playerName, 0.05f, QueueMode.PlayNow);
 				Game.PacifyEnemies();
 				Invoke("EndGame", 2.5f);

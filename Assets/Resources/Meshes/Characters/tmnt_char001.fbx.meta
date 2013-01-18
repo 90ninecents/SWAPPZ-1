@@ -7,6 +7,15 @@ ModelImporter:
     4300004: tmnt_wep_001_2
     7400000: Take 001 //// tmnt_char001
     7400002: death_Leonardo //// tmnt_char001
+    7400004: test_Leo //// tmnt_char001
+    7400006: idle_Leonardo //// tmnt_char001
+    7400008: startRun_Leonardo //// tmnt_char001
+    7400010: run_Leonardo //// tmnt_char001
+    7400012: stopRun_Leonardo //// tmnt_char001
+    7400014: hit_Leonardo //// tmnt_char001
+    7400016: attack1_Leonardo //// tmnt_char001
+    7400018: attack2_Leonardo //// tmnt_char001
+    7400020: attack3_Leonardo //// tmnt_char001
   serializedVersion: 10
   materials:
     importMaterials: 1
@@ -25,6 +34,46 @@ ModelImporter:
     - name: death_Leonardo
       firstFrame: 100
       lastFrame: 130
+      wrapMode: 0
+      loop: 0
+    - name: idle_Leonardo
+      firstFrame: 0
+      lastFrame: 16
+      wrapMode: 0
+      loop: 0
+    - name: startRun_Leonardo
+      firstFrame: 51
+      lastFrame: 55
+      wrapMode: 0
+      loop: 0
+    - name: run_Leonardo
+      firstFrame: 56
+      lastFrame: 65
+      wrapMode: 0
+      loop: 0
+    - name: stopRun_Leonardo
+      firstFrame: 66
+      lastFrame: 70
+      wrapMode: 0
+      loop: 0
+    - name: hit_Leonardo
+      firstFrame: 71
+      lastFrame: 85
+      wrapMode: 0
+      loop: 0
+    - name: attack1_Leonardo
+      firstFrame: 20
+      lastFrame: 28
+      wrapMode: 0
+      loop: 0
+    - name: attack2_Leonardo
+      firstFrame: 29
+      lastFrame: 37
+      wrapMode: 0
+      loop: 0
+    - name: attack3_Leonardo
+      firstFrame: 38
+      lastFrame: 46
       wrapMode: 0
       loop: 0
   meshes:
