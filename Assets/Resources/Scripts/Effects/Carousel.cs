@@ -104,6 +104,12 @@ public class Carousel : MonoBehaviour {
 		}
 	}
 	
+	public void Reset() {
+		dragging = true;
+		OnDragEnd(new Vector2(0,0));
+		dragging = false;
+	}
+	
 	void SetSelectedItem() {
 		// find currently centered item
 		// defined as the item closest to the camera on the z-axis

@@ -29,7 +29,9 @@ public class LoadoutManager : MonoBehaviour {
 		}
 		
 		if (roster != null) {
-			SavedData.CharacterLoadout = roster.SelectedItem.name;
+			if (roster.SelectedItem.name.Substring(roster.SelectedItem.name.Length-6, 6) != "Locked") {
+				SavedData.CharacterLoadout = roster.SelectedItem.name;
+			}
 		}
 		
 		PowerupSpawner.loadoutChange = true;

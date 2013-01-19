@@ -63,57 +63,21 @@ public class InventoryLoader : MonoBehaviour {
 					print (go.transform.GetChild(0).name+" "+go.transform.GetChild(0).localScale);
 					
 					go.transform.parent = transform;
-
+					
 					go.transform.localScale = c.items[i].localScale;
 					go.transform.position = c.items[i].position;
 					go.transform.rotation = c.items[i].rotation;
 					
 					Destroy(c.items[i].GetChild(0).gameObject);
 					go.transform.GetChild(0).parent = c.items[i];
+					
 					Destroy(go);
 				}
 				
 				i++;
 			}
-			
-			
-			
-			
-			//UpdateRoster();
-			c.RotateTo(270);			
-		}
-		
-		if (manager.roster != null) {
-				foreach (Transform item in manager.roster.items) {
-					print (item.name+" "+item.GetChild(0).localScale);
-				}
-			}
-		
-		
-	}
-	
-	void UpdateRoster() {
-		if (manager.roster != null) {
-			foreach (Transform item in manager.roster.items) {
-				print (item.name+" SCALE");
-				item.GetChild(0).localScale = new Vector3(1,1,1);
-				
-				item.GetChild(0).localPosition = new Vector3(0,0,0);
-			}
-		}
-	}
-	
-	void Update() {
-		if (manager.roster != null) {
-			foreach (Transform item in manager.roster.items) {
-//				print (item.name+" "+item.GetChild(0).localScale+", "+item.GetChild(0).localPosition);
-//				
-//				item.GetChild(0).localScale = new Vector3(1,1,1);
-//				
-//				item.GetChild(0).localPosition = new Vector3(0,0,0);
-				
-				print (item.name+" "+item.GetChild(0).localScale+", "+item.GetChild(0).localPosition);
-			}
+			c.RotateTo(270);
+			c.Reset();
 		}
 	}
 }
