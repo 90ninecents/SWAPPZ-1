@@ -13,7 +13,8 @@ public class LoadoutManager : MonoBehaviour {
 	void OnEnable() {		
 		if (roster != null && GameObject.Find ("BtnNext") != null) {
 			btnAccept = GameObject.Find ("BtnNext").transform.guiTexture;
-			btnAccept.enabled = false;
+			//btnAccept.enabled = false;
+			roster.Reset();
 		}
 		if (inventory != null) {
 			Gesture.onTouchUpE += CheckHighlights;
@@ -39,21 +40,12 @@ public class LoadoutManager : MonoBehaviour {
 		Gesture.onTouchUpE -= CheckHighlights;
 	}
 		
-	void Update() {		
+	void Update() {
 		if (roster != null && btnAccept != null) {
-			
 			if (roster.SelectedItem.name.Substring(roster.SelectedItem.name.Length-6, 6) != "Locked") {
 				btnAccept.enabled = true;
 			}
 			else btnAccept.enabled = false;
-//			btnAccept.enabled = false;
-//			
-//			foreach (Transform t in roster.SelectedItems) {
-//				if (t != null) {
-//					btnAccept.enabled = true;
-//					break;
-//				}
-//			}
 		}
 	}
 	

@@ -60,8 +60,6 @@ public class InventoryLoader : MonoBehaviour {
 						c.items[i].name = s+"Locked";
 					}
 					
-					print (go.transform.GetChild(0).name+" "+go.transform.GetChild(0).localScale);
-					
 					go.transform.parent = transform;
 					
 					go.transform.localScale = c.items[i].localScale;

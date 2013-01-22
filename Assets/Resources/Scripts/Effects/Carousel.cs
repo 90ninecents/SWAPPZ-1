@@ -28,15 +28,13 @@ public class Carousel : MonoBehaviour {
 			}
 		}
 		
-		selectedItem = items[0];
+		inheritedRotation = transform.rotation.eulerAngles;
 	}
 	
 	void OnEnable() {
 		Gesture.onTouchDownE += OnTouch;
 		Gesture.onDraggingE += OnDrag;
 		Gesture.onDraggingEndE += OnDragEnd;
-		
-		inheritedRotation = transform.rotation.eulerAngles;
 	}
 	
 	void OnDisable() {
@@ -48,12 +46,7 @@ public class Carousel : MonoBehaviour {
 	
 	void OnTouch(Vector2 touchPos) {
 		if (fullScreen) {
-			if (vertical) {
-				touchPos.y = transform.position.y+Screen.height/2;
-			}
-			else {
-				touchPos.x = transform.position.x+Screen.width/2;
-			}
+			touchPos.x = transform.position.x+Screen.width/2;
 		}
 		
 		
@@ -70,8 +63,7 @@ public class Carousel : MonoBehaviour {
 	
 	void OnDrag(DragInfo di) {
 		if (dragging) {
-			if (vertical) transform.RotateAroundLocal(new Vector3(1,0,0), di.delta.y/100);
-			else transform.RotateAroundLocal(new Vector3(0,1,0), -di.delta.x/100);
+			transform.RotateAroundLocal(new Vector3(0,1,0), -di.delta.x/100);
 		}
 		else {
 			OnTouch(di.pos);
@@ -81,9 +73,7 @@ public class Carousel : MonoBehaviour {
 	void OnDragEnd(Vector2 touchPos) {
 		if (dragging) {
 			// snap to nearest portrait
-			float absRotation;
-			if (vertical) absRotation = transform.rotation.eulerAngles.x-inheritedRotation.x;
-			else absRotation = transform.rotation.eulerAngles.y-inheritedRotation.y;
+			float absRotation = transform.rotation.eulerAngles.y-inheritedRotation.y;
 			
 			if (absRotation < 0) absRotation += 360;
 			
@@ -96,9 +86,9 @@ public class Carousel : MonoBehaviour {
 			// 226-315 = 270
 			else if (absRotation >= 225 && absRotation <= 315) absRotation = 270;
 			
-			if (vertical) transform.rotation = Quaternion.Euler(absRotation+inheritedRotation.x,transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z);
-			else transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,absRotation+inheritedRotation.y,transform.rotation.eulerAngles.z);
-		
+			//transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,absRotation+inheritedRotation.y,transform.rotation.eulerAngles.z);
+			RotateTo(absRotation);
+			
 			SetSelectedItem();
 			dragging = false;
 		}
@@ -107,7 +97,6 @@ public class Carousel : MonoBehaviour {
 	public void Reset() {
 		dragging = true;
 		OnDragEnd(new Vector2(0,0));
-		dragging = false;
 	}
 	
 	void SetSelectedItem() {
@@ -119,9 +108,9 @@ public class Carousel : MonoBehaviour {
 		float closestDistance = 0;
 		
 		foreach (Transform t in items) {
-			if (t.position.z-Camera.main.transform.position.z < closestDistance|| closestDistance == 0) {
+			if (Mathf.Abs(t.position.z-Camera.main.transform.position.z) < closestDistance|| closestDistance == 0) {
 				result = t;
-				closestDistance = t.position.z-Camera.main.transform.position.z;
+				closestDistance = Mathf.Abs (t.position.z-Camera.main.transform.position.z);
 			}
 		}
 		
@@ -129,7 +118,8 @@ public class Carousel : MonoBehaviour {
 	}
 	
 	public void RotateTo(float angle) {
-		if (vertical) transform.rotation = Quaternion.Euler(angle,transform.rotation.eulerAngles.y,transform.rotation.eulerAngles.z);
-		else transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,angle,transform.rotation.eulerAngles.z);
+		transform.Rotate(Vector3.up, angle-transform.localEulerAngles.y, Space.Self);
+		//transform.Rotate(transform.up, angle, Space.World);
+		//transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,angle,transform.rotation.eulerAngles.z);
 	}
 }
