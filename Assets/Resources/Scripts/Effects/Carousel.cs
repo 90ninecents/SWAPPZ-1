@@ -119,6 +119,7 @@ public class Carousel : MonoBehaviour {
 	
 	public void RotateTo(float angle) {
 		transform.Rotate(Vector3.up, angle-transform.localEulerAngles.y, Space.Self);
+		Invoke("SetSelectedItem", 0.05f);
 		//transform.Rotate(transform.up, angle, Space.World);
 		//transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x,angle,transform.rotation.eulerAngles.z);
 	}
