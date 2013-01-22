@@ -18,12 +18,14 @@ public class Game : MonoBehaviour {
 	public int enemyKillsPerCoin = 5;
 	
 	public float timeBetweenWaves = 5;
+	
 	// -----
 	PlayerController player;
 	Joystick joystick;
 	DamageCounter damageCounter;
 	
 	bool won = false;
+	int score = 0;
 	// -----
 	
 	static List<GameObject> availablePowerups;
@@ -46,6 +48,8 @@ public class Game : MonoBehaviour {
 	public static float TimeBetweenWaves { get { return instance.timeBetweenWaves; } }
 	public static int LevelTimeInSeconds { get { return instance.levelTimeInSeconds; } }
 	public static bool LastLevelWon { get { return instance.won; } }
+	public static int Score { get { return instance.score; } 
+							  set { instance.score = value; } }
 	
 	// Use this for initialization
 	void Awake () {

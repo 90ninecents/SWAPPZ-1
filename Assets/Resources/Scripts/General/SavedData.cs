@@ -20,6 +20,7 @@ public class SavedData {
 	private static string levelCoins = "LevelCoins";
 	private static string levelKills = "LevelKills";
 	private static string levelTime = "LevelTime";
+	private static string levelScore = "LevelScore";
 	
 	private static string totalCoins = "TotalCoins";
 	
@@ -84,6 +85,11 @@ public class SavedData {
 	public static int LevelTime {
 		get { return PlayerPrefs.GetInt(SavedData.levelTime); }
 		set { PlayerPrefs.SetInt(SavedData.levelTime, value); }
+	}
+	
+	public static int LevelScore {
+		get { return PlayerPrefs.GetInt(SavedData.levelScore); }
+		set { PlayerPrefs.SetInt(SavedData.levelScore, value); }
 	}
 	
 	public static void ClearData() {

@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour {
 	protected SeparationBehaviour separationComponent;
 	
 	public int xpGain = 100;
+	public int score = 100;
 	protected bool cooling = false;
 	protected bool stunned = false;
 	protected bool passive = false;
@@ -114,10 +115,10 @@ public class EnemyController : MonoBehaviour {
 	
 	public void TakeDamage(int damage, Transform attacker) {
 		if (health > 0) {
-			if (attacker != arrivalComponent.targetObject) {
-				arrivalComponent.targetObject = attacker;
-				//Debug.Log ("switch");
-			}
+//			if (attacker != arrivalComponent.targetObject) {
+//				arrivalComponent.targetObject = attacker;
+//				Debug.Log ("switch");
+//			}
 			
 			health -= damage;
 			anim.CrossFadeQueued("hit_"+enemyName, 0/*.05f*/,QueueMode.PlayNow);
@@ -127,6 +128,7 @@ public class EnemyController : MonoBehaviour {
 			
 			if (health <= 0) {
 				Game.EnemiesKilled++;
+				Game.Score += score;
 				
 				if (Game.SpawnCoin()) {
 					GameObject coin = Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;

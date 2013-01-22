@@ -11,6 +11,7 @@ public class StatsManager : MonoBehaviour {
 		coinCounter.text = ""+Game.Coins;
 		killCounter.text = ""+Game.EnemiesKilled;
 		timeCounter.text = FormatTime(Game.LevelTimeInSeconds);
+		scoreCounter.text = CalculateScore();
 		
 		if (Game.LastLevelWon) AudioManager.PlayAudio("Win", "Background");
 		else AudioManager.PlayAudio("Lose", "Background");
@@ -30,5 +31,11 @@ public class StatsManager : MonoBehaviour {
 		result +=seconds;
 		
 		return result;
+	}
+	
+	string CalculateScore() {
+		// Score from enemies killed, coins collected, and time in seconds
+		int result = Game.Score + (Game.Coins*10) - Game.LevelTimeInSeconds;
+		return ""+result;
 	}
 }
