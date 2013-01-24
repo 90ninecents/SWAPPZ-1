@@ -8,9 +8,7 @@ public class Game : MonoBehaviour {
 	
 	// DO NOT make these fields static - static fields can't be set in the inspector
 	Transform playerObject;
-	public Transform joystickObject;
 	public Transform enemyGroupObject;
-	public Transform touchTracker;
 	public Transform playerGroupObject;
 	public Transform damageCounterObject;
 	
@@ -21,7 +19,6 @@ public class Game : MonoBehaviour {
 	
 	// -----
 	PlayerController player;
-	Joystick joystick;
 	DamageCounter damageCounter;
 	
 	bool won = false;
@@ -36,10 +33,10 @@ public class Game : MonoBehaviour {
 	int enemiesKilled = 0;
 	int levelTimeInSeconds = 0;		// Measures time taken to complete level
 	
+	bool swiping = false;
+	
 	public static PlayerController Player { get { return instance.player; } }
-	public static Joystick Joystick { get { return instance.joystick; } }
 	public static Transform EnemyGroup { get { return instance.enemyGroupObject; } }
-	public static Transform TouchTracker { get { return instance.touchTracker; } }
 	public static Transform PlayerGroup { get { return instance.playerGroupObject; } }
 	public static int Coins { get { return instance.coins; } 
 							  set { instance.coins = value; } }
@@ -93,7 +90,7 @@ public class Game : MonoBehaviour {
 		powerupSpawners = gameObject.GetComponentsInChildren<PowerupSpawner>();
 		
 		player = playerObject.GetComponent<PlayerController>();
-		joystick = joystickObject.GetComponent<Joystick>();
+		player.ArrivalTouch.targetPoint = playerObject.position;
 		if (damageCounterObject != null) damageCounter = damageCounterObject.GetComponent<DamageCounter>();
 		
 		// Start counters
@@ -109,36 +106,43 @@ public class Game : MonoBehaviour {
 	}
 	
 	void OnEnable() {
-		Gesture.onTouchDownE += OnTouch;
+		Gesture.onTouchUpE += OnTouchUp;
+		Gesture.onSwipeE += OnSwipe;
 		// Unpause
 		Time.timeScale = 1.0f;
 	}
 	
 	void OnDisable() {
-		Gesture.onTouchDownE -= OnTouch;
+		Gesture.onTouchUpE -= OnTouchUp;
+		Gesture.onSwipeE -= OnSwipe;
 	}
 	
-	void OnTouch(Vector2 touchPos) {
-		
-		bool exit = false;
-		foreach (GUITexture tex in uiList) {
-			if (tex.GetScreenRect().Contains(touchPos)) {
-				exit = true;
-				break;
+	void OnSwipe(SwipeInfo si) {
+		swiping = true;
+		player.ExecuteAttack(1);
+		player.ArrivalTouch.targetPoint = playerObject.position;
+	}
+	
+	void OnTouchUp(Vector2 touchPos) {
+		if (!swiping) {
+			bool exit = false;
+			foreach (GUITexture tex in uiList) {
+				if (tex.enabled && tex.GetScreenRect().Contains(touchPos)) {
+					exit = true;
+					break;
+				}
 			}
-		}
-		
-		if (!exit) {
-			Ray ray = Camera.main.ScreenPointToRay(touchPos);
-			RaycastHit hit;
 			
-			if (Physics.Raycast(ray, out hit, 1000)) {
-				if (hit.transform.GetComponent<PlayerController>() != null) {
-					SwitchPlayer(hit.transform.gameObject);
+			if (!exit) {
+				Ray ray = Camera.main.ScreenPointToRay(touchPos);
+				RaycastHit hit;
+				
+				if (Physics.Raycast(ray, out hit, 1000/*, 1 << 13*/)) {
+					player.ArrivalTouch.targetPoint = hit.point;
 				}
 			}
 		}
-		
+		swiping = false;
 	}
 	
 	public static void DestroyEnemies(float radius = 0.0f) {
@@ -216,9 +220,9 @@ public class Game : MonoBehaviour {
 		playerObject = go.transform;
 		playerObject.localPosition = newPos+new Vector3(0,100,0);
 		
-		Boid b = playerObject.GetComponent<Boid>();
-		b.GetBehaviour("ToTracker").SetWeight(1);
-		(b.GetBehaviour("ToTracker") as ArrivalBehaviour).targetObject = touchTracker;
+//		Boid b = playerObject.GetComponent<Boid>();
+//		b.GetBehaviour("ToTracker").SetWeight(1);
+//		(b.GetBehaviour("ToTracker") as ArrivalBehaviour).targetObject = touchTracker;
 		
 		// Disable companion AI
 		playerObject.GetComponent<CompanionController>().enabled = false;
@@ -230,7 +234,7 @@ public class Game : MonoBehaviour {
 		player.Health = (int)(player.healthMax*prevHealth);
 		
 		// Update touch tracker
-		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);
+//		touchTracker.position = new Vector3(playerObject.position.x, touchTracker.position.y, playerObject.position.z);
 		
 		if (damageCounterObject != null) {
 			damageCounterObject.position = new Vector3(0,damageCounterObject.position.y,0);

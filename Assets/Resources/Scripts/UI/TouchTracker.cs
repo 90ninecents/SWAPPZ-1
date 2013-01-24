@@ -12,7 +12,7 @@ public class TouchTracker : MonoBehaviour {
 	}
 	
 	void FixedUpdate() {
-		transform.position -= Game.Joystick.GetDrive()*maxOffset;
+//		transform.position -= Game.Joystick.GetDrive()*maxOffset;
 		
 		Vector3 diff = (transform.position-Game.Player.transform.position);
 		

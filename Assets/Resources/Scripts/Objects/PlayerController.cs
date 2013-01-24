@@ -68,7 +68,12 @@ public class PlayerController : MonoBehaviour {
 	public int FrameCount { get { return frameCount; }
 							set { frameCount = value; } }
 	
-	void Awake() {		
+	public ArrivalBehaviour ArrivalTouch { get { return (boidComponent.GetBehaviour("ToTracker")) as ArrivalBehaviour; } }
+	public ArrivalBehaviour ArrivalEnemy { get { return (boidComponent.GetBehaviour("ToEnemy")) as ArrivalBehaviour; } }
+	
+	void Awake() {
+		boidComponent = gameObject.GetComponent<Boid>();
+		
 		health = healthMax;
 		anim = transform.GetComponentInChildren<Animation>();
 		
@@ -96,7 +101,7 @@ public class PlayerController : MonoBehaviour {
 		boidComponent.GetBehaviour("ToTracker").SetWeight(1);
 		boidComponent.GetBehaviour("ObstacleAvoidance").SetWeight(0);
 		
-		transform.GetComponent<ArrivalBehaviour>().targetObject = Game.TouchTracker;
+		//transform.GetComponent<ArrivalBehaviour>().targetObject = Game.TouchTracker;
 		
 		boidComponent.Speed = boidComponent.maxSpeed;
 		
@@ -106,17 +111,17 @@ public class PlayerController : MonoBehaviour {
 	void Update() {
 		if (health > 0) {
 			if (dashing) {
-				Game.TouchTracker.position += transform.forward*5f;
+				//Game.TouchTracker.position += transform.forward*5f;
 				transform.position += transform.forward*5f;
 			}
 			else {
-				if (!anim.IsPlaying("attack1_"+playerName) && !anim.IsPlaying("attack2_"+playerName) && !anim.IsPlaying("attack3_"+playerName)) boidComponent.Speed = (Game.Joystick.GetDrive().magnitude*boidComponent.maxSpeed)*speedModifier;
+				if (!anim.IsPlaying("attack1_"+playerName) && !anim.IsPlaying("attack2_"+playerName) && !anim.IsPlaying("attack3_"+playerName)) boidComponent.Speed = (boidComponent.maxSpeed)*speedModifier;
 				else boidComponent.Speed = 0;
 				
-				if (Game.Joystick.GetDrive() != Vector3.zero && !anim.IsPlaying("run_"+playerName)) {
+				if (ArrivalTouch.CalculateSteering(transform.position) != Vector3.zero && !anim.IsPlaying("run_"+playerName)) {
 					anim.CrossFadeQueued("run_"+playerName, 0.1f, QueueMode.PlayNow);
 				}
-				else if (Game.Joystick.GetDrive() == Vector3.zero && (anim.IsPlaying ("run_"+playerName) || !anim.isPlaying)) {
+				else if (ArrivalTouch.CalculateSteering(transform.position) == Vector3.zero && (anim.IsPlaying ("run_"+playerName) || !anim.isPlaying)) {
 					anim.CrossFadeQueued("idle_"+playerName,0.15f,QueueMode.CompleteOthers);
 				}
 				
