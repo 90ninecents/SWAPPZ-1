@@ -131,22 +131,18 @@ public class Gesture : MonoBehaviour {
 	}
 	
 	public static void LongTap(Vector2 pos){
-		//Debug.Log("long tap "+pos);
 		if(onLongTapE!=null) onLongTapE(pos);
 	}
 	
 	public static void DoubleTap(Vector2 pos){
-		//Debug.Log("Double tap "+pos);
 		if(onDoubleTapE!=null) onDoubleTapE(pos);
 	}
 	
 	public static void Charging(ChargedInfo cInfo){
-		//Debug.Log("charging "+chargePercent);
 		if(onChargingE!=null) onChargingE(cInfo);
 	}
 	
 	public static void ChargeEnd(ChargedInfo cInfo){
-		//Debug.Log("charge end "+cInfo.percent);
 		if(onChargeEndE!=null) onChargeEndE(cInfo);
 	}
 	
@@ -175,12 +171,11 @@ public class Gesture : MonoBehaviour {
 	
 	//Dual Finger dragging
 	public static void Dragging(DragInfo dragInfo){
-		//Debug.Log("dragging "+dir);
 		if(onDraggingE!=null) onDraggingE(dragInfo);
 	}
 	
 	public static void DualFingerDragging(DragInfo dragInfo){
-		//Debug.Log("DualFingerDrag "+dir);
+		Debug.Log("DualFingerDrag");
 		if(onDualFDraggingE!=null) onDualFDraggingE(dragInfo);
 	}
 	
@@ -189,25 +184,20 @@ public class Gesture : MonoBehaviour {
 	}
 	
 	public static void DualFingerDraggingEnd(Vector2 pos){
-		//Debug.Log("DualFingerDrag "+dir);
 		if(onDualFDraggingEndE!=null) onDualFDraggingEndE(pos);
 	}
 	
 
 	//special
 	public static void Swipe(SwipeInfo sw){
-		//Debug.Log("swipe start at "+"   "+pos);
 		if(onSwipeE!=null) onSwipeE(sw);
 	}
 
 	public static void Pinch(float val){
-		//Debug.Log("Pinch "+val);
 		if(onPinchE!=null) onPinchE(val);
 	}
 	
 	public static void Rotate(float val){
-		//if(val>0) Debug.Log("RotateCC "+val);
-		//else Debug.Log("RotateC "+val);
 		if(onRotateE!=null) onRotateE(val);
 	}
 	

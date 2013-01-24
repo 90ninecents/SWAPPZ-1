@@ -79,6 +79,33 @@ extern "C"
 	void	virtualButtonIsEnabled();
 	void	virtualButtonSetSensitivity();
 	void	virtualButtonSetAreaRectangle();
+	void	createMetaioSDKUnity();
+	void	deleteMetaioSDKUnity();
+	void	registerCallback();
+	void	setScreenRotation();
+	void	render();
+	void	setTrackingConfiguration();
+	void	setCameraParameters();
+	void	setRendererClippingPlaneLimits();
+	void	getFrameSize();
+	void	getCameraTextureSize();
+	void	getCameraPlaneScale();
+	void	getSensorGravity();
+	void	getLocation();
+	void	getProjectionMatrix();
+	void	getTrackingValues();
+	void	startSensors();
+	void	stopSensors();
+	void	pauseSensors();
+	void	resumeSensors();
+	void	setManualLocation();
+	void	resetManualLocation();
+	void	setCosOffset();
+	void	requestCameraImage();
+	void	startInstantTracking();
+	void	convertLLAToTranslation();
+	void	startCamera();
+	void	stopCamera();
 }
 void RegisterMonoModules()
 {
@@ -153,6 +180,33 @@ void RegisterMonoModules()
 	mono_dl_register_symbol("virtualButtonIsEnabled", (void*)&virtualButtonIsEnabled);
 	mono_dl_register_symbol("virtualButtonSetSensitivity", (void*)&virtualButtonSetSensitivity);
 	mono_dl_register_symbol("virtualButtonSetAreaRectangle", (void*)&virtualButtonSetAreaRectangle);
+	mono_dl_register_symbol("createMetaioSDKUnity", (void*)&createMetaioSDKUnity);
+	mono_dl_register_symbol("deleteMetaioSDKUnity", (void*)&deleteMetaioSDKUnity);
+	mono_dl_register_symbol("registerCallback", (void*)&registerCallback);
+	mono_dl_register_symbol("setScreenRotation", (void*)&setScreenRotation);
+	mono_dl_register_symbol("render", (void*)&render);
+	mono_dl_register_symbol("setTrackingConfiguration", (void*)&setTrackingConfiguration);
+	mono_dl_register_symbol("setCameraParameters", (void*)&setCameraParameters);
+	mono_dl_register_symbol("setRendererClippingPlaneLimits", (void*)&setRendererClippingPlaneLimits);
+	mono_dl_register_symbol("getFrameSize", (void*)&getFrameSize);
+	mono_dl_register_symbol("getCameraTextureSize", (void*)&getCameraTextureSize);
+	mono_dl_register_symbol("getCameraPlaneScale", (void*)&getCameraPlaneScale);
+	mono_dl_register_symbol("getSensorGravity", (void*)&getSensorGravity);
+	mono_dl_register_symbol("getLocation", (void*)&getLocation);
+	mono_dl_register_symbol("getProjectionMatrix", (void*)&getProjectionMatrix);
+	mono_dl_register_symbol("getTrackingValues", (void*)&getTrackingValues);
+	mono_dl_register_symbol("startSensors", (void*)&startSensors);
+	mono_dl_register_symbol("stopSensors", (void*)&stopSensors);
+	mono_dl_register_symbol("pauseSensors", (void*)&pauseSensors);
+	mono_dl_register_symbol("resumeSensors", (void*)&resumeSensors);
+	mono_dl_register_symbol("setManualLocation", (void*)&setManualLocation);
+	mono_dl_register_symbol("resetManualLocation", (void*)&resetManualLocation);
+	mono_dl_register_symbol("setCosOffset", (void*)&setCosOffset);
+	mono_dl_register_symbol("requestCameraImage", (void*)&requestCameraImage);
+	mono_dl_register_symbol("startInstantTracking", (void*)&startInstantTracking);
+	mono_dl_register_symbol("convertLLAToTranslation", (void*)&convertLLAToTranslation);
+	mono_dl_register_symbol("startCamera", (void*)&startCamera);
+	mono_dl_register_symbol("stopCamera", (void*)&stopCamera);
 #endif // !(TARGET_IPHONE_SIMULATOR)
 }
 
@@ -366,6 +420,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Camera_get_farClipPlane ();
 	void Register_UnityEngine_Camera_set_farClipPlane ();
 	Register_UnityEngine_Camera_set_farClipPlane ();
+	void Register_UnityEngine_Camera_get_orthographicSize ();
+	Register_UnityEngine_Camera_get_orthographicSize ();
 	void Register_UnityEngine_Camera_set_orthographicSize ();
 	Register_UnityEngine_Camera_set_orthographicSize ();
 	void Register_UnityEngine_Camera_get_orthographic ();
@@ -386,6 +442,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Camera_get_pixelWidth ();
 	void Register_UnityEngine_Camera_get_pixelHeight ();
 	Register_UnityEngine_Camera_get_pixelHeight ();
+	void Register_UnityEngine_Camera_INTERNAL_get_projectionMatrix ();
+	Register_UnityEngine_Camera_INTERNAL_get_projectionMatrix ();
 	void Register_UnityEngine_Camera_INTERNAL_set_projectionMatrix ();
 	Register_UnityEngine_Camera_INTERNAL_set_projectionMatrix ();
 	void Register_UnityEngine_Camera_get_clearFlags ();
@@ -668,6 +726,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_iPhoneKeyboard_Destroy ();
 	void Register_UnityEngine_Material_get_shader ();
 	Register_UnityEngine_Material_get_shader ();
+	void Register_UnityEngine_Material_set_shader ();
+	Register_UnityEngine_Material_set_shader ();
 	void Register_UnityEngine_Material_INTERNAL_CALL_SetColor ();
 	Register_UnityEngine_Material_INTERNAL_CALL_SetColor ();
 	void Register_UnityEngine_Material_GetColor ();
@@ -862,6 +922,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_RenderTexture_Internal_GetHeight ();
 	void Register_UnityEngine_Resources_Load ();
 	Register_UnityEngine_Resources_Load ();
+	void Register_UnityEngine_Resources_LoadAll ();
+	Register_UnityEngine_Resources_LoadAll ();
 	void Register_UnityEngine_Resources_UnloadUnusedAssets ();
 	Register_UnityEngine_Resources_UnloadUnusedAssets ();
 	void Register_UnityEngine_Rigidbody_INTERNAL_get_velocity ();
@@ -932,6 +994,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_SystemInfo_get_graphicsDeviceVersion ();
 	void Register_UnityEngine_TextAsset_get_text ();
 	Register_UnityEngine_TextAsset_get_text ();
+	void Register_UnityEngine_TextAsset_get_bytes ();
+	Register_UnityEngine_TextAsset_get_bytes ();
 	void Register_UnityEngine_TextMesh_set_text ();
 	Register_UnityEngine_TextMesh_set_text ();
 	void Register_UnityEngine_Texture_Internal_GetWidth ();

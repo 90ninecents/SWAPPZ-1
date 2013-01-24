@@ -34,6 +34,7 @@ public class Game : MonoBehaviour {
 	int levelTimeInSeconds = 0;		// Measures time taken to complete level
 	
 	bool swiping = false;
+	bool dragging = false;
 	
 	public static PlayerController Player { get { return instance.player; } }
 	public static Transform EnemyGroup { get { return instance.enemyGroupObject; } }
@@ -107,24 +108,44 @@ public class Game : MonoBehaviour {
 	
 	void OnEnable() {
 		Gesture.onTouchUpE += OnTouchUp;
-		Gesture.onSwipeE += OnSwipe;
+		//Gesture.onSwipeE += OnSwipe;
+		
+		Gesture.onDraggingE += OnDrag;
+		Gesture.onDraggingEndE += OnDragEnd;
 		// Unpause
 		Time.timeScale = 1.0f;
 	}
 	
 	void OnDisable() {
 		Gesture.onTouchUpE -= OnTouchUp;
-		Gesture.onSwipeE -= OnSwipe;
+		//Gesture.onSwipeE -= OnSwipe;
+		
+		Gesture.onDraggingE -= OnDrag;
+		Gesture.onDraggingEndE -= OnDragEnd;
 	}
 	
-	void OnSwipe(SwipeInfo si) {
-		swiping = true;
-		player.ExecuteAttack(1);
-		player.ArrivalTouch.targetPoint = playerObject.position;
+//	void OnSwipe(SwipeInfo si) {
+//		print ("swipe");
+//		swiping = true;
+//		player.ExecuteAttack(1);
+//		player.ArrivalTouch.targetPoint = playerObject.position;
+//	}
+	
+	void OnDrag(DragInfo di/*Vector2 touchPos*/) {
+		dragging = true;
+		if (!swiping && di.delta.magnitude > 25) {
+			swiping = true;
+			player.ExecuteAttack(1);
+			player.ArrivalTouch.targetPoint = playerObject.position;
+		}
+	}
+	
+	void OnDragEnd(Vector2 touchPos) {
+		dragging = false;
 	}
 	
 	void OnTouchUp(Vector2 touchPos) {
-		if (!swiping) {
+		if (!swiping && !dragging) {
 			bool exit = false;
 			foreach (GUITexture tex in uiList) {
 				if (tex.enabled && tex.GetScreenRect().Contains(touchPos)) {

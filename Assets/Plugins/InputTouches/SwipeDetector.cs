@@ -57,7 +57,7 @@ public class SwipeDetector : MonoBehaviour {
 		//GameMessage.DisplayMessage("swipe end "+pos);
 		
 		SwipeInfo sw=new SwipeInfo(swipeStartPos, pos, swipeDir, timeStartSwipe);
-		Gesture.Swipe(sw);
+		//Gesture.Swipe(sw);
 	}
 	
 	
