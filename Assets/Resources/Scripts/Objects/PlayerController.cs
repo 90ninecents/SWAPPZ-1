@@ -65,6 +65,11 @@ public class PlayerController : MonoBehaviour {
 	
 	int frameCount = 0;
 	
+	bool dragging = false;
+	bool swiping = false;
+	
+	RaycastHit enemyHit;
+	
 	public int FrameCount { get { return frameCount; }
 							set { frameCount = value; } }
 	
@@ -106,7 +111,77 @@ public class PlayerController : MonoBehaviour {
 		boidComponent.Speed = boidComponent.maxSpeed;
 		
 		powerups = new List<Powerup>();
+
+		Gesture.onTouchUpE += OnTouchUp;
+		Gesture.onDraggingE += OnDrag;
+		Gesture.onDraggingEndE += OnDragEnd;
 	}
+	
+	void OnDisable() {
+		Gesture.onTouchUpE -= OnTouchUp;		
+		Gesture.onDraggingE -= OnDrag;
+		Gesture.onDraggingEndE -= OnDragEnd;
+	}
+	
+	void OnDrag(DragInfo di) {
+		dragging = true;
+		
+		Ray ray = Camera.main.ScreenPointToRay(di.pos);
+		RaycastHit hit;
+		
+		Physics.Raycast(ray, out hit, 1000);
+		
+		bool enemy = (hit.transform.GetComponent<EnemyController>() != null);
+		
+		if (!swiping && di.delta.magnitude > 25) {
+			swiping = true;
+			
+			ExecuteAttack(1);
+			if (!enemy) ArrivalTouch.targetPoint = transform.position;
+			else {
+				enemyHit = hit;
+				Vector3 prevRot = transform.rotation.eulerAngles;
+				transform.LookAt(hit.transform.position);
+				
+				if (Mathf.Abs((transform.position-hit.transform.position).magnitude) > attackRadius) Invoke ("JumpToTarget", 0.1f);
+			}
+		}
+	}
+	
+	void JumpToTarget() {
+		print ("Jump");
+		transform.Translate(new Vector3(0,0,1)*((transform.position - enemyHit.transform.position).magnitude-attackRadius-5));
+		ArrivalTouch.targetPoint = transform.position;
+	}
+	
+	void OnDragEnd(Vector2 touchPos) {
+		dragging = false;
+	}
+	
+	void OnTouchUp(Vector2 touchPos) {
+		if (!swiping && !dragging) {
+			bool exit = false;
+			foreach (GUITexture tex in Game.UIList) {
+				if (tex.enabled && tex.GetScreenRect().Contains(touchPos)) {
+					exit = true;
+					break;
+				}
+			}
+			
+			if (!exit) {
+				Ray ray = Camera.main.ScreenPointToRay(touchPos);
+				RaycastHit hit;
+				
+				if (Physics.Raycast(ray, out hit, 1000)) {
+					ArrivalTouch.targetPoint = hit.point;
+				}
+			}
+		}
+		swiping = false;
+	}
+	
+	
+	
 	
 	void Update() {
 		if (health > 0) {

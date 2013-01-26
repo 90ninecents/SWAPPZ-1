@@ -33,8 +33,6 @@ public class Game : MonoBehaviour {
 	int enemiesKilled = 0;
 	int levelTimeInSeconds = 0;		// Measures time taken to complete level
 	
-	bool swiping = false;
-	bool dragging = false;
 	
 	public static PlayerController Player { get { return instance.player; } }
 	public static Transform EnemyGroup { get { return instance.enemyGroupObject; } }
@@ -48,6 +46,8 @@ public class Game : MonoBehaviour {
 	public static bool LastLevelWon { get { return instance.won; } }
 	public static int Score { get { return instance.score; } 
 							  set { instance.score = value; } }
+	
+	public static GUITexture[] UIList { get { return uiList; } }
 	
 	// Use this for initialization
 	void Awake () {
@@ -107,63 +107,8 @@ public class Game : MonoBehaviour {
 	}
 	
 	void OnEnable() {
-		Gesture.onTouchUpE += OnTouchUp;
-		//Gesture.onSwipeE += OnSwipe;
-		
-		Gesture.onDraggingE += OnDrag;
-		Gesture.onDraggingEndE += OnDragEnd;
 		// Unpause
 		Time.timeScale = 1.0f;
-	}
-	
-	void OnDisable() {
-		Gesture.onTouchUpE -= OnTouchUp;
-		//Gesture.onSwipeE -= OnSwipe;
-		
-		Gesture.onDraggingE -= OnDrag;
-		Gesture.onDraggingEndE -= OnDragEnd;
-	}
-	
-//	void OnSwipe(SwipeInfo si) {
-//		print ("swipe");
-//		swiping = true;
-//		player.ExecuteAttack(1);
-//		player.ArrivalTouch.targetPoint = playerObject.position;
-//	}
-	
-	void OnDrag(DragInfo di/*Vector2 touchPos*/) {
-		dragging = true;
-		if (!swiping && di.delta.magnitude > 25) {
-			swiping = true;
-			player.ExecuteAttack(1);
-			player.ArrivalTouch.targetPoint = playerObject.position;
-		}
-	}
-	
-	void OnDragEnd(Vector2 touchPos) {
-		dragging = false;
-	}
-	
-	void OnTouchUp(Vector2 touchPos) {
-		if (!swiping && !dragging) {
-			bool exit = false;
-			foreach (GUITexture tex in uiList) {
-				if (tex.enabled && tex.GetScreenRect().Contains(touchPos)) {
-					exit = true;
-					break;
-				}
-			}
-			
-			if (!exit) {
-				Ray ray = Camera.main.ScreenPointToRay(touchPos);
-				RaycastHit hit;
-				
-				if (Physics.Raycast(ray, out hit, 1000/*, 1 << 13*/)) {
-					player.ArrivalTouch.targetPoint = hit.point;
-				}
-			}
-		}
-		swiping = false;
 	}
 	
 	public static void DestroyEnemies(float radius = 0.0f) {
