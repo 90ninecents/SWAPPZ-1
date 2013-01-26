@@ -149,9 +149,11 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void JumpToTarget() {
-		print ("Jump");
-		transform.Translate(new Vector3(0,0,1)*((transform.position - enemyHit.transform.position).magnitude-attackRadius-5));
-		ArrivalTouch.targetPoint = transform.position;
+		if (enemyHit != null) {
+			print ("Jump");
+			transform.Translate(new Vector3(0,0,1)*((transform.position - enemyHit.transform.position).magnitude-attackRadius-5));
+			ArrivalTouch.targetPoint = transform.position;
+		}
 	}
 	
 	void OnDragEnd(Vector2 touchPos) {
