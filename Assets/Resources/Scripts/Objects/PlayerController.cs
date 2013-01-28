@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour {
 	bool dragging = false;
 	bool swiping = false;
 	
-	RaycastHit enemyHit;
+	Transform enemyHit;
 	
 	public int FrameCount { get { return frameCount; }
 							set { frameCount = value; } }
@@ -129,30 +129,36 @@ public class PlayerController : MonoBehaviour {
 		Ray ray = Camera.main.ScreenPointToRay(di.pos);
 		RaycastHit hit;
 		
-		Physics.Raycast(ray, out hit, 1000);
-		
-		bool enemy = (hit.transform.GetComponent<EnemyController>() != null);
-		
-		if (!swiping && di.delta.magnitude > 25) {
-			swiping = true;
+		if (Physics.Raycast(ray, out hit, 1000)) {
+			bool enemy = (hit.transform.GetComponent<EnemyController>() != null);
 			
-			ExecuteAttack(1);
-			if (!enemy) ArrivalTouch.targetPoint = transform.position;
-			else {
-				enemyHit = hit;
-				Vector3 prevRot = transform.rotation.eulerAngles;
-				transform.LookAt(hit.transform.position);
+			if (!swiping && di.delta.magnitude > 25) {
+				swiping = true;
 				
-				if (Mathf.Abs((transform.position-hit.transform.position).magnitude) > attackRadius) Invoke ("JumpToTarget", 0.1f);
+				if (!enemy) {
+					ArrivalTouch.targetPoint = transform.position;
+					ExecuteAttack();
+				}
+				else {
+					enemyHit = hit.transform;
+					Vector3 prevRot = transform.rotation.eulerAngles;
+					transform.LookAt(enemyHit.position);
+					
+					if (Mathf.Abs((transform.position-enemyHit.position).magnitude) > attackRadius) Invoke ("JumpToTarget", 0.1f);
+					else ExecuteAttack();
+				}
 			}
 		}
 	}
 	
 	void JumpToTarget() {
 		if (enemyHit != null) {
-			print ("Jump");
-			transform.Translate(new Vector3(0,0,1)*((transform.position - enemyHit.transform.position).magnitude-attackRadius-5));
-			ArrivalTouch.targetPoint = transform.position;
+			//transform.Translate(new Vector3(0,0,1)*((transform.position - enemyHit.position).magnitude-attackRadius-5));
+			//ArrivalTouch.targetPoint = transform.position;
+			print ("jump");
+			ArrivalTouch.targetPoint = enemyHit.position - ((enemyHit.position - transform.position)/10);
+			speedModifier *= 5;
+			dashing = true;
 		}
 	}
 	
@@ -187,9 +193,11 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update() {
 		if (health > 0) {
-			if (dashing) {
+			if (dashing && ArrivalTouch.CalculateSteering(transform.position) == Vector3.zero) {
 				//Game.TouchTracker.position += transform.forward*5f;
-				transform.position += transform.forward*5f;
+				speedModifier /= 5;
+				dashing = false;
+				ExecuteAttack();
 			}
 			else {
 				if (!anim.IsPlaying("attack1_"+playerName) && !anim.IsPlaying("attack2_"+playerName) && !anim.IsPlaying("attack3_"+playerName)) boidComponent.Speed = (boidComponent.maxSpeed)*speedModifier;
@@ -241,7 +249,9 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 	
-	public void ExecuteAttack(int attackNumber = 1) {
+	public void ExecuteAttack() {
+		int attackNumber = 1;
+		
 		if (!cooling) {
 			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
 			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
@@ -312,12 +322,12 @@ public class PlayerController : MonoBehaviour {
 			cooling = true;
 			Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber-1]*speedModifier);
 			
-			if (attackNumber == 2) {
-				if (boidComponent.maxSpeed > 0) {
-					dashing = true;
-					Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
-				}
-			}
+//			if (attackNumber == 2) {
+//				if (boidComponent.maxSpeed > 0) {
+//					dashing = true;
+//					Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
+//				}
+//			}
 
 		}
 	}
@@ -404,7 +414,8 @@ public class PlayerController : MonoBehaviour {
 			particle.transform.position = transform.position+new Vector3(0,40,0);
 			Destroy(particle, 1.0f);
 			
-			if (!anim.IsPlaying("run_"+playerName)) anim.CrossFadeQueued("hit_"+playerName, 0.05f, QueueMode.PlayNow);
+			//if (!anim.IsPlaying("run_"+playerName)) 
+			if (anim.IsPlaying("idle_"+playerName)) anim.CrossFadeQueued("hit_"+playerName, 0.05f, QueueMode.PlayNow);
 			
 			
 			if (health <= 0) {
