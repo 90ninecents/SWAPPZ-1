@@ -3,12 +3,15 @@ using System.Collections;
 
 public class Carousel : MonoBehaviour {
 	
+	public Transform lockedPopup;
+	
 	int numberOfSlots = 4;
 	public bool vertical = true;
 	public Transform[] items;
 	public bool fullScreen = false;
 	
 	bool dragging = false;
+	bool touchWithin = false;
 	
 	Transform selectedItem;
 	public Transform SelectedItem { get { return selectedItem; } }
@@ -33,12 +36,14 @@ public class Carousel : MonoBehaviour {
 	
 	void OnEnable() {
 		Gesture.onTouchDownE += OnTouch;
+		Gesture.onTouchUpE += OnTouchUp;
 		Gesture.onDraggingE += OnDrag;
 		Gesture.onDraggingEndE += OnDragEnd;
 	}
 	
 	void OnDisable() {
 		Gesture.onTouchDownE -= OnTouch;
+		Gesture.onTouchUpE -= OnTouchUp;
 		Gesture.onDraggingE -= OnDrag;
 		Gesture.onDraggingEndE -= OnDragEnd;
 	}
@@ -55,14 +60,25 @@ public class Carousel : MonoBehaviour {
 		
 		foreach (RaycastHit hit in hits) {
 			if (hit.collider ==  transform.collider) {
-				dragging = true;
+				touchWithin = true;
 				break;
 			}
 		}
 	}
 	
+	void OnTouchUp(Vector2 pos) {
+		if (touchWithin && !dragging) {
+			touchWithin = false;
+			
+			if (lockedPopup != null && SelectedItem.name.Substring(SelectedItem.name.Length-6, 6) == "Locked") {
+				lockedPopup.gameObject.SetActiveRecursively(true);
+			}
+		}
+	}
+	
 	void OnDrag(DragInfo di) {
-		if (dragging) {
+		if (touchWithin) {
+			dragging = true;
 			transform.RotateAroundLocal(new Vector3(0,1,0), -di.delta.x/100);
 		}
 		else {
