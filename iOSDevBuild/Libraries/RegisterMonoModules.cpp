@@ -876,6 +876,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Physics_INTERNAL_CALL_RaycastAll ();
 	void Register_UnityEngine_Physics_INTERNAL_CALL_OverlapSphere ();
 	Register_UnityEngine_Physics_INTERNAL_CALL_OverlapSphere ();
+	void Register_UnityEngine_Physics_INTERNAL_CALL_CapsuleCastAll ();
+	Register_UnityEngine_Physics_INTERNAL_CALL_CapsuleCastAll ();
 	void Register_UnityEngine_PlayerPrefs_TrySetInt ();
 	Register_UnityEngine_PlayerPrefs_TrySetInt ();
 	void Register_UnityEngine_PlayerPrefs_TrySetSetString ();

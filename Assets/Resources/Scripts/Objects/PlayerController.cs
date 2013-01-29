@@ -3,46 +3,67 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
-	private Boid boidComponent;
 	
-	List<Powerup> powerups;
+	// COMPONENTS/INFO------------------------------------------------------------------
+	private Boid boidComponent;			// The turtle's boid script
+	public string playerName;			// Player's name (e.g. Leonardo)
 	
-	// Stats
-	public int healthMax = 100;
-	int health;
+	public Transform weapon1;			// reference to turtle's weapon #1 for trail rendering
+	ParticleSystem weaponTrail1;		// the trail attached to weapon 1
+	public Transform weapon2;			// reference to turtle's weapon #2 for trail rendering
+	ParticleSystem weaponTrail2;		// the trail attached to weapon 2
+	
+	
+	// STATS----------------------------------------------------------------------------
+	public int healthMax = 100;			// Maximum health
+	int health;							// Current health
 	public int armor = 100;				// Affected by powerups
 	
-	public float healthRegenRate = 1.0f;
-	public int healthRegenAmount = 50;
+	
+	// POWERUPS/MODIFIERS---------------------------------------------------------------
+	List<Powerup> powerups;				// List of active powerups
+	
+	public float healthRegenRate = 1.0f;// Seconds between health regen ticks
+	public int healthRegenAmount = 50;	// Amount of health regenerated per tick
 	
 	float strengthModifier = 1.0f;		// Affected by powerups
 	float speedModifier = 1.0f;			// Affected by powerups; modifies both movement speed and attack speed
 	float armorModifier = 1.0f;			// Affected by powerups
 	float regenModifier = 1.0f;			// Affected by powerups; modifies speed of regeneration, not amount
-	float xpModifier = 1.0f;
 	float sizeModifier = 1.0f;			// Affects model size, attack radius
-	float comboModifier = 1.0f;
+	
+	float comboModifier = 1.0f;	//REMOVE
+	float xpModifier = 1.0f;	//REMOVE
 	
 	int maxSizeIncrease = 2;			// The maximum size increase that can be gained through powerups
 	
+	
+	// XP/COMBOS------------------------------------------------------------------------
+	int comboMeter = 0;		//REMOVE	// Current combo points
+	int comboMax = 100;		//REMOVE	// Combo points to unlock mega move
+	int comboPoints = 10;	//REMOVE	// Points gained after each combo
+	
+	int xp = 0;				//REMOVE
+	int xpTNL = 1000;		//REMOVE
+	
+	
+	// ATTACKS--------------------------------------------------------------------------
+	public float attackRadius = 20.0f;				// Maximum distance from enemy before needing to jump to its location
+	public int[] attackStrengths = {100,200};		// Attack strength
+	public float[] attackSpeeds = {1.5f, 0.75f, 1}; // Attack animation speed
+	public float attackCooldown = 0.25f;			// Time between consecutive attacks
+	
+	
+	// FLAGS----------------------------------------------------------------------------
+	bool cooling = false;				// Flag to indicate whether the turtle is cooling down between attacks
+	bool jumping = false;				// Flag to handle jump attack on distant targets
 	bool invincible = false;			// Affected by powerups
-
-	int comboMeter = 0;					// Current combo points
-	int comboMax = 100;					// Combo points to unlock mega move
-	int comboPoints = 10;				// Points gained after each combo
+	bool dragging = false;				// Tracks dragging state
+	bool swiping = false;				// Tracks swiping state
+	bool moving = false;				// Tracks movement state
 	
-	int xp = 0;
-	int xpTNL = 1000;
 	
-	// Attacks/Combos
-	public float attackRadius = 20.0f;
-	public int[] attackStrengths = {100,200};
-	public float[] attackSpeeds = {1.5f, 0.75f, 1};
-	public float attackCooldown = 0.25f;
-	
-	bool cooling = false;
-	bool dashing = false;	// Handles forward motion on attack
-	
+	//_________________CHANGE_________________
 	public string[] combos = {"1221", "2112"};
 	public int[] comboStrengths = {300,300};
 	
@@ -50,36 +71,42 @@ public class PlayerController : MonoBehaviour {
 	public float comboCooldown = 0.5f;	// If the time since last attack exceeds this number, combo resets
 	
 	public float ComboPercentage { get { return (float)comboMeter/comboMax; } }
+	//________________________________________
+	
+	
+	// GETTERS/SETTERS------------------------------------------------------------------
 	public float HealthPercentage { get {return (float)health/healthMax; } }
 	public int Health { get { return health; } 
 						set { health = value; if (health > healthMax) health = healthMax; } }
-	public float XPPercentage { get { return (float)xp/xpTNL; } }
 	
-	public Animation anim;
-	public string playerName;
+	public float XPPercentage { get { return (float)xp/xpTNL; } }	//REMOVE
 	
-	public Transform weapon1;
-	ParticleSystem weaponTrail1;
-	public Transform weapon2;
-	ParticleSystem weaponTrail2;
-	
-	int frameCount = 0;
-	
-	bool dragging = false;
-	bool swiping = false;
-	
-	Transform enemyHit;
-	
-	Vector2 dragStart;
-	Vector2 dragEnd;
-	
-	public int FrameCount { get { return frameCount; }
+	public int FrameCount { get { return frameCount; }		
 							set { frameCount = value; } }
 	
 	public ArrivalBehaviour ArrivalTouch { get { return (boidComponent.GetBehaviour("ToTracker")) as ArrivalBehaviour; } }
 	public ArrivalBehaviour ArrivalEnemy { get { return (boidComponent.GetBehaviour("ToEnemy")) as ArrivalBehaviour; } }
 	
+	
+	// ANIMATIONS-----------------------------------------------------------------------
+	public Animation anim;				// The turtle's animation component	
+	int frameCount = 0;					// Frame counter for enabling/disabling Mikey's nunchuks
+	
+
+	// SWIPING INFO---------------------------------------------------------------------
+	Transform enemyHit;					// The enemy that was swiped over
+	
+	Vector2 dragStart;					// The start point of the swipe motion
+	Vector2 dragEnd;					// The end point of the swipe motino
+	
+	int capsuleSize = 25;				// The radius of the capsule that represents the area swiped over
+	
+	public float jumpSpeed = 5;			// The speed at which the player jumps/dashes to a distant enemy
+	
+	
+	
 	void Awake() {
+		// Set values
 		boidComponent = gameObject.GetComponent<Boid>();
 		
 		health = healthMax;
@@ -101,34 +128,62 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 	
-	void OnEnable() {		
+	void OnEnable() {
+		// Set steering behaviours
 		boidComponent = transform.GetComponent<Boid>();
 		
 		boidComponent.GetBehaviour("ToEnemy").SetWeight(0);
 		boidComponent.GetBehaviour("ToPlayer").SetWeight(0);
 		boidComponent.GetBehaviour("ToTracker").SetWeight(1);
-		boidComponent.GetBehaviour("ObstacleAvoidance").SetWeight(0);
-		
-		//transform.GetComponent<ArrivalBehaviour>().targetObject = Game.TouchTracker;
+		boidComponent.GetBehaviour("ObstacleAvoidance").SetWeight(1);
 		
 		boidComponent.Speed = boidComponent.maxSpeed;
 		
 		powerups = new List<Powerup>();
-
+		
+		// Gestures
 		Gesture.onTouchUpE += OnTouchUp;
 		Gesture.onDraggingE += OnDrag;
 		Gesture.onDraggingEndE += OnDragEnd;
+		Gesture.onChargingE += OnPressAndHold;
+		//Gesture.onChargeEndE += OnPressAndHoldEnd;
 	}
 	
 	void OnDisable() {
+		// Gestures
 		Gesture.onTouchUpE -= OnTouchUp;		
 		Gesture.onDraggingE -= OnDrag;
 		Gesture.onDraggingEndE -= OnDragEnd;
+		Gesture.onChargingE -= OnPressAndHold;
+		//Gesture.onChargeEndE -= OnPressAndHoldEnd;
 	}
 	
+	void OnPressAndHold(ChargedInfo ci) {
+		if (!swiping) {
+			moving = true;
+			
+			Ray ray = Camera.main.ScreenPointToRay(ci.pos);
+			RaycastHit hit;
+			
+			if (Physics.Raycast(ray, out hit, 1000, 1 << 13)) {
+				ArrivalTouch.targetPoint = hit.point;
+			}
+		}
+	}
+	
+//	void OnPressAndHoldEnd(ChargedInfo ci) {
+//		print ("charge end: "+ci.pos);
+//	}
+	
 	void OnDrag(DragInfo di) {
-		if (!dragging) dragStart = di.pos;
-		dragging = true;
+		if (!moving) {
+			if (!dragging) dragStart = di.pos;
+			dragging = true;
+			
+			if (!swiping && di.delta.magnitude > 25) {
+				swiping = true;
+			}
+		}
 		
 //		Ray ray = Camera.main.ScreenPointToRay(di.pos);
 //		//RaycastHit hit;
@@ -167,55 +222,53 @@ public class PlayerController : MonoBehaviour {
 	
 	void JumpToTarget() {
 		if (enemyHit != null) {
-			//transform.Translate(new Vector3(0,0,1)*((transform.position - enemyHit.position).magnitude-attackRadius-5));
-			//ArrivalTouch.targetPoint = transform.position;
 			ArrivalTouch.targetPoint = enemyHit.position - ((enemyHit.position - transform.position)/10);
-			speedModifier *= 2;
-			dashing = true;
+			speedModifier *= jumpSpeed;
+			jumping = true;
 		}
 	}
 	
 	void OnDragEnd(Vector2 touchPos) {
-		print ("dragEnd "+touchPos);
 		dragging = false;
 		dragEnd = touchPos;
 		
-		
+		// Find where the dragging motion intersects playing field
 		RaycastHit hit1;
 		Physics.Raycast(Camera.main.ScreenPointToRay(dragStart), out hit1, 5000, 1 << 13);
-//		print (hit1.transform.name);
 		
 		RaycastHit hit2;
 		Physics.Raycast(Camera.main.ScreenPointToRay(dragEnd), out hit2, 5000, 1 << 13);
-//		print (hit2.transform.name);
 		
-		
-		RaycastHit[] hits =	Physics.CapsuleCastAll(hit1.point, hit2.point, 25, Camera.main.transform.forward*-1);
+		// Create a capsule from the above hit points and move it towards the camera to see if any enemies were swiped
+		RaycastHit[] hits =	Physics.CapsuleCastAll(hit1.point, hit2.point, capsuleSize, Camera.main.transform.forward*-1);
 		
 		if (hits.Length > 0) {
 			Transform prevEnemy = enemyHit;
-			//print ("---------------------------------------------------------------------");
 			foreach (RaycastHit hit in hits) {
-				//print (hit.transform.name);
 				if (hit.transform.GetComponent<EnemyController>() != null) {
 					enemyHit = hit.transform;
 					
-					//if (enemyHit == prevEnemy) {
-						JumpToTarget();
-						break;
-					//}
+					// if the swiped enemy is outside the turtle's reach, jump to the enemy
+					if ((enemyHit.position-transform.position).magnitude > attackRadius*2) JumpToTarget();
+					
+					// otherwise, face the enemy and attack
+					else {
+						Vector3 prevRot = transform.rotation.eulerAngles;
+						transform.LookAt(enemyHit);
+						transform.rotation = Quaternion.Euler(prevRot.x, transform.rotation.eulerAngles.y, prevRot.z);
+						
+						ExecuteAttack();
+					}
+					
+					break;
 				}
 			}
-			
-			//if (prevEnemy == null || enemyHit != prevEnemy) {
-			//	JumpToTarget();
-			//}
 		}
 
 	}
 	
 	void OnTouchUp(Vector2 touchPos) {
-		if (!swiping && !dragging) {
+		if (!swiping && !dragging && !moving) {
 			bool exit = false;
 			foreach (GUITexture tex in Game.UIList) {
 				if (tex.enabled && tex.GetScreenRect().Contains(touchPos)) {
@@ -234,6 +287,7 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 		swiping = false;
+		moving = false;
 	}
 	
 	
@@ -241,10 +295,9 @@ public class PlayerController : MonoBehaviour {
 	
 	void Update() {
 		if (health > 0) {
-			if (dashing && ArrivalTouch.CalculateSteering(transform.position) == Vector3.zero) {
-				//Game.TouchTracker.position += transform.forward*5f;
-				speedModifier /= 2;
-				dashing = false;
+			if (jumping && ArrivalTouch.CalculateSteering(transform.position) == Vector3.zero) {
+				speedModifier /= jumpSpeed;
+				jumping = false;
 				ExecuteAttack();
 			}
 			else {
@@ -364,7 +417,7 @@ public class PlayerController : MonoBehaviour {
 			if (hit) AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
 			else AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), AudioManager.UnusedChannel);
 	
-			// Combo/dashing/cooldowns
+			// Combo/jumping/cooldowns
 			if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
 			
 			cooling = true;
@@ -372,7 +425,7 @@ public class PlayerController : MonoBehaviour {
 			
 //			if (attackNumber == 2) {
 //				if (boidComponent.maxSpeed > 0) {
-//					dashing = true;
+//					jumping = true;
 //					Invoke ("EndDash", ((attackCooldown*attackSpeeds[attackNumber])/2)*speedModifier);
 //				}
 //			}
@@ -388,7 +441,7 @@ public class PlayerController : MonoBehaviour {
 		cooling = false;
 	}
 	void EndDash() {
-		dashing = false;
+		jumping = false;
 	}
 	
 	public void CollectPowerup(Powerup p) {
