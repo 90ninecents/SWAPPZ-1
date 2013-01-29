@@ -21,15 +21,30 @@ public class AppSetup : MonoBehaviour {
 		// ---------
 		
 		if (!qualityChanged) {
-			if (iPhone.generation == iPhoneGeneration.iPodTouch4Gen || 
-				iPhone.generation == iPhoneGeneration.iPad1Gen 		|| 
-				iPhone.generation == iPhoneGeneration.iPhone4 		|| 
-				iPhone.generation == iPhoneGeneration.iPhone3G) {
-				QualitySettings.SetQualityLevel(0);
-			}
-			else {
+			
+			if (iPhone.generation == iPhoneGeneration.iPodTouch5Gen	||
+				iPhone.generation == iPhoneGeneration.iPad2Gen		||
+				iPhone.generation == iPhoneGeneration.iPad3Gen		||
+				iPhone.generation == iPhoneGeneration.iPadUnknown	||
+				iPhone.generation == iPhoneGeneration.iPhone4S		||
+				iPhone.generation == iPhoneGeneration.iPhone5		||
+				iPhone.generation == iPhoneGeneration.iPhoneUnknown) {
+				
 				QualitySettings.SetQualityLevel(1);
 			}
+			else {
+				QualitySettings.SetQualityLevel(0);
+			}
+			
+//			if (iPhone.generation == iPhoneGeneration.iPodTouch4Gen || 
+//				iPhone.generation == iPhoneGeneration.iPad1Gen 		|| 
+//				iPhone.generation == iPhoneGeneration.iPhone4 		|| 
+//				iPhone.generation == iPhoneGeneration.iPhone3G) {
+//				QualitySettings.SetQualityLevel(0);
+//			}
+//			else {
+//				QualitySettings.SetQualityLevel(1);
+//			}
 			
 			qualityChanged = true;
 			
@@ -37,7 +52,7 @@ public class AppSetup : MonoBehaviour {
 			AudioManager.PlayAudio("MenuBG", "Background", 0, true);
 			
 			// throttle framerate for editor testing
-			Application.targetFrameRate = 30;
+			Application.targetFrameRate = 60;
 		}
 		
 		// Play menu music

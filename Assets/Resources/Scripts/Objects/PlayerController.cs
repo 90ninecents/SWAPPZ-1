@@ -70,6 +70,9 @@ public class PlayerController : MonoBehaviour {
 	
 	Transform enemyHit;
 	
+	Vector2 dragStart;
+	Vector2 dragEnd;
+	
 	public int FrameCount { get { return frameCount; }
 							set { frameCount = value; } }
 	
@@ -124,46 +127,91 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnDrag(DragInfo di) {
+		if (!dragging) dragStart = di.pos;
 		dragging = true;
 		
-		Ray ray = Camera.main.ScreenPointToRay(di.pos);
-		RaycastHit hit;
-		
-		if (Physics.Raycast(ray, out hit, 1000)) {
-			bool enemy = (hit.transform.GetComponent<EnemyController>() != null);
-			
-			if (!swiping && di.delta.magnitude > 25) {
-				swiping = true;
-				
-				if (!enemy) {
-					ArrivalTouch.targetPoint = transform.position;
-					ExecuteAttack();
-				}
-				else {
-					enemyHit = hit.transform;
-					Vector3 prevRot = transform.rotation.eulerAngles;
-					transform.LookAt(enemyHit.position);
-					
-					if (Mathf.Abs((transform.position-enemyHit.position).magnitude) > attackRadius) Invoke ("JumpToTarget", 0.1f);
-					else ExecuteAttack();
-				}
-			}
-		}
+//		Ray ray = Camera.main.ScreenPointToRay(di.pos);
+//		//RaycastHit hit;
+//		RaycastHit[] hits;
+//		hits = Physics.RaycastAll(ray, 1000);
+//		
+//		//if (Physics.Raycast(ray, out hit, 1000)) {
+//		if (hits.Length > 0) {
+//			bool enemy = false;
+//			foreach (RaycastHit hit in hits) {
+//				if (hit.transform.GetComponent<EnemyController>() != null) {
+//					enemy = true;
+//					enemyHit = hit.transform;
+//					break;
+//				}
+//			}
+//			
+//			if (!swiping && di.delta.magnitude > 25) {
+//				swiping = true;
+//				
+//				if (!enemy) {
+//					ArrivalTouch.targetPoint = transform.position;
+//					ExecuteAttack();
+//				}
+//				else {
+//					//enemyHit = hit.transform;
+//					Vector3 prevRot = transform.rotation.eulerAngles;
+//					transform.LookAt(enemyHit.position);
+//					
+//					if (Mathf.Abs((transform.position-enemyHit.position).magnitude) > attackRadius) Invoke ("JumpToTarget", 0.1f);
+//					else ExecuteAttack();
+//				}
+//			}
+//		}
 	}
 	
 	void JumpToTarget() {
 		if (enemyHit != null) {
 			//transform.Translate(new Vector3(0,0,1)*((transform.position - enemyHit.position).magnitude-attackRadius-5));
 			//ArrivalTouch.targetPoint = transform.position;
-			print ("jump");
 			ArrivalTouch.targetPoint = enemyHit.position - ((enemyHit.position - transform.position)/10);
-			speedModifier *= 5;
+			speedModifier *= 2;
 			dashing = true;
 		}
 	}
 	
 	void OnDragEnd(Vector2 touchPos) {
+		print ("dragEnd "+touchPos);
 		dragging = false;
+		dragEnd = touchPos;
+		
+		
+		RaycastHit hit1;
+		Physics.Raycast(Camera.main.ScreenPointToRay(dragStart), out hit1, 5000, 1 << 13);
+//		print (hit1.transform.name);
+		
+		RaycastHit hit2;
+		Physics.Raycast(Camera.main.ScreenPointToRay(dragEnd), out hit2, 5000, 1 << 13);
+//		print (hit2.transform.name);
+		
+		
+		RaycastHit[] hits =	Physics.CapsuleCastAll(hit1.point, hit2.point, 25, Camera.main.transform.forward*-1);
+		
+		if (hits.Length > 0) {
+			Transform prevEnemy = enemyHit;
+			//print ("---------------------------------------------------------------------");
+			foreach (RaycastHit hit in hits) {
+				//print (hit.transform.name);
+				if (hit.transform.GetComponent<EnemyController>() != null) {
+					enemyHit = hit.transform;
+					
+					//if (enemyHit == prevEnemy) {
+						JumpToTarget();
+						break;
+					//}
+				}
+			}
+			
+			//if (prevEnemy == null || enemyHit != prevEnemy) {
+			//	JumpToTarget();
+			//}
+		}
+
 	}
 	
 	void OnTouchUp(Vector2 touchPos) {
@@ -195,7 +243,7 @@ public class PlayerController : MonoBehaviour {
 		if (health > 0) {
 			if (dashing && ArrivalTouch.CalculateSteering(transform.position) == Vector3.zero) {
 				//Game.TouchTracker.position += transform.forward*5f;
-				speedModifier /= 5;
+				speedModifier /= 2;
 				dashing = false;
 				ExecuteAttack();
 			}
