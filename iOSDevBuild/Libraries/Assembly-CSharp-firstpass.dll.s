@@ -41432,35 +41432,35 @@ mono_image_table:
 
 	.long 5
 	.asciz "Assembly-CSharp-firstpass"
-	.asciz "2F6BD2DD-99AE-4673-8CF5-A3A9369934CE"
+	.asciz "993193EE-1DD8-4AD0-A4C3-3CF83FBFE07E"
 	.asciz ""
 	.asciz ""
 	.align 3
 
 	.long 0,0,0,0,0
 	.asciz "mscorlib"
-	.asciz "AB302C66-DEA2-4C3D-9BE5-522C24A23E78"
+	.asciz "B08CDD0C-E577-4065-8BF5-F0025472CE51"
 	.asciz ""
 	.asciz "7cec85d7bea7798e"
 	.align 3
 
 	.long 1,2,0,5,0
 	.asciz "System"
-	.asciz "5A6ACC09-D05D-4B2E-B763-7B8926E3886D"
+	.asciz "3A4169BB-D77A-41D5-86E2-2EB4C70E7C6C"
 	.asciz ""
 	.asciz "7cec85d7bea7798e"
 	.align 3
 
 	.long 1,2,0,5,0
 	.asciz "UnityEngine"
-	.asciz "469D5CD7-4ECD-43C8-A757-22A6F268BF8C"
+	.asciz "FD34E83B-9A2B-40CE-9FA0-3B109E00D9CD"
 	.asciz ""
 	.asciz ""
 	.align 3
 
 	.long 0,0,0,0,0
 	.asciz "System.Core"
-	.asciz "E6CF707F-966D-4B94-BE9F-BA8CF6D90BF5"
+	.asciz "CBEBD168-2A7F-4D8B-B7D4-FDD6345BCF6E"
 	.asciz ""
 	.asciz "7cec85d7bea7798e"
 	.align 3
@@ -41485,7 +41485,7 @@ mono_aot_file_info:
 .text
 	.align 2
 mono_assembly_guid:
-	.asciz "2F6BD2DD-99AE-4673-8CF5-A3A9369934CE"
+	.asciz "993193EE-1DD8-4AD0-A4C3-3CF83FBFE07E"
 .text
 	.align 2
 mono_aot_version:

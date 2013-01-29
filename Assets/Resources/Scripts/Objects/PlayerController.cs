@@ -103,6 +103,14 @@ public class PlayerController : MonoBehaviour {
 	
 	public float jumpSpeed = 5;			// The speed at which the player jumps/dashes to a distant enemy
 	
+	Vector2 lastTouchPos;
+	Vector2 lastSwipeDir;
+	Vector2 lastSwipeDir2;
+	
+	float swipeCooldown = 0.000005f;
+	
+	int hitCount = 0;
+	
 	
 	
 	void Awake() {
@@ -126,6 +134,10 @@ public class PlayerController : MonoBehaviour {
 		if (playerName == "Michelangelo") {
 			weapon1.gameObject.active = false;
 		}
+		
+		lastSwipeDir2 = new Vector2(0,0);
+		lastSwipeDir  = new Vector2(0,0);
+		lastTouchPos  = new Vector2(0,0);
 	}
 	
 	void OnEnable() {
@@ -135,7 +147,6 @@ public class PlayerController : MonoBehaviour {
 		boidComponent.GetBehaviour("ToEnemy").SetWeight(0);
 		boidComponent.GetBehaviour("ToPlayer").SetWeight(0);
 		boidComponent.GetBehaviour("ToTracker").SetWeight(1);
-		boidComponent.GetBehaviour("ObstacleAvoidance").SetWeight(1);
 		
 		boidComponent.Speed = boidComponent.maxSpeed;
 		
@@ -159,7 +170,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnPressAndHold(ChargedInfo ci) {
-		if (!swiping) {
+		if (!swiping && !dragging && !jumping) {
 			moving = true;
 			
 			Ray ray = Camera.main.ScreenPointToRay(ci.pos);
@@ -176,13 +187,17 @@ public class PlayerController : MonoBehaviour {
 //	}
 	
 	void OnDrag(DragInfo di) {
+		CancelInvoke("StopTest");
+		
 		if (!moving) {
 			if (!dragging) dragStart = di.pos;
 			dragging = true;
 			
-			if (!swiping && di.delta.magnitude > 25) {
-				swiping = true;
-			}
+			if (!swiping && di.delta.magnitude > 15) swiping = true;
+			
+			lastSwipeDir2 = lastSwipeDir;
+			lastSwipeDir = di.pos-lastTouchPos;
+			lastTouchPos = di.pos;
 		}
 		
 //		Ray ray = Camera.main.ScreenPointToRay(di.pos);
@@ -233,7 +248,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnDragEnd(Vector2 touchPos) {
-		if (!moving) {
+		if (swiping) {
 			dragging = false;
 			dragEnd = touchPos;
 			
@@ -249,35 +264,44 @@ public class PlayerController : MonoBehaviour {
 			
 			if (hits.Length > 0) {
 				Transform prevEnemy = enemyHit;
+				enemyHit = null;
+				
 				foreach (RaycastHit hit in hits) {
 					if (hit.transform.GetComponent<EnemyController>() != null) {
 						enemyHit = hit.transform;
 						
-						// if the swiped enemy is outside the turtle's reach, jump to the enemy
-						if ((enemyHit.position-transform.position).magnitude > attackRadius*2) JumpToTarget();
-						
-						// otherwise, face the enemy and attack
-						else {
-							ArrivalTouch.targetPoint = transform.position;
-							
-							Vector3 prevRot = transform.rotation.eulerAngles;
-							transform.LookAt(enemyHit);
-							transform.rotation = Quaternion.Euler(prevRot.x, transform.rotation.eulerAngles.y, prevRot.z);
-							
-							ExecuteAttack();
-						}
-						
-						break;
+						if (enemyHit == prevEnemy) break;
 					}
 				}
+				
+				if (enemyHit != null) {
+					hitCount++;
+					if (hitCount > 3) hitCount = 1;
+					
+					// if the swiped enemy is outside the turtle's reach, jump to the enemy
+					if ((enemyHit.position-transform.position).magnitude > attackRadius*1.5) JumpToTarget();
+					
+					// otherwise, face the enemy and attack
+					else {
+						ArrivalTouch.targetPoint = transform.position;
+						
+						Vector3 prevRot = transform.rotation.eulerAngles;
+						transform.LookAt(enemyHit);
+						transform.rotation = Quaternion.Euler(prevRot.x, transform.rotation.eulerAngles.y, prevRot.z);
+						
+						ExecuteAttack();
+					}
+				}
+				else enemyHit = prevEnemy;
 			}
 		}
 		
+		swiping = false;
 		moving = false;
 	}
 	
 	void OnTouchUp(Vector2 touchPos) {
-		if (!swiping && !dragging && !moving) {
+		if (!swiping && !dragging && !jumping) {
 			bool exit = false;
 			foreach (GUITexture tex in Game.UIList) {
 				if (tex.enabled && tex.GetScreenRect().Contains(touchPos)) {
@@ -297,15 +321,48 @@ public class PlayerController : MonoBehaviour {
 		}
 		
 		if (!dragging) moving = false;
-		swiping = false;
+		hitCount = 0;
+		//swiping = false;
 	}
 	
 	
+	void StopTest() {
+		//if (new Vector2(Input.mousePosition.x, Input.mousePosition.y) == lastTouchPos || (Input.touchCount > 0 && Input.touches[0].position == lastTouchPos)) {
+			if (Input.touchCount > 0) {
+				OnDragEnd(Input.touches[0].position);
+				dragStart = Input.touches[0].position;
+			}
+			else {
+				OnDragEnd(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+				dragStart = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+			}
+			
+			dragging = true;
+		//}
+	}
 	
 	
 	void Update() {
 		if (health > 0) {
-			if (jumping && ArrivalTouch.CalculateSteering(transform.position) == Vector3.zero) {
+			
+			// If swipe has stopped, trigger swipe end
+			if ((swiping) && (Input.touchCount > 0 || Input.GetMouseButton(0))) {
+				//if (new Vector2(Input.mousePosition.x, Input.mousePosition.y) == lastTouchPos || (Input.touchCount > 0 && Input.touches[0].position == lastTouchPos)) {
+				
+				float angle = Vector3.Angle(lastSwipeDir, lastSwipeDir2);
+				if (angle > 180) angle -= 360;
+				angle = Mathf.Abs(angle);
+				
+				if (angle > 90) {
+					StopTest ();
+					//Invoke("StopTest", swipeCooldown);
+					//if (Input.touchCount > 0) OnDragEnd(Input.touches[0].position);
+					//else OnDragEnd(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+				}
+			}
+			
+			
+			if (jumping && ((enemyHit.position-transform.position).magnitude <= attackRadius*1.5)) {
 				speedModifier /= jumpSpeed;
 				jumping = false;
 				ExecuteAttack();
@@ -361,7 +418,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	public void ExecuteAttack() {
-		int attackNumber = 1;
+		int attackNumber = hitCount;
 		
 		if (!cooling) {
 			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
@@ -391,7 +448,7 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 			
-			if (currentCombo != "") {
+			if (currentCombo != "" && attackNumber < 3) {
 				Invoke("ToggleTrail"+attackNumber, 0);
 				Invoke("ToggleTrail"+attackNumber, attackSpeeds[attackNumber-1]/3);
 			}
