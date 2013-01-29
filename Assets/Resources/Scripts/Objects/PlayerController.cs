@@ -222,6 +222,10 @@ public class PlayerController : MonoBehaviour {
 	
 	void JumpToTarget() {
 		if (enemyHit != null) {
+			Vector3 prevRot = transform.rotation.eulerAngles;
+			transform.LookAt(enemyHit);
+			transform.rotation = Quaternion.Euler(prevRot.x, transform.rotation.eulerAngles.y, prevRot.z);
+			
 			ArrivalTouch.targetPoint = enemyHit.position - ((enemyHit.position - transform.position)/10);
 			speedModifier *= jumpSpeed;
 			jumping = true;
@@ -229,42 +233,47 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnDragEnd(Vector2 touchPos) {
-		dragging = false;
-		dragEnd = touchPos;
-		
-		// Find where the dragging motion intersects playing field
-		RaycastHit hit1;
-		Physics.Raycast(Camera.main.ScreenPointToRay(dragStart), out hit1, 5000, 1 << 13);
-		
-		RaycastHit hit2;
-		Physics.Raycast(Camera.main.ScreenPointToRay(dragEnd), out hit2, 5000, 1 << 13);
-		
-		// Create a capsule from the above hit points and move it towards the camera to see if any enemies were swiped
-		RaycastHit[] hits =	Physics.CapsuleCastAll(hit1.point, hit2.point, capsuleSize, Camera.main.transform.forward*-1);
-		
-		if (hits.Length > 0) {
-			Transform prevEnemy = enemyHit;
-			foreach (RaycastHit hit in hits) {
-				if (hit.transform.GetComponent<EnemyController>() != null) {
-					enemyHit = hit.transform;
-					
-					// if the swiped enemy is outside the turtle's reach, jump to the enemy
-					if ((enemyHit.position-transform.position).magnitude > attackRadius*2) JumpToTarget();
-					
-					// otherwise, face the enemy and attack
-					else {
-						Vector3 prevRot = transform.rotation.eulerAngles;
-						transform.LookAt(enemyHit);
-						transform.rotation = Quaternion.Euler(prevRot.x, transform.rotation.eulerAngles.y, prevRot.z);
+		if (!moving) {
+			dragging = false;
+			dragEnd = touchPos;
+			
+			// Find where the dragging motion intersects playing field
+			RaycastHit hit1;
+			Physics.Raycast(Camera.main.ScreenPointToRay(dragStart), out hit1, 5000, ((1 << 13) | (1 << 15)));
+			
+			RaycastHit hit2;
+			Physics.Raycast(Camera.main.ScreenPointToRay(dragEnd), out hit2, 5000, ((1 << 13) | (1 << 15)));
+			
+			// Create a capsule from the above hit points and move it towards the camera to see if any enemies were swiped
+			RaycastHit[] hits =	Physics.CapsuleCastAll(hit1.point, hit2.point, capsuleSize, Camera.main.transform.forward*-1);
+			
+			if (hits.Length > 0) {
+				Transform prevEnemy = enemyHit;
+				foreach (RaycastHit hit in hits) {
+					if (hit.transform.GetComponent<EnemyController>() != null) {
+						enemyHit = hit.transform;
 						
-						ExecuteAttack();
+						// if the swiped enemy is outside the turtle's reach, jump to the enemy
+						if ((enemyHit.position-transform.position).magnitude > attackRadius*2) JumpToTarget();
+						
+						// otherwise, face the enemy and attack
+						else {
+							ArrivalTouch.targetPoint = transform.position;
+							
+							Vector3 prevRot = transform.rotation.eulerAngles;
+							transform.LookAt(enemyHit);
+							transform.rotation = Quaternion.Euler(prevRot.x, transform.rotation.eulerAngles.y, prevRot.z);
+							
+							ExecuteAttack();
+						}
+						
+						break;
 					}
-					
-					break;
 				}
 			}
 		}
-
+		
+		moving = false;
 	}
 	
 	void OnTouchUp(Vector2 touchPos) {
@@ -286,8 +295,9 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 		}
+		
+		if (!dragging) moving = false;
 		swiping = false;
-		moving = false;
 	}
 	
 	
