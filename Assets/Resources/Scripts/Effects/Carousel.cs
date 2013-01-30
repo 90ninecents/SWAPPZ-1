@@ -26,6 +26,8 @@ public class Carousel : MonoBehaviour {
 		
 		foreach (Transform t in transform.parent) {
 			if (t != transform) {
+				print (t);
+				
 				items[i] = t;			
 				i++;
 			}
@@ -50,6 +52,8 @@ public class Carousel : MonoBehaviour {
 	
 	
 	void OnTouch(Vector2 touchPos) {
+		//print ("touch down");
+		
 		if (fullScreen) {
 			touchPos.x = transform.position.x+Screen.width/2;
 		}
@@ -67,6 +71,7 @@ public class Carousel : MonoBehaviour {
 	}
 	
 	void OnTouchUp(Vector2 pos) {
+		//print ("touch up");
 		if (touchWithin && !dragging) {
 			touchWithin = false;
 			
@@ -77,6 +82,7 @@ public class Carousel : MonoBehaviour {
 	}
 	
 	void OnDrag(DragInfo di) {
+		//print ("drag");
 		if (touchWithin) {
 			dragging = true;
 			transform.RotateAroundLocal(new Vector3(0,1,0), -di.delta.x/100);
@@ -87,6 +93,7 @@ public class Carousel : MonoBehaviour {
 	}
 	
 	void OnDragEnd(Vector2 touchPos) {
+		//print ("drag end");
 		if (dragging) {
 			// snap to nearest portrait
 			float absRotation = transform.rotation.eulerAngles.y-inheritedRotation.y;
@@ -111,6 +118,7 @@ public class Carousel : MonoBehaviour {
 	}
 	
 	public void Reset() {
+		//print ("reset");
 		dragging = true;
 		OnDragEnd(new Vector2(0,0));
 	}
@@ -123,7 +131,9 @@ public class Carousel : MonoBehaviour {
 		
 		float closestDistance = 0;
 		
+		print (items.Length);
 		foreach (Transform t in items) {
+			print (t);
 			if (Mathf.Abs(t.position.z-Camera.main.transform.position.z) < closestDistance|| closestDistance == 0) {
 				result = t;
 				closestDistance = Mathf.Abs (t.position.z-Camera.main.transform.position.z);
@@ -134,6 +144,7 @@ public class Carousel : MonoBehaviour {
 	}
 	
 	public void RotateTo(float angle) {
+		//print ("rotate");
 		transform.Rotate(Vector3.up, angle-transform.localEulerAngles.y, Space.Self);
 		Invoke("SetSelectedItem", 0.05f);
 		//transform.Rotate(transform.up, angle, Space.World);

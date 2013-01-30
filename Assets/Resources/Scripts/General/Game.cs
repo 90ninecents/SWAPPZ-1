@@ -110,6 +110,10 @@ public class Game : MonoBehaviour {
 		// Unpause
 		Time.timeScale = 1.0f;
 	}
+	void OnDisable() {
+		// Unpause
+		Time.timeScale = 1.0f;
+	}
 	
 	public static void DestroyEnemies(float radius = 0.0f) {
 		// Destroys all enemies in a circular area with given radius around the player

@@ -192,7 +192,6 @@ public class PlayerController : MonoBehaviour {
 			
 			if (!swiping && di.delta.magnitude > 15) {
 				swiping = true;
-				print ("reset attack");
 				attacked = false;
 			}
 			
@@ -217,7 +216,6 @@ public class PlayerController : MonoBehaviour {
 	
 	void OnDragEnd(Vector2 touchPos) {
 		if (swiping && !attacked) {
-			print ("ondragend");
 			dragging = false;
 			dragEnd = touchPos;
 			
@@ -308,7 +306,6 @@ public class PlayerController : MonoBehaviour {
 		if (health > 0) {
 			if (swiping) {
 				if (!attacked && Time.time - lastMoveTime > swipeCooldown) {
-					print ("swipe end - time out");
 					if (Input.touchCount > 0) {
 						OnDragEnd(Input.touches[0].position);
 						dragStart = Input.touches[0].position;
@@ -323,13 +320,11 @@ public class PlayerController : MonoBehaviour {
 				}
 				
 				else {
-					print (lastSwipeDir+" "+lastSwipeDir2);
 					float angle = Vector3.Angle(lastSwipeDir, lastSwipeDir2);
 					if (angle > 180) angle -= 360;
 					angle = Mathf.Abs (angle);
 					
 					if (angle > 90 ) {
-						print ("swipe end - direction change");
 						attacked = false;
 						
 						if (Input.touchCount > 0) {
@@ -407,7 +402,6 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	public void ExecuteAttack() {
-		print ("attack");
 		attacked = true;
 		
 		int attackNumber = hitCount;
