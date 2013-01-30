@@ -104,10 +104,8 @@ public class PlayerController : MonoBehaviour {
 	public float jumpSpeed = 5;			// The speed at which the player jumps/dashes to a distant enemy
 	
 	Vector2 lastTouchPos;
-	Vector2 lastSwipeDir;
-	Vector2 lastSwipeDir2;
 	
-	float swipeCooldown = 0.000005f;
+	float swipeCooldown = 0.005f;
 	
 	int hitCount = 0;
 	
@@ -134,10 +132,6 @@ public class PlayerController : MonoBehaviour {
 		if (playerName == "Michelangelo") {
 			weapon1.gameObject.active = false;
 		}
-		
-		lastSwipeDir2 = new Vector2(0,0);
-		lastSwipeDir  = new Vector2(0,0);
-		lastTouchPos  = new Vector2(0,0);
 	}
 	
 	void OnEnable() {
@@ -193,10 +187,11 @@ public class PlayerController : MonoBehaviour {
 			if (!dragging) dragStart = di.pos;
 			dragging = true;
 			
-			if (!swiping && di.delta.magnitude > 15) swiping = true;
+			if (!swiping && di.delta.magnitude > 15) {
+				print ("swipe start");
+				swiping = true;
+			}
 			
-			lastSwipeDir2 = lastSwipeDir;
-			lastSwipeDir = di.pos-lastTouchPos;
 			lastTouchPos = di.pos;
 		}
 		
@@ -327,7 +322,7 @@ public class PlayerController : MonoBehaviour {
 	
 	
 	void StopTest() {
-		//if (new Vector2(Input.mousePosition.x, Input.mousePosition.y) == lastTouchPos || (Input.touchCount > 0 && Input.touches[0].position == lastTouchPos)) {
+		if (new Vector2(Input.mousePosition.x, Input.mousePosition.y) == lastTouchPos || (Input.touchCount > 0 && Input.touches[0].position == lastTouchPos)) {
 			if (Input.touchCount > 0) {
 				OnDragEnd(Input.touches[0].position);
 				dragStart = Input.touches[0].position;
@@ -338,7 +333,7 @@ public class PlayerController : MonoBehaviour {
 			}
 			
 			dragging = true;
-		//}
+		}
 	}
 	
 	
@@ -347,15 +342,8 @@ public class PlayerController : MonoBehaviour {
 			
 			// If swipe has stopped, trigger swipe end
 			if ((swiping) && (Input.touchCount > 0 || Input.GetMouseButton(0))) {
-				//if (new Vector2(Input.mousePosition.x, Input.mousePosition.y) == lastTouchPos || (Input.touchCount > 0 && Input.touches[0].position == lastTouchPos)) {
-				
-				float angle = Vector3.Angle(lastSwipeDir, lastSwipeDir2);
-				if (angle > 180) angle -= 360;
-				angle = Mathf.Abs(angle);
-				
-				if (angle > 90) {
-					StopTest ();
-					//Invoke("StopTest", swipeCooldown);
+				if (new Vector2(Input.mousePosition.x, Input.mousePosition.y) == lastTouchPos || (Input.touchCount > 0 && Input.touches[0].position == lastTouchPos)) {
+					Invoke("StopTest", swipeCooldown);
 					//if (Input.touchCount > 0) OnDragEnd(Input.touches[0].position);
 					//else OnDragEnd(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
 				}
@@ -420,7 +408,7 @@ public class PlayerController : MonoBehaviour {
 	public void ExecuteAttack() {
 		int attackNumber = hitCount;
 		
-		if (!cooling) {
+		//if (!cooling) {
 			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
 			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
 			
@@ -448,9 +436,9 @@ public class PlayerController : MonoBehaviour {
 				}
 			}
 			
-			if (currentCombo != "" && attackNumber < 3) {
-				Invoke("ToggleTrail"+attackNumber, 0);
-				Invoke("ToggleTrail"+attackNumber, attackSpeeds[attackNumber-1]/3);
+			if (currentCombo != "") {
+				//Invoke("ToggleTrail"+attackNumber, 0);
+				//Invoke("ToggleTrail"+attackNumber, attackSpeeds[attackNumber-1]/3);
 			}
 			
 			if (!match) {
@@ -497,7 +485,7 @@ public class PlayerController : MonoBehaviour {
 //				}
 //			}
 
-		}
+		//}
 	}
 	
 	public void BreakCombo() {
