@@ -109,9 +109,15 @@ public class PlayerController : MonoBehaviour {
 	
 	int hitCount = 0;
 	
+	Vector2 lastSwipeDir;
+	Vector2 lastSwipeDir2;
+	
 	
 	
 	void Awake() {
+		lastSwipeDir = new Vector2(0,0);
+		lastSwipeDir2 = new Vector2(0,0);
+		
 		// Set values
 		boidComponent = gameObject.GetComponent<Boid>();
 		
@@ -149,7 +155,7 @@ public class PlayerController : MonoBehaviour {
 		// Gestures
 		Gesture.onTouchUpE += OnTouchUp;
 		Gesture.onDraggingE += OnDrag;
-		Gesture.onDraggingEndE += OnDragEnd;
+		//Gesture.onDraggingEndE += OnDragEnd;
 		Gesture.onChargingE += OnPressAndHold;
 		//Gesture.onChargeEndE += OnPressAndHoldEnd;
 	}
@@ -158,7 +164,7 @@ public class PlayerController : MonoBehaviour {
 		// Gestures
 		Gesture.onTouchUpE -= OnTouchUp;		
 		Gesture.onDraggingE -= OnDrag;
-		Gesture.onDraggingEndE -= OnDragEnd;
+		//Gesture.onDraggingEndE -= OnDragEnd;
 		Gesture.onChargingE -= OnPressAndHold;
 		//Gesture.onChargeEndE -= OnPressAndHoldEnd;
 	}
@@ -181,17 +187,19 @@ public class PlayerController : MonoBehaviour {
 //	}
 	
 	void OnDrag(DragInfo di) {
-		CancelInvoke("StopTest");
+		//CancelInvoke("StopTest");
 		
 		if (!moving) {
 			if (!dragging) dragStart = di.pos;
 			dragging = true;
 			
 			if (!swiping && di.delta.magnitude > 15) {
-				print ("swipe start");
 				swiping = true;
 			}
 			
+			
+			lastSwipeDir2 = lastSwipeDir;
+			lastSwipeDir = di.pos-lastTouchPos;
 			lastTouchPos = di.pos;
 		}
 		
@@ -293,6 +301,9 @@ public class PlayerController : MonoBehaviour {
 		
 		swiping = false;
 		moving = false;
+		
+				lastSwipeDir = new Vector2(0,0);
+		lastSwipeDir2 = new Vector2(0,0);
 	}
 	
 	void OnTouchUp(Vector2 touchPos) {
@@ -315,25 +326,30 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 		
+		else if (swiping && lastSwipeDir == Vector2.zero) {
+			OnDragEnd(lastTouchPos);
+		}
+		
 		if (!dragging) moving = false;
 		hitCount = 0;
-		//swiping = false;
+		swiping = false;
+		dragging = false;
 	}
 	
 	
 	void StopTest() {
-		if (new Vector2(Input.mousePosition.x, Input.mousePosition.y) == lastTouchPos || (Input.touchCount > 0 && Input.touches[0].position == lastTouchPos)) {
-			if (Input.touchCount > 0) {
-				OnDragEnd(Input.touches[0].position);
-				dragStart = Input.touches[0].position;
-			}
-			else {
-				OnDragEnd(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
-				dragStart = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-			}
-			
-			dragging = true;
-		}
+//		if (new Vector2(Input.mousePosition.x, Input.mousePosition.y) == lastTouchPos || (Input.touchCount > 0 && Input.touches[0].position == lastTouchPos)) {
+//			if (Input.touchCount > 0) {
+//				OnDragEnd(Input.touches[0].position);
+//				dragStart = Input.touches[0].position;
+//			}
+//			else {
+//				OnDragEnd(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+//				dragStart = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+//			}
+//			
+//			dragging = true;
+//		}
 	}
 	
 	
@@ -342,17 +358,36 @@ public class PlayerController : MonoBehaviour {
 			
 			// If swipe has stopped, trigger swipe end
 			if ((swiping) && (Input.touchCount > 0 || Input.GetMouseButton(0))) {
-				if (new Vector2(Input.mousePosition.x, Input.mousePosition.y) == lastTouchPos || (Input.touchCount > 0 && Input.touches[0].position == lastTouchPos)) {
-					Invoke("StopTest", swipeCooldown);
+				//if (new Vector2(Input.mousePosition.x, Input.mousePosition.y) == lastTouchPos || (Input.touchCount > 0 && Input.touches[0].position == lastTouchPos)) {
+				//	Invoke("StopTest", swipeCooldown);
 					//if (Input.touchCount > 0) OnDragEnd(Input.touches[0].position);
 					//else OnDragEnd(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+				//}
+				
+				float angle = Vector3.Angle(lastSwipeDir, lastSwipeDir2);
+				if (angle > 180) angle -= 360;
+				angle = Mathf.Abs (angle);
+				
+				if (angle > 90 || lastSwipeDir == Vector2.zero) {
+					if (Input.touchCount > 0) {
+						OnDragEnd(Input.touches[0].position);
+						dragStart = Input.touches[0].position;
+					}
+					else {
+						OnDragEnd(new Vector2(Input.mousePosition.x, Input.mousePosition.y));
+						dragStart = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+					}
+					
+					dragging = true;
 				}
+				
 			}
 			
 			
-			if (jumping && ((enemyHit.position-transform.position).magnitude <= attackRadius*1.5)) {
+			if (jumping && ((enemyHit.position-transform.position).magnitude <= attackRadius*1.65)) {
 				speedModifier /= jumpSpeed;
 				jumping = false;
+				print(speedModifier);
 				ExecuteAttack();
 			}
 			else {
@@ -407,6 +442,7 @@ public class PlayerController : MonoBehaviour {
 	
 	public void ExecuteAttack() {
 		int attackNumber = hitCount;
+		if (hitCount == 0) attackNumber = 1;
 		
 		//if (!cooling) {
 			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
