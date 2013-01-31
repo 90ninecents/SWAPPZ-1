@@ -49,21 +49,24 @@ public class WaveController : MonoBehaviour {
 			waveNumber++;
 			
 			if (waveNumber != 1) {
-				SpawnRewardCoins(coinsOnWaveEnd);
+				CoinController.SpawnCoins(coinsOnWaveEnd);
+				Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
 			}
 			
 			CancelInvoke("CheckWave");
 		}
 		else if (Game.EnemyGroup.GetChildCount() == 0 && waveNumber == waves.Length) {
-			movePopup.enabled = true;
+			if (movePopup != null) movePopup.enabled = true;
 			CancelInvoke("CheckWave");
 			InvokeRepeating("CheckPopupEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
 		}
 	}
 	
 	void CheckPopupEnd() {
-		if (movePopup.enabled == false) {
-			SpawnRewardCoins(coinsOnLevelEnd);
+		if (movePopup == null || (movePopup != null && movePopup.enabled == false)) {
+			CoinController.SpawnCoins(coinsOnLevelEnd);
+			Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
+			
 			CancelInvoke("CheckPopupEnd");
 			InvokeRepeating("CheckLevelEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
 		}
@@ -76,36 +79,36 @@ public class WaveController : MonoBehaviour {
 		}
 	}
 	
-	void SpawnRewardCoins(int num) {
-		// Pick random location in view to spawn coins
-		
-		Vector2 randVec;
-		Vector3 pos = new Vector3();
-		
-		for (int i = 0; i < num; i++) {
-			bool go = false;
-			
-			while (!go) {
-				randVec = new Vector2(Random.Range(0.0f,1.0f)*Screen.width, Random.Range(0.0f,1.0f)*Screen.height);
-				
-				Ray ray = Camera.main.ScreenPointToRay(randVec);
-				RaycastHit hit;
-				
-				if (Physics.Raycast(ray, out hit, 1000, 1 << 13)) {
-					 pos = new Vector3(hit.point.x, hit.point.y+5, hit.point.z);
-					if (Physics.OverlapSphere(pos, 10).Length == 1) {
-						go = true;
-					}
-				}
-			}
-			GameObject coin = Object.Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
-			coin.transform.position = pos+new Vector3(0,10,0);
-			coin.GetComponent<Coin>().SetTimes(7.5f, 2.5f);
-		}
-		
-		
-		Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
-	}
+//	void SpawnRewardCoins(int num) {
+//		// Pick random location in view to spawn coins
+//		
+//		Vector2 randVec;
+//		Vector3 pos = new Vector3();
+//		
+//		for (int i = 0; i < num; i++) {
+//			bool go = false;
+//			
+//			while (!go) {
+//				randVec = new Vector2(Random.Range(0.0f,1.0f)*Screen.width, Random.Range(0.0f,1.0f)*Screen.height);
+//				
+//				Ray ray = Camera.main.ScreenPointToRay(randVec);
+//				RaycastHit hit;
+//				
+//				if (Physics.Raycast(ray, out hit, 1000, 1 << 13)) {
+//					 pos = new Vector3(hit.point.x, hit.point.y+5, hit.point.z);
+//					if (Physics.OverlapSphere(pos, 10).Length == 1) {
+//						go = true;
+//					}
+//				}
+//			}
+//			GameObject coin = Object.Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
+//			coin.transform.position = pos+new Vector3(0,10,0);
+//			coin.GetComponent<Coin>().SetTimes(7.5f, 2.5f);
+//		}
+//		
+//		
+//		Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
+//	}
 	
 	void Update() {
 		if (!IsInvoking() && waveNumber > 1) {

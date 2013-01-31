@@ -109,10 +109,24 @@ public class Game : MonoBehaviour {
 	void OnEnable() {
 		// Unpause
 		Time.timeScale = 1.0f;
+		
+		Gesture.onTouchDownE += OnTouchDown;
+		Gesture.onDraggingE += OnDrag;
 	}
 	void OnDisable() {
 		// Unpause
 		Time.timeScale = 1.0f;
+		
+		Gesture.onTouchDownE -= OnTouchDown;
+		Gesture.onDraggingE -= OnDrag;
+	}
+	
+	void OnTouchDown(Vector2 touchPos) {
+		CoinController.CheckCoinTap(touchPos);
+	}
+	
+	void OnDrag(DragInfo di) {
+		CoinController.CheckCoinTap(di.pos);
 	}
 	
 	public static void DestroyEnemies(float radius = 0.0f) {

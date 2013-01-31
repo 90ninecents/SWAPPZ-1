@@ -283,24 +283,24 @@ public class PlayerController : MonoBehaviour {
 	
 	
 	void OnTouchUp(Vector2 touchPos) {
-		if (!swiping && !dragging && !jumping) {
-			bool exit = false;
-			foreach (GUITexture tex in Game.UIList) {
-				if (tex.enabled && tex.GetScreenRect().Contains(touchPos)) {
-					exit = true;
-					break;
-				}
-			}
-			
-			if (!exit) {
-				Ray ray = Camera.main.ScreenPointToRay(touchPos);
-				RaycastHit hit;
-				
-				if (Physics.Raycast(ray, out hit, 1000, 1 << 13)) {
-					ArrivalTouch.targetPoint = hit.point;
-				}
-			}
-		}
+//		if (!swiping && !dragging && !jumping) {
+//			bool exit = false;
+//			foreach (GUITexture tex in Game.UIList) {
+//				if (tex.enabled && tex.GetScreenRect().Contains(touchPos)) {
+//					exit = true;
+//					break;
+//				}
+//			}
+//			
+//			if (!exit) {
+//				Ray ray = Camera.main.ScreenPointToRay(touchPos);
+//				RaycastHit hit;
+//				
+//				if (Physics.Raycast(ray, out hit, 1000, 1 << 13)) {
+//					ArrivalTouch.targetPoint = hit.point;
+//				}
+//			}
+//		}
 		
 		if (!dragging) moving = false;
 		hitCount = 0;
@@ -351,8 +351,7 @@ public class PlayerController : MonoBehaviour {
 			
 			
 			if (jumping && ((enemyHit.position-transform.position).magnitude <= attackRadius*1.65)) {
-				// TODO: change this "tornado" hack fix
-				speedModifier = 1;
+				speedModifier = 1;	// TODO: change this "tornado" hack fix
 				jumping = false;
 				ExecuteAttack();
 			}
@@ -393,16 +392,16 @@ public class PlayerController : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other) {
 		if (enabled) {
-			Coin c = other.gameObject.GetComponent<Coin>();
-			if (c != null) {
-				CollectCoin(c);
-			}
-			else {
+//			Coin c = other.gameObject.GetComponent<Coin>();
+//			if (c != null) {
+//				CollectCoin(c);
+//			}
+			//else {
 				Powerup pu = other.gameObject.GetComponent<Powerup>();
 				if (pu != null) {
 					CollectPowerup(pu);
 				}
-			}
+			//}
 		}
 	}
 	
@@ -552,11 +551,6 @@ public class PlayerController : MonoBehaviour {
 			// don't use invincible = p.invincibility; will cause powerups to cancel invincibility granted by other powerups
 			if (p.invincibility) invincible = true;
 		}
-	}
-	
-	void CollectCoin(Coin c) {
-		c.Kill();
-		Game.Coins++;
 	}
 	
 	public void TakeDamage(int damage) {
