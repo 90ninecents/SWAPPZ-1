@@ -102,7 +102,7 @@ public class PlayerController : MonoBehaviour {
 	
 	int capsuleSize = 25;				// The radius of the capsule that represents the area swiped over
 	
-	public float jumpSpeed = 5;			// The speed at which the player jumps/dashes to a distant enemy
+	public float jumpSpeed = 2.5f;			// The speed at which the player jumps/dashes to a distant enemy
 	
 	Vector2 lastTouchPos;
 	
@@ -156,6 +156,7 @@ public class PlayerController : MonoBehaviour {
 		
 		// Gestures
 		Gesture.onTouchUpE += OnTouchUp;
+		Gesture.onTouchDownE += OnTouchDown;
 		Gesture.onDraggingE += OnDrag;
 		Gesture.onDraggingEndE += OnDragEnd;
 		Gesture.onChargingE += OnPressAndHold;
@@ -163,7 +164,8 @@ public class PlayerController : MonoBehaviour {
 	
 	void OnDisable() {
 		// Gestures
-		Gesture.onTouchUpE -= OnTouchUp;		
+		Gesture.onTouchUpE -= OnTouchUp;
+		Gesture.onTouchDownE -= OnTouchDown;
 		Gesture.onDraggingE -= OnDrag;
 		Gesture.onDraggingEndE -= OnDragEnd;
 		Gesture.onChargingE -= OnPressAndHold;
@@ -193,6 +195,7 @@ public class PlayerController : MonoBehaviour {
 			if (!swiping && di.delta.magnitude > 15) {
 				swiping = true;
 				attacked = false;
+				moving = false;
 			}
 			
 			
@@ -263,13 +266,21 @@ public class PlayerController : MonoBehaviour {
 			}
 		}
 		
-		if (Input.touchCount == 0 && !Input.GetMouseButton(0)) swiping = false;
+		if (Input.touchCount == 0 && !Input.GetMouseButton(0)) {
+			swiping = false;
+			dragging = false;
+		}
 		moving = false;
 		//dragging = false;
 		
 		lastSwipeDir = Vector2.zero;
 		lastSwipeDir2 = Vector2.zero;
 	}
+	
+	
+	void OnTouchDown(Vector2 touchPos) {
+	}
+	
 	
 	void OnTouchUp(Vector2 touchPos) {
 		if (!swiping && !dragging && !jumping) {
@@ -285,19 +296,14 @@ public class PlayerController : MonoBehaviour {
 				Ray ray = Camera.main.ScreenPointToRay(touchPos);
 				RaycastHit hit;
 				
-				if (Physics.Raycast(ray, out hit, 1000)) {
+				if (Physics.Raycast(ray, out hit, 1000, 1 << 13)) {
 					ArrivalTouch.targetPoint = hit.point;
 				}
 			}
 		}
 		
-//		else if (swiping && lastSwipeDir == Vector2.zero) {
-//			OnDragEnd(lastTouchPos);
-//		}
-		
 		if (!dragging) moving = false;
 		hitCount = 0;
-		//swiping = false;
 		dragging = false;
 	}
 	
@@ -348,7 +354,6 @@ public class PlayerController : MonoBehaviour {
 				// TODO: change this "tornado" hack fix
 				speedModifier = 1;
 				jumping = false;
-				print(speedModifier);
 				ExecuteAttack();
 			}
 			else {
@@ -407,7 +412,7 @@ public class PlayerController : MonoBehaviour {
 		int attackNumber = hitCount;
 		if (hitCount == 0) attackNumber = 1;
 		
-		//if (!cooling) {
+		if (!cooling) {
 			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
 			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
 			
@@ -477,7 +482,7 @@ public class PlayerController : MonoBehaviour {
 			cooling = true;
 			Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber-1]*speedModifier);
 
-		//}
+		}
 	}
 	
 	public void BreakCombo() {
