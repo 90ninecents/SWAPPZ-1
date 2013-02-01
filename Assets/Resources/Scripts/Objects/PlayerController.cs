@@ -62,6 +62,7 @@ public class PlayerController : MonoBehaviour {
 	bool swiping = false;				// Tracks swiping state
 	bool moving = false;				// Tracks movement state
 	bool attacked = false;
+	bool swipeUp = false;
 	
 	
 	//_________________CHANGE_________________
@@ -218,7 +219,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnDragEnd(Vector2 touchPos) {
-		if (swiping && !attacked) {
+		if ((swiping || swipeUp) && !attacked) {
 			dragging = false;
 			dragEnd = touchPos;
 			
@@ -271,6 +272,7 @@ public class PlayerController : MonoBehaviour {
 			dragging = false;
 		}
 		moving = false;
+		swipeUp = false;
 		//dragging = false;
 		
 		lastSwipeDir = Vector2.zero;
@@ -305,6 +307,15 @@ public class PlayerController : MonoBehaviour {
 		if (!dragging) moving = false;
 		hitCount = 0;
 		dragging = false;
+		
+		if (swiping) {
+			swiping = false;
+			swipeUp = true;
+		}
+		
+		print (moving);
+		print (dragging);
+		print (swiping);
 	}
 	
 	

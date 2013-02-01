@@ -39,6 +39,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
         }
 		
+		FirstTimeSetup();
         OnTrackingLost();
     }
 
@@ -77,6 +78,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
 
         // Enable rendering:
         foreach (Renderer component in rendererComponents) {
+			print (component.name);
             component.enabled = true;
         }
 		
@@ -103,7 +105,23 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
 			scanned = true;
 		}
     }
+	
+	
+	private void FirstTimeSetup() {
+        Renderer[] rendererComponents = GetComponentsInChildren<Renderer>();
 
+        // Disable rendering:
+        foreach (Renderer component in rendererComponents) {
+            component.enabled = false;
+        }
+		
+		foreach (GameObject go in activeOnTrack) {
+			go.SetActiveRecursively(false);
+		}
+		foreach (GameObject go in activeOnLost) {
+			go.SetActiveRecursively(true);
+		}
+	}
 
     private void OnTrackingLost() {
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>();
