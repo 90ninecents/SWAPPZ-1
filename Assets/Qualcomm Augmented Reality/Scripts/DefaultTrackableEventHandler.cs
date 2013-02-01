@@ -13,8 +13,8 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
 {
 	public TrackableBehaviour mtrackableBehaviour;
 	
-    GameObject ninja;
 	bool scanned = false;
+	Animation turtleAnim;
 	
 	GUITexture reticle;
 	GUIText text;
@@ -33,13 +33,18 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
 	    
     void Start()
     {
+		// TimeScale starts at 0.2 - don't know why
+		Time.timeScale = 0.75f;
+		
         mTrackableBehaviour = GetComponent<TrackableBehaviour>();
         if (mTrackableBehaviour)
         {
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
         }
 		
-		FirstTimeSetup();
+		turtleAnim = GameObject.Find ("Leonardo").transform.GetChild(0).GetComponent<Animation>();
+		turtleAnim.Play();
+		
         OnTrackingLost();
     }
 
@@ -75,10 +80,11 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
     private void OnTrackingFound()
     {
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>();
-
+		
+		
+		
         // Enable rendering:
         foreach (Renderer component in rendererComponents) {
-			print (component.name);
             component.enabled = true;
         }
 		
@@ -105,23 +111,6 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
 			scanned = true;
 		}
     }
-	
-	
-	private void FirstTimeSetup() {
-        Renderer[] rendererComponents = GetComponentsInChildren<Renderer>();
-
-        // Disable rendering:
-        foreach (Renderer component in rendererComponents) {
-            component.enabled = false;
-        }
-		
-		foreach (GameObject go in activeOnTrack) {
-			go.SetActiveRecursively(false);
-		}
-		foreach (GameObject go in activeOnLost) {
-			go.SetActiveRecursively(true);
-		}
-	}
 
     private void OnTrackingLost() {
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>();
@@ -142,6 +131,12 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
     }
 	
 	void OnTrack() {
+	}
+	
+	void Update() {
+		if (!turtleAnim.isPlaying) {
+			turtleAnim.Play();
+		}
 	}
 
     #endregion // PRIVATE_METHODS
