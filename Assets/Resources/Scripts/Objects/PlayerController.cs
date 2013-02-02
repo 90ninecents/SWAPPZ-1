@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerController : MonoBehaviour {
+	/*
+	 * WARNING: Spaghetti code ahead
+	 * 			Do not modify this class unless you're a masochist
+	 */ 
 	
 	// COMPONENTS/INFO------------------------------------------------------------------
 	private Boid boidComponent;			// The turtle's boid script
@@ -212,7 +216,7 @@ public class PlayerController : MonoBehaviour {
 			transform.LookAt(enemyHit);
 			transform.rotation = Quaternion.Euler(prevRot.x, transform.rotation.eulerAngles.y, prevRot.z);
 			
-			ArrivalTouch.targetPoint = enemyHit.position - ((enemyHit.position - transform.position)/10);
+			ArrivalTouch.targetPoint = enemyHit.position - ((enemyHit.position - transform.position)/20);
 			speedModifier *= jumpSpeed;
 			jumping = true;
 		}
@@ -273,7 +277,6 @@ public class PlayerController : MonoBehaviour {
 		}
 		moving = false;
 		swipeUp = false;
-		//dragging = false;
 		
 		lastSwipeDir = Vector2.zero;
 		lastSwipeDir2 = Vector2.zero;
@@ -284,26 +287,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	
-	void OnTouchUp(Vector2 touchPos) {
-//		if (!swiping && !dragging && !jumping) {
-//			bool exit = false;
-//			foreach (GUITexture tex in Game.UIList) {
-//				if (tex.enabled && tex.GetScreenRect().Contains(touchPos)) {
-//					exit = true;
-//					break;
-//				}
-//			}
-//			
-//			if (!exit) {
-//				Ray ray = Camera.main.ScreenPointToRay(touchPos);
-//				RaycastHit hit;
-//				
-//				if (Physics.Raycast(ray, out hit, 1000, 1 << 13)) {
-//					ArrivalTouch.targetPoint = hit.point;
-//				}
-//			}
-//		}
-		
+	void OnTouchUp(Vector2 touchPos) {		
 		if (!dragging) moving = false;
 		hitCount = 0;
 		dragging = false;
@@ -312,10 +296,6 @@ public class PlayerController : MonoBehaviour {
 			swiping = false;
 			swipeUp = true;
 		}
-		
-		print (moving);
-		print (dragging);
-		print (swiping);
 	}
 	
 	
@@ -361,7 +341,7 @@ public class PlayerController : MonoBehaviour {
 
 			
 			
-			if (jumping && ((enemyHit.position-transform.position).magnitude <= attackRadius*1.65)) {
+			if (jumping && ((enemyHit.position-transform.position).magnitude <= attackRadius*1.5)) {
 				speedModifier = 1;	// TODO: change this "tornado" hack fix
 				jumping = false;
 				ExecuteAttack();
@@ -403,16 +383,10 @@ public class PlayerController : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other) {
 		if (enabled) {
-//			Coin c = other.gameObject.GetComponent<Coin>();
-//			if (c != null) {
-//				CollectCoin(c);
-//			}
-			//else {
-				Powerup pu = other.gameObject.GetComponent<Powerup>();
-				if (pu != null) {
-					CollectPowerup(pu);
-				}
-			//}
+			Powerup pu = other.gameObject.GetComponent<Powerup>();
+			if (pu != null) {
+				CollectPowerup(pu);
+			}
 		}
 	}
 	

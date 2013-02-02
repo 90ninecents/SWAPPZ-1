@@ -26,17 +26,17 @@ public class WaveController : MonoBehaviour {
 		
 		Invoke("LaunchWave", Game.TimeBetweenWaves);
 		
-		arrow = GameObject.Find ("ProgressArrow").guiTexture;
+		if (GameObject.Find ("ProgressArrow") != null) arrow = GameObject.Find ("ProgressArrow").guiTexture;
 	}
 	
 	void LaunchWave() {
-		waves[waveNumber-1].SetActiveRecursively(true);
+		waves[waveNumber].SetActiveRecursively(true);
 		
 		// snap camera to wave center
-		if (waveNumber != 1) Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[waveNumber-1].transform);
+		if (waveNumber != 0) Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[waveNumber].transform);
 		
 		if (waveCounter != null) {
-			waveCounter.text = "Wave "+waveNumber;
+			waveCounter.text = "Wave "+(waveNumber+1);
 			waveCounter.GetComponent<SlidingTexture>().StartSlide();
 		}
 		
@@ -44,18 +44,18 @@ public class WaveController : MonoBehaviour {
 	}
 	
 	void CheckWave () {
-		if (Game.EnemyGroup.GetChildCount() == 0 && waveNumber < waves.Length) {
+		if (Game.EnemyGroup.GetChildCount() == 0 && waves[waveNumber].transform.childCount == 0 && waveNumber < waves.Length-1) {
 			waves[waveNumber].SetActiveRecursively(false);
 			waveNumber++;
 			
-			if (waveNumber != 1) {
+			//if (waveNumber != 1) {
 				CoinController.SpawnCoins(coinsOnWaveEnd);
 				Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
-			}
+			//}
 			
 			CancelInvoke("CheckWave");
 		}
-		else if (Game.EnemyGroup.GetChildCount() == 0 && waveNumber == waves.Length) {
+		else if (Game.EnemyGroup.GetChildCount() == 0 && waves[waveNumber].transform.childCount == 0 && waveNumber == waves.Length-1) {
 			if (movePopup != null) movePopup.enabled = true;
 			CancelInvoke("CheckWave");
 			InvokeRepeating("CheckPopupEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
@@ -73,51 +73,20 @@ public class WaveController : MonoBehaviour {
 	}
 	
 	void CheckLevelEnd() {
-		if (GameObject.FindSceneObjectsOfType(typeof(Coin)).Length == 0) {
+		if (CoinController.CoinCount == 0) {
 			CancelInvoke("CheckLevelEnd");
 			Game.EndGame(true);
 		}
 	}
 	
-//	void SpawnRewardCoins(int num) {
-//		// Pick random location in view to spawn coins
-//		
-//		Vector2 randVec;
-//		Vector3 pos = new Vector3();
-//		
-//		for (int i = 0; i < num; i++) {
-//			bool go = false;
-//			
-//			while (!go) {
-//				randVec = new Vector2(Random.Range(0.0f,1.0f)*Screen.width, Random.Range(0.0f,1.0f)*Screen.height);
-//				
-//				Ray ray = Camera.main.ScreenPointToRay(randVec);
-//				RaycastHit hit;
-//				
-//				if (Physics.Raycast(ray, out hit, 1000, 1 << 13)) {
-//					 pos = new Vector3(hit.point.x, hit.point.y+5, hit.point.z);
-//					if (Physics.OverlapSphere(pos, 10).Length == 1) {
-//						go = true;
-//					}
-//				}
-//			}
-//			GameObject coin = Object.Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
-//			coin.transform.position = pos+new Vector3(0,10,0);
-//			coin.GetComponent<Coin>().SetTimes(7.5f, 2.5f);
-//		}
-//		
-//		
-//		Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
-//	}
-	
 	void Update() {
-		if (!IsInvoking() && waveNumber > 1) {
-			if (Mathf.Abs (Camera.main.transform.position.x - waves[waveNumber-1].transform.position.x) < 10.0f) {
+		if (!IsInvoking() && waveNumber > 0) {
+			if (Mathf.Abs (Camera.main.transform.position.x - waves[waveNumber].transform.position.x) < 10.0f) {
 				LaunchWave();
-				arrow.enabled = false;
+				if (arrow != null) arrow.enabled = false;
 			}
 			else {
-				arrow.enabled = true;
+				if (arrow != null) arrow.enabled = true;
 			}
 		}
 	}

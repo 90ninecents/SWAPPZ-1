@@ -5,6 +5,8 @@ using System.Collections.Generic;
 public class CoinController {
 	static List<Coin> coinList = new List<Coin>();
 	
+	public static int CoinCount { get { return coinList.Count; } }
+	
 	public static void SpawnCoins(int num) {
 		Vector2 randVec;
 		Vector3 pos = new Vector3();

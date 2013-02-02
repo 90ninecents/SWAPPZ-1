@@ -10,7 +10,7 @@ public class Spawner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {		
-		InvokeRepeating("SpawnEntity", 0, spawnInterval);
+		InvokeRepeating("SpawnEntity", spawnInterval, spawnInterval);
 	}
 	
 	void SpawnEntity() {
