@@ -10,7 +10,7 @@ public class Coin : MonoBehaviour {
 	bool flag = true;
 	
 	void Awake() {
-		Invoke("Kill", lifeInSeconds);
+		Invoke("ScheduleKill", lifeInSeconds);
 		InvokeRepeating ("Warning", lifeInSeconds-warningTimeInSeconds, warnRateInSeconds);
 	}
 	
@@ -35,9 +35,13 @@ public class Coin : MonoBehaviour {
 		flag = !flag;
 	}
 	
+	void ScheduleKill() {
+		CoinController.KillCoin(this);
+	}
+	
 	public void Kill() {
 		CancelInvoke("Warning");
-		CancelInvoke("Kill");
+		CancelInvoke("ScheduleKill");
 		
 		Destroy (gameObject);
 	}

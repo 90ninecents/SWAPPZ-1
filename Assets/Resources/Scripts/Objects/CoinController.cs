@@ -53,4 +53,10 @@ public class CoinController {
 		}
 	}
 	
+	public static void KillCoin(Coin c) {
+		if (c != null) {
+			coinList.Remove(c);
+			c.Kill();
+		}
+	}
 }

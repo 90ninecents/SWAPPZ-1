@@ -133,7 +133,6 @@ public class Carousel : MonoBehaviour {
 		
 		print (items.Length);
 		foreach (Transform t in items) {
-			print (t);
 			if (Mathf.Abs(t.position.z-Camera.main.transform.position.z) < closestDistance|| closestDistance == 0) {
 				result = t;
 				closestDistance = Mathf.Abs (t.position.z-Camera.main.transform.position.z);

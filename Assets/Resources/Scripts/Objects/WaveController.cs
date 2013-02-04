@@ -56,9 +56,16 @@ public class WaveController : MonoBehaviour {
 			CancelInvoke("CheckWave");
 		}
 		else if (Game.EnemyGroup.GetChildCount() == 0 && waves[waveNumber].transform.childCount == 0 && waveNumber == waves.Length-1) {
-			if (movePopup != null) movePopup.enabled = true;
+			if (movePopup != null) {
+				movePopup.enabled = true;
+				InvokeRepeating("CheckPopupEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
+			}
+			else {
+				CoinController.SpawnCoins(coinsOnLevelEnd);
+				InvokeRepeating("CheckLevelEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
+			}
+			
 			CancelInvoke("CheckWave");
-			InvokeRepeating("CheckPopupEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
 		}
 	}
 	
