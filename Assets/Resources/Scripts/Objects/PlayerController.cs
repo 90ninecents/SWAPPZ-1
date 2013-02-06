@@ -60,13 +60,15 @@ public class PlayerController : MonoBehaviour {
 	
 	// FLAGS----------------------------------------------------------------------------
 	bool cooling = false;				// Flag to indicate whether the turtle is cooling down between attacks
-	bool jumping = false;				// Flag to handle jump attack on distant targets
 	bool invincible = false;			// Affected by powerups
+	
+	bool jumping = false;				// Flag to handle jump attack on distant targets
 	bool dragging = false;				// Tracks dragging state
 	bool swiping = false;				// Tracks swiping state
 	bool moving = false;				// Tracks movement state
-	bool attacked = false;
-	bool swipeUp = false;
+	bool attacked = false;				// Tracks whether an attack has already been made for this swipe gesture
+	bool swipeUp = false;				// Tracks end of swipe whether touch is lifted or not (e.g. drag pause, direction change)
+	bool engaged = false;				// Tracks whether player has engaged an enemy
 	
 	
 	//_________________CHANGE_________________
@@ -107,7 +109,7 @@ public class PlayerController : MonoBehaviour {
 	
 	int capsuleSize = 25;				// The radius of the capsule that represents the area swiped over
 	
-	public float jumpSpeed = 2.5f;			// The speed at which the player jumps/dashes to a distant enemy
+	public float jumpSpeed = 2.5f;		// The speed at which the player jumps/dashes to a distant enemy
 	
 	Vector2 lastTouchPos;
 	
@@ -177,35 +179,31 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnPressAndHold(ChargedInfo ci) {
-		if (!swiping && !dragging && !jumping) {
+		if (!swiping && !engaged && !jumping) {
 			moving = true;
 			
-			Ray ray = Camera.main.ScreenPointToRay(ci.pos);
-			RaycastHit hit;
-			
-			if (Physics.Raycast(ray, out hit, 1000, 1 << 13)) {
-				ArrivalTouch.targetPoint = hit.point;
-			}
+			ArrivalTouch.targetPoint = TouchPoint(ci.pos);
 		}
 	}
 	
 	void OnDrag(DragInfo di) {
 		lastMoveTime = Time.time;
 		
-		if (!moving) {
+		if (!swiping && di.delta.magnitude > 15) {
+			swiping = true;
+			attacked = false;
+		}
+		
+		//if (!moving) {
 			if (!dragging) dragStart = di.pos;
 			dragging = true;
-			
-			if (!swiping && di.delta.magnitude > 15) {
-				swiping = true;
-				attacked = false;
-				moving = false;
-			}
-			
 			
 			lastSwipeDir2 = lastSwipeDir;
 			lastSwipeDir = di.pos-lastTouchPos;
 			lastTouchPos = di.pos;
+		//}
+		if (!engaged) {
+			ArrivalTouch.targetPoint = TouchPoint(di.pos);
 		}
 	}
 	
@@ -223,7 +221,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void OnDragEnd(Vector2 touchPos) {
 		if ((swiping || swipeUp) && !attacked) {
-			dragging = false;
+			
 			dragEnd = touchPos;
 			
 			// Find where the dragging motion intersects playing field
@@ -249,6 +247,9 @@ public class PlayerController : MonoBehaviour {
 				}
 				
 				if (enemyHit != null) {
+					moving = false;
+					dragging = false;
+					
 					hitCount++;
 					if (hitCount > 3) hitCount = 1;
 					
@@ -283,13 +284,19 @@ public class PlayerController : MonoBehaviour {
 	
 	
 	void OnTouchDown(Vector2 touchPos) {
+		ArrivalTouch.targetPoint = TouchPoint(touchPos);
+		moving = true;
 	}
 	
 	
 	void OnTouchUp(Vector2 touchPos) {		
-		if (!dragging) moving = false;
+		if (!dragging && moving && !engaged) {
+			ArrivalTouch.targetPoint = TouchPoint(touchPos);
+			moving = false;
+		}
 		hitCount = 0;
 		dragging = false;
+		engaged = false;
 		
 		if (swiping) {
 			swiping = false;
@@ -297,9 +304,16 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 	
+	void EndEngagement() {
+		engaged = false;
+	}
 	
 	void Update() {
 		if (health > 0) {
+			if (enemyHit == null && engaged) {
+				Invoke ("EndEngagement", 0.75f);
+			}
+			
 			if (swiping) {
 				if (!attacked && Time.time - lastMoveTime > swipeCooldown) {
 					if (Input.touchCount > 0) {
@@ -391,6 +405,7 @@ public class PlayerController : MonoBehaviour {
 	
 	public void ExecuteAttack() {
 		attacked = true;
+		engaged = true;
 		
 		int attackNumber = hitCount;
 		if (hitCount == 0) attackNumber = 1;
@@ -639,5 +654,20 @@ public class PlayerController : MonoBehaviour {
 				weaponTrail2.Play();
 			}
 		}
+	}
+	
+	Vector3 TouchPoint(Vector2 screenPos) {
+		Vector3 result;
+		
+		Ray ray = Camera.main.ScreenPointToRay(screenPos);
+		RaycastHit hit;
+												// Layer of road/playing field
+		if (Physics.Raycast(ray, out hit, 1 << 13)) {
+			result = hit.point;
+		}
+		else result = ArrivalTouch.targetPoint;
+		
+		print(result);
+		return result;
 	}
 }
