@@ -202,7 +202,9 @@ public class Game : MonoBehaviour {
 		
 		// Set up new player character
 		playerObject = go.transform;
-		playerObject.localPosition = newPos+new Vector3(0,100,0);
+		playerObject.localPosition = newPos;//+new Vector3(0,100,0);
+		
+		Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(playerObject);
 		
 //		Boid b = playerObject.GetComponent<Boid>();
 //		b.GetBehaviour("ToTracker").SetWeight(1);

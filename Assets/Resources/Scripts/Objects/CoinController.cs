@@ -35,7 +35,7 @@ public class CoinController {
 		}
 		
 		
-		Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
+		//Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
 	}
 	
 	public static void CheckCoinTap(Vector2 touchPos) {

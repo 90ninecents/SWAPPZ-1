@@ -190,7 +190,6 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnDrag(DragInfo di) {
-		//CancelInvoke("StopTest");
 		lastMoveTime = Time.time;
 		
 		if (!moving) {

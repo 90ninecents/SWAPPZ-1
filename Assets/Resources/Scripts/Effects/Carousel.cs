@@ -25,9 +25,7 @@ public class Carousel : MonoBehaviour {
 		int i = 0;
 		
 		foreach (Transform t in transform.parent) {
-			if (t != transform) {
-				print (t);
-				
+			if (t != transform) {				
 				items[i] = t;			
 				i++;
 			}
@@ -131,7 +129,6 @@ public class Carousel : MonoBehaviour {
 		
 		float closestDistance = 0;
 		
-		print (items.Length);
 		foreach (Transform t in items) {
 			if (Mathf.Abs(t.position.z-Camera.main.transform.position.z) < closestDistance|| closestDistance == 0) {
 				result = t;

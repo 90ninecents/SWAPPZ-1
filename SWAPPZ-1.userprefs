@@ -1,12 +1,11 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/Objects/PlayerController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/General/Game.cs">
     <Files>
-      <File FileName="Assets/Resources/Scripts/General/Game.cs" Line="129" Column="37" />
-      <File FileName="Assets/Resources/Scripts/Objects/PlayerController.cs" Line="344" Column="88" />
-      <File FileName="Assets/Resources/Scripts/Objects/WaveController.cs" Line="46" Column="21" />
-      <File FileName="Assets/Resources/Scripts/Objects/Spawner.cs" Line="13" Column="47" />
-      <File FileName="Assets/Resources/Scripts/Objects/CoinController.cs" Line="8" Column="61" />
+      <File FileName="Assets/Resources/Scripts/Objects/PlayerController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/Objects/WaveController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/UI/ThirdPersonCamera.cs" Line="1" Column="1" />
+      <File FileName="Assets/Resources/Scripts/General/Game.cs" Line="207" Column="71" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
