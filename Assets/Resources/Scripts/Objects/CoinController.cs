@@ -4,6 +4,9 @@ using System.Collections.Generic;
 
 public class CoinController {
 	static List<Coin> coinList = new List<Coin>();
+	static Vector3 curPos = Vector3.zero;
+	static Vector3 lastPos = Vector3.zero;
+	static int capsuleSize = 25;
 	
 	public static int CoinCount { get { return coinList.Count; } }
 	
@@ -39,18 +42,57 @@ public class CoinController {
 	}
 	
 	public static void CheckCoinTap(Vector2 touchPos) {
-		Ray ray = Camera.main.ScreenPointToRay(touchPos);
-		RaycastHit hit;
+		lastPos = curPos;
+		curPos = touchPos;
 		
-		if (Physics.Raycast(ray, out hit, 1000)) {
-			Coin c = hit.transform.GetComponent<Coin>();
-			if (c != null) {
-				coinList.Remove(c);
-				c.Kill();
+		// Find where the dragging motion intersects playing field
+		RaycastHit hit1;
+		Physics.Raycast(Camera.main.ScreenPointToRay(lastPos), out hit1, 5000, ((1 << 13) | (1 << 15)));
+		
+		RaycastHit hit2;
+		Physics.Raycast(Camera.main.ScreenPointToRay(touchPos), out hit2, 5000, ((1 << 13) | (1 << 15)));
+		
+		// Create a capsule from the above hit points and move it towards the camera to see if any enemies were swiped
+//		RaycastHit[] hits =	Physics.CapsuleCastAll(hit1.point, hit2.point, capsuleSize, Camera.main.transform.forward*-1, 0);
+//		
+//		GameObject go1 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+//		go1.transform.localScale = new Vector3(10,10,10);
+//		go1.transform.position = hit1.point;
+//		
+//		GameObject go2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+//		go2.transform.localScale = new Vector3(10,10,10);
+//		go2.transform.position = hit2.point;
+		
+		Collider[] hits = Physics.OverlapSphere(hit2.point, 40);
+		
+		
+		if (hits.Length > 0) {
+			foreach (Collider hit in hits) {
+				Coin c = hit.transform.GetComponent<Coin>();
 				
-				Game.Coins++;
+				if (c != null) {
+					coinList.Remove(c);
+					c.Kill();
+				
+					Game.Coins++;
+				}
 			}
 		}
+			
+			
+			
+//		Ray ray = Camera.main.ScreenPointToRay(touchPos);
+//		RaycastHit hit;
+//		
+//		if (Physics.Raycast(ray, out hit, 1000)) {
+//			Coin c = hit.transform.GetComponent<Coin>();
+//			if (c != null) {
+//				coinList.Remove(c);
+//				c.Kill();
+//				
+//				Game.Coins++;
+//			}
+//		}
 	}
 	
 	public static void KillCoin(Coin c) {

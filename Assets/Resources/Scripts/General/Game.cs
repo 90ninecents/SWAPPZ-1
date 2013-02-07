@@ -53,6 +53,8 @@ public class Game : MonoBehaviour {
 	void Awake () {
 		if (instance == null) instance = this;
 		
+		CoinController.SpawnCoins(10);
+		
 		Application.targetFrameRate = 30;
 		
 		// Load chosen companions

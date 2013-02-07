@@ -1,0 +1,124 @@
+{"frames": {
+
+"BG.png":
+{
+	"frame": {"x":2,"y":2,"w":1024,"h":768},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1024,"h":768},
+	"sourceSize": {"w":1024,"h":768}
+},
+"Don.png":
+{
+	"frame": {"x":1028,"y":2,"w":248,"h":516},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":248,"h":516},
+	"sourceSize": {"w":248,"h":516}
+},
+"GCDown.png":
+{
+	"frame": {"x":660,"y":880,"w":90,"h":106},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":90,"h":106},
+	"sourceSize": {"w":90,"h":106}
+},
+"GCUp.png":
+{
+	"frame": {"x":660,"y":772,"w":90,"h":106},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":90,"h":106},
+	"sourceSize": {"w":90,"h":106}
+},
+"Leo.png":
+{
+	"frame": {"x":1528,"y":324,"w":386,"h":340},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":386,"h":340},
+	"sourceSize": {"w":386,"h":340}
+},
+"Mike.png":
+{
+	"frame": {"x":1528,"y":2,"w":436,"h":320},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":436,"h":320},
+	"sourceSize": {"w":436,"h":320}
+},
+"OptionDown.png":
+{
+	"frame": {"x":1338,"y":906,"w":78,"h":82},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":82},
+	"sourceSize": {"w":78,"h":82}
+},
+"OptionUp.png":
+{
+	"frame": {"x":1258,"y":906,"w":78,"h":82},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":78,"h":82},
+	"sourceSize": {"w":78,"h":82}
+},
+"PlayDown.png":
+{
+	"frame": {"x":1006,"y":862,"w":250,"h":88},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":88},
+	"sourceSize": {"w":250,"h":88}
+},
+"PlayUp.png":
+{
+	"frame": {"x":1006,"y":772,"w":250,"h":88},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":250,"h":88},
+	"sourceSize": {"w":250,"h":88}
+},
+"Ralph.png":
+{
+	"frame": {"x":1258,"y":520,"w":268,"h":384},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":268,"h":384},
+	"sourceSize": {"w":268,"h":384}
+},
+"StoreDown.png":
+{
+	"frame": {"x":752,"y":864,"w":252,"h":90},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":252,"h":90},
+	"sourceSize": {"w":252,"h":90}
+},
+"StoreUp.png":
+{
+	"frame": {"x":752,"y":772,"w":252,"h":90},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":252,"h":90},
+	"sourceSize": {"w":252,"h":90}
+},
+"Title.png":
+{
+	"frame": {"x":2,"y":772,"w":656,"h":216},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":656,"h":216},
+	"sourceSize": {"w":656,"h":216}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "TMNT2x.png",
+	"format": "RGBA8888",
+	"size": {"w":2048,"h":1024},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:edfab79ec462c59d596b852ccf76f412$"
+}
+}

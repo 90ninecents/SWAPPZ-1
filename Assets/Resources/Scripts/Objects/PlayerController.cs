@@ -667,7 +667,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		else result = ArrivalTouch.targetPoint;
 		
-		print(result);
+//		print(result);
 		return result;
 	}
 }
