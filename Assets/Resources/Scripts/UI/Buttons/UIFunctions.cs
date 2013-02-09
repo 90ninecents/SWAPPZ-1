@@ -20,8 +20,7 @@ public class UIFunctions {
 	public static void BackButton (UIButton obj) {
 		StartLoadingGraphic();
 		Application.LoadLevel(Application.loadedLevel-1);
-	}
-	
+	}	
 	
 	static void StartLoadingGraphic() {
 		GameObject loader = Object.Instantiate(Resources.Load("Prefabs/UI/LoadingGraphic")) as GameObject;

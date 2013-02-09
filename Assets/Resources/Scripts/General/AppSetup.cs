@@ -3,7 +3,7 @@ using System.Collections;
 
 public class AppSetup : MonoBehaviour {
 	
-	bool qualityChanged = false;
+	static bool qualityChanged = false;
 	
 	// Use this for initialization
 	void Awake () {
@@ -46,6 +46,6 @@ public class AppSetup : MonoBehaviour {
 		}
 		
 		// Play menu music
-		if (AudioManager.GetChannel("Background").clip.name != "MenuBG") AudioManager.PlayAudio("MenuBG", "Background", 0, true);
+		if (AudioManager.GetChannelClipName("Background") != "MenuBG") AudioManager.PlayAudio("MenuBG", "Background", 0, true);
 	}
 }

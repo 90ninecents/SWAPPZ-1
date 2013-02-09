@@ -7,12 +7,19 @@ public class PopupManager : MonoBehaviour
 	
 	public UIToolkit manager;
 	private int scaleFactor;
+	UIAbsoluteLayout hBox;
+	public GameObject[] activateOnClose;
 	
 	void Start()
 	{	
+		Game.Player.ArrivalTouch.SetWeight(0);
+		
 		scaleFactor = UI.scaleFactor;
+		//Time.timeScale = 0;
 			
-		var bg = UIStateSprite.create( manager , "blackBG.png" , 0 , 0 , 10 );
+		//var bg = UIStateSprite.create( manager , "blackBG.png" , 0 , 0 , 10 );
+		var bg = UIButton.create(manager,"blackBG.png" ,"blackBG.png" , 0 , 0 , 10 );
+		bg.onTouchUpInside += PopupDismiss;
 		
 		var whiteSmear = UIStateSprite.create( manager , "whiteSmear.png" , -40*scaleFactor , -15*scaleFactor , 9 );
 		whiteSmear.hidden = true;
@@ -47,11 +54,26 @@ public class PopupManager : MonoBehaviour
 		centerize( splinter );
 		StartCoroutine( animateScale( splinter , Vector3.zero , Vector3.one , 0.5f , 2f , Easing.Exponential.easeIn ) );
 		
-		var hBox = new UIAbsoluteLayout();
+		hBox = new UIAbsoluteLayout();
 		hBox.addChild( bg , whiteSmear , star1 , brick , whiteBg , circle , yellowSmear , emblem , star2 , splinter );
 		hBox.matchSizeToContentSize();
 		hBox.positionCenter();
 		StartCoroutine( animatePosition( hBox , new Vector3( hBox.position.x , -Screen.height - hBox.height , 0 ) , hBox.position ,  0.3f , 1f , Easing.Exponential.easeOut ) );
+	}
+	
+	void PopupDismiss (UIButton obj) {
+		hBox.hidden = true;
+		
+		foreach (GameObject go in activateOnClose) {
+			go.active = true;
+		}
+		
+		Invoke("EnablePlayer", 0.2f);
+	}
+	
+	void EnablePlayer() {
+		Game.Player.ArrivalTouch.targetPoint = Game.Player.transform.position;
+		Game.Player.ArrivalTouch.SetWeight(1);
 	}
 	
 	private IEnumerator animatePosition( UIAbstractContainer container, Vector3 posStart, Vector3 posStop, float duration , float delay , System.Func<float, float> ease )

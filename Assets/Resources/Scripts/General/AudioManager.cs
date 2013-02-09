@@ -122,6 +122,19 @@ public class AudioManager : MonoBehaviour {
 		}
 	}
 	
+	public static string GetChannelClipName(string channelName) {
+		int index = -1;
+				
+		foreach (AudioClip c in AudioFiles) {
+			index++;
+			if (c == Channels[channelName].clip) {
+				return AudioNames[index];
+			}
+		}
+		
+		return "";
+	}
+	
 	public static void ToggleMute() {
 		instance.muted = !instance.muted;
 		
