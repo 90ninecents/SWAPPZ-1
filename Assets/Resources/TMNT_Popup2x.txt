@@ -1,0 +1,84 @@
+{"frames": {
+
+"blackBG.png":
+{
+	"frame": {"x":186,"y":2,"w":856,"h":274},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":856,"h":274},
+	"sourceSize": {"w":856,"h":273}
+},
+"distressedStar.png":
+{
+	"frame": {"x":896,"y":278,"w":186,"h":100},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":0,"w":186,"h":100},
+	"sourceSize": {"w":189,"h":103}
+},
+"greenDistressedBricks.png":
+{
+	"frame": {"x":1462,"y":204,"w":374,"h":172},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":374,"h":172},
+	"sourceSize": {"w":374,"h":171}
+},
+"splinter.png":
+{
+	"frame": {"x":2,"y":2,"w":182,"h":296},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":182,"h":296},
+	"sourceSize": {"w":181,"h":295}
+},
+"symbol.png":
+{
+	"frame": {"x":1262,"y":204,"w":198,"h":198},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":198,"h":198},
+	"sourceSize": {"w":203,"h":204}
+},
+"whiteBG.png":
+{
+	"frame": {"x":1262,"y":2,"w":628,"h":200},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":628,"h":200},
+	"sourceSize": {"w":628,"h":200}
+},
+"whiteDistressedCircle.png":
+{
+	"frame": {"x":1044,"y":2,"w":216,"h":216},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":216,"h":216},
+	"sourceSize": {"w":220,"h":218}
+},
+"whiteSmear.png":
+{
+	"frame": {"x":576,"y":278,"w":318,"h":110},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":6,"y":0,"w":318,"h":110},
+	"sourceSize": {"w":341,"h":110}
+},
+"yellowSmear.png":
+{
+	"frame": {"x":2,"y":300,"w":572,"h":100},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":24,"y":0,"w":572,"h":100},
+	"sourceSize": {"w":595,"h":117}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "TMNT_Popup2x.png",
+	"format": "RGBA8888",
+	"size": {"w":1892,"h":404},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:bd93fe8bcfe2c170e031e5553d23895c$"
+}
+}

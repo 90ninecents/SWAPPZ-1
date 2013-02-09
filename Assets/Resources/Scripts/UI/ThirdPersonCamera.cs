@@ -10,7 +10,9 @@ public class ThirdPersonCamera : MonoBehaviour {
 	}
 	
 	void Update() {
-		if (target != null) transform.position = new Vector3(target.position.x, transform.position.y, transform.position.z);
+		if (target != null) {
+			transform.position = new Vector3(target.position.x, transform.position.y, transform.position.z);
+		}
 	}	
 	
 // OLD CODE - for wave-locked and dynamic zooming camera	

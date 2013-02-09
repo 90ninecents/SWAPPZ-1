@@ -566,6 +566,9 @@ public class PlayerController : MonoBehaviour {
 			
 			if (health <= 0) {
 				// trigger game over
+				OnDisable();
+				ArrivalTouch.targetPoint = transform.position;
+				
 				CancelInvoke("HealthTick");
 				health = 0;				
 				

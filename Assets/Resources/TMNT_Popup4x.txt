@@ -1,0 +1,84 @@
+{"frames": {
+
+"blackBG.png":
+{
+	"frame": {"x":372,"y":4,"w":1712,"h":548},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":1712,"h":548},
+	"sourceSize": {"w":1711,"h":545}
+},
+"distressedStar.png":
+{
+	"frame": {"x":1792,"y":556,"w":372,"h":200},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":0,"w":372,"h":200},
+	"sourceSize": {"w":378,"h":205}
+},
+"greenDistressedBricks.png":
+{
+	"frame": {"x":2924,"y":408,"w":748,"h":344},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":748,"h":344},
+	"sourceSize": {"w":747,"h":341}
+},
+"splinter.png":
+{
+	"frame": {"x":4,"y":4,"w":364,"h":592},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":364,"h":592},
+	"sourceSize": {"w":362,"h":590}
+},
+"symbol.png":
+{
+	"frame": {"x":2524,"y":408,"w":396,"h":396},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":4,"w":396,"h":396},
+	"sourceSize": {"w":405,"h":407}
+},
+"whiteBG.png":
+{
+	"frame": {"x":2524,"y":4,"w":1256,"h":400},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1256,"h":400},
+	"sourceSize": {"w":1256,"h":400}
+},
+"whiteDistressedCircle.png":
+{
+	"frame": {"x":2088,"y":4,"w":432,"h":432},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":4,"y":4,"w":432,"h":432},
+	"sourceSize": {"w":439,"h":436}
+},
+"whiteSmear.png":
+{
+	"frame": {"x":1152,"y":556,"w":636,"h":220},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":12,"y":0,"w":636,"h":220},
+	"sourceSize": {"w":682,"h":220}
+},
+"yellowSmear.png":
+{
+	"frame": {"x":4,"y":600,"w":1144,"h":200},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":48,"y":0,"w":1144,"h":200},
+	"sourceSize": {"w":1189,"h":234}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "TMNT_Popup4x.png",
+	"format": "RGBA8888",
+	"size": {"w":3784,"h":808},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:bd93fe8bcfe2c170e031e5553d23895c$"
+}
+}

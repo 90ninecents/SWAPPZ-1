@@ -33,7 +33,8 @@ public class WaveController : MonoBehaviour {
 		waves[waveNumber].SetActiveRecursively(true);
 		
 		// snap camera to wave center
-		//if (waveNumber != 0) Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[waveNumber].transform);
+		//if (waveNumber != 0) 
+			//Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[waveNumber].transform);
 		
 		if (waveCounter != null) {
 			waveCounter.text = "Wave "+(waveNumber+1);
@@ -72,7 +73,7 @@ public class WaveController : MonoBehaviour {
 	void CheckPopupEnd() {
 		if (movePopup == null || (movePopup != null && movePopup.enabled == false)) {
 			CoinController.SpawnCoins(coinsOnLevelEnd);
-			//Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
+			Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
 			
 			CancelInvoke("CheckPopupEnd");
 			InvokeRepeating("CheckLevelEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
