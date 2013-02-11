@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour {
 	public Transform weapon2;			// reference to turtle's weapon #2 for trail rendering
 	ParticleSystem weaponTrail2;		// the trail attached to weapon 2
 	
+	GameObject particle;
+	
 	
 	// STATS----------------------------------------------------------------------------
 	public int healthMax = 100;			// Maximum health
@@ -556,9 +558,14 @@ public class PlayerController : MonoBehaviour {
 		if (!invincible && health > 0) {
 			health -= Mathf.RoundToInt(damage-(armor*armorModifier));
 			
-			GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 0"+Random.Range(1,3)+" Particle System")) as GameObject;
-			particle.transform.position = transform.position+new Vector3(0,40,0);
-			Destroy(particle, 1.0f);
+			if (particle == null) {
+				particle = Instantiate(Resources.Load("fx/Prefabs/Hit Stars")) as GameObject;
+				
+				particle.transform.parent = transform;
+				particle.transform.localPosition = new Vector3(0,45,0);
+				
+				Destroy(particle, 0.5f);
+			}
 			
 			
 			if (anim.IsPlaying("idle_"+playerName)) anim.CrossFadeQueued("hit_"+playerName, 0.05f, QueueMode.PlayNow);
@@ -575,6 +582,10 @@ public class PlayerController : MonoBehaviour {
 				anim.CrossFadeQueued("death_"+playerName, 0.05f, QueueMode.PlayNow);
 				Game.PacifyEnemies();
 				Invoke("EndGame", 2.5f);
+		
+				GameObject particle2 = Instantiate(Resources.Load("fx/Prefabs/Landing Impact")) as GameObject;
+				particle2.transform.position = transform.position;
+				Destroy(particle2, 1.0f);
 			}
 			else if (!IsInvoking("HealthTick")) {
 				InvokeRepeating("HealthTick", healthRegenRate/regenModifier, healthRegenRate/regenModifier);

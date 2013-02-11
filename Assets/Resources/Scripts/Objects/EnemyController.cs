@@ -122,9 +122,9 @@ public class EnemyController : MonoBehaviour {
 			
 			health -= damage;
 			anim.CrossFadeQueued("hit_"+enemyName, 0/*.05f*/,QueueMode.PlayNow);
-			GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit 0"+Random.Range(1,3)+" Particle System")) as GameObject;
-			particle.transform.position = transform.position+new Vector3(0,40,0);
-			Destroy(particle, 1.0f);
+			GameObject particle = Instantiate(Resources.Load("fx/Prefabs/Hit Stars")) as GameObject;
+			particle.transform.position = transform.position+new Vector3(0,55,0);
+			Destroy(particle, 0.5f);
 			
 			if (health <= 0) {
 				Game.EnemiesKilled++;

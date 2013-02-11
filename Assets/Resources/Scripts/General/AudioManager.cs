@@ -3,52 +3,78 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class AudioManager : MonoBehaviour {
+	/*
+	 * AudioManager.cs
+	 * Stephanie Owen
+	 * 
+	 * This class provides a simple way to access and manage all AudioClips and AudioSources in the project.
+	 * 
+	 */
+	
+	
 	public static AudioManager instance;
 	
-	public static string NewChannel { get { return "NEW_CHANNEL"; } }
-	public static string UnusedChannel { get { return "1ST_UNUSED_CHANNEL"; } }
+	public static string NewChannel { get { return "NEW_CHANNEL"; } }			// Constant string used to signal the creation of a new, one-use AudioSource
+	public static string UnusedChannel { get { return "1ST_UNUSED_CHANNEL"; } } // Constant string used to signal the use of the first AudioSource in the manager that is not playing a clip
 	
-	public AudioClip[] audioFiles;
-	public string[] audioNames;
+	// Inspector variables
+	public AudioClip[] audioFiles;				// List of all AudioClips to be managed by this class
+	public string[] audioNames;					// List of the desired names for the AudioClips assigned to this manager, in order
 	
-	public string[] channelNames;
+	public string[] channelNames;				// List of the desired names for the AudioSources (channels) managed by this object; the number of elements dictates the number of permanent AudioSource components
 	
-	Dictionary<string, AudioSource> channels;	
+	Dictionary<string, AudioSource> channels;	// Dictionary of permanent AudioSources using names as keys
 	
-	bool muted = false;
+	bool muted = false;							// Flag that indicates whether all audio is muted
 	
+	// Getters
 	public static AudioClip[] AudioFiles { get { return instance.audioFiles; } }
 	public static string[]    AudioNames { get { return instance.audioNames; } }
 	public static bool 		  IsMuted 	 { get { return instance.muted; } }
 	
 	public static Dictionary<string, AudioSource> Channels { get { return instance.channels; } }
 	
-	// Use this for initialization
+	
+	// Methods
+	
 	void Awake () {
+		/*
+		 * Check inspector-assigned values and initialize permanent AudioSource components
+		 */ 
+		
 		if (instance == null) {
 			instance = this;
 			
+			// If there is a mismatch between number of AudioClips and number of clip names, exit
 			if (AudioFiles.Length != AudioNames.Length) {
 				Debug.LogError("AudioManager: Number of AudioClips does not match number of audio names set in the Inspector.");
 				return;
 			}
 			
+			// Create dictionary
 			channels = new Dictionary<string, AudioSource>();
 			
+			// Create permanent AudioSources
 			foreach (string s in channelNames) {
 				AudioSource source = gameObject.AddComponent<AudioSource>();
 				source.playOnAwake = false;
 				channels.Add(s, source);
 			}
 			
+			// Prevent this object from being destroyed on scene load
 			DontDestroyOnLoad(transform);
 		}
 		else {
+			// If an instance already exists, destroy duplicate
 			Destroy(this);
 		}
 	}
 	
 	public static void PlayAudio(string name, string channelName = "", float delay = 0, bool looping = false) {
+		/*
+		 * Takes the name of the desired clip and the name of the desired channel, and uses the specified channel to play the AudioClip after 'delay' seconds
+		 */ 
+		
 		int index = -1;
 		
 		foreach (string s in AudioNames) {
@@ -98,18 +124,31 @@ public class AudioManager : MonoBehaviour {
 	}
 	
 	public static void StopChannel(string name) {
+		/*
+		 * Takes the name of a channel and stops the AudioSource
+		 */ 
 		Channels[name].Stop();
 	}
 	
 	public static void ChangeChannelVolume(string name, float volume) {
+		/*
+		 * Takes the name of a channel and changes the volume of the AudioSource
+		 */ 
 		Channels[name].volume = volume;
 	}
 	
 	public static AudioSource GetChannel(string name) {
+		/*
+		 * Takes the name of a channel and returns the AudioSource
+		 */ 
 		return Channels[name];
 	}
 	
 	static void CreateNewChannel(AudioClip clip, float delay, bool looping) {
+		/*
+		 * Takes an AudioClip and creates a new AudioSource component to play it, then destroys the AudioSource after completion
+		 */ 
+		
 		// If game is muted, don't bother 
 		if (!instance.muted) {
 			AudioSource a = instance.gameObject.AddComponent<AudioSource>();
@@ -123,6 +162,9 @@ public class AudioManager : MonoBehaviour {
 	}
 	
 	public static string GetChannelClipName(string channelName) {
+		/*
+		 * Takes the name of a channel and returns the name of the clip it is currently playing
+		 */ 
 		int index = -1;
 				
 		foreach (AudioClip c in AudioFiles) {
@@ -136,6 +178,9 @@ public class AudioManager : MonoBehaviour {
 	}
 	
 	public static void ToggleMute() {
+		/*
+		 * Toggles the muted state of all AudioSources
+		 */ 
 		instance.muted = !instance.muted;
 		
 		foreach (AudioSource s in instance.transform.GetComponents<AudioSource>()) {

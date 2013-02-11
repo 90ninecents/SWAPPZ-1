@@ -218,21 +218,21 @@ mono_image_table:
 
 	.long 3
 	.asciz "Assembly-UnityScript-firstpass"
-	.asciz "D14734B0-A2B6-405B-B702-573E33349AB9"
+	.asciz "DBD1E52F-ABEB-4D15-9B5E-F9B3A8484E1F"
 	.asciz ""
 	.asciz ""
 	.align 3
 
 	.long 0,0,0,0,0
 	.asciz "UnityEngine"
-	.asciz "397EB7DD-2080-42D6-B156-D2E1467D59BD"
+	.asciz "8F01CB1D-DBB0-4CE7-82CC-5383C67F0C32"
 	.asciz ""
 	.asciz ""
 	.align 3
 
 	.long 0,0,0,0,0
 	.asciz "mscorlib"
-	.asciz "72322B21-AE82-4817-AF66-622A5EDCAD10"
+	.asciz "61CEC9FC-8ED2-4A3A-A7EB-B39C9737000C"
 	.asciz ""
 	.asciz "7cec85d7bea7798e"
 	.align 3
@@ -257,7 +257,7 @@ mono_aot_file_info:
 .text
 	.align 2
 mono_assembly_guid:
-	.asciz "D14734B0-A2B6-405B-B702-573E33349AB9"
+	.asciz "DBD1E52F-ABEB-4D15-9B5E-F9B3A8484E1F"
 .text
 	.align 2
 mono_aot_version:
