@@ -286,8 +286,12 @@ public class PlayerController : MonoBehaviour {
 	
 	
 	void OnTouchDown(Vector2 touchPos) {
-		ArrivalTouch.targetPoint = TouchPoint(touchPos);
+		Vector3 touch = TouchPoint(touchPos);
+		ArrivalTouch.targetPoint = touch;
 		moving = true;
+		
+		GameObject effect = Instantiate(Resources.Load("FX/Prefabs/Tap Effect"), touch, Quaternion.identity) as GameObject;
+		Destroy (effect, 0.3f);
 	}
 	
 	
@@ -304,6 +308,11 @@ public class PlayerController : MonoBehaviour {
 			swiping = false;
 			swipeUp = true;
 		}
+		
+		Vector3 touch = TouchPoint(touchPos);
+		
+		GameObject effect = Instantiate(Resources.Load("FX/Prefabs/Tap Effect"), touch, Quaternion.identity) as GameObject;
+		Destroy (effect, 0.3f);
 	}
 	
 	void EndEngagement() {

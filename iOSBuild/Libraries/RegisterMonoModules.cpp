@@ -14,7 +14,6 @@ extern "C"
 	extern gboolean		mono_aot_only;
 	extern gpointer*	mono_aot_module_Assembly_CSharp_firstpass_info; // Assembly-CSharp-firstpass.dll
 	extern gpointer*	mono_aot_module_Assembly_CSharp_info; // Assembly-CSharp.dll
-	extern gpointer*	mono_aot_module_Assembly_UnityScript_firstpass_info; // Assembly-UnityScript-firstpass.dll
 	extern gpointer*	mono_aot_module_System_Core_info; // System.Core.dll
 	extern gpointer*	mono_aot_module_System_info; // System.dll
 	extern gpointer*	mono_aot_module_UnityEngine_info; // UnityEngine.dll
@@ -115,7 +114,6 @@ void RegisterMonoModules()
 	mono_ficall_flag = true;
 	mono_aot_register_module(mono_aot_module_Assembly_CSharp_firstpass_info);
 	mono_aot_register_module(mono_aot_module_Assembly_CSharp_info);
-	mono_aot_register_module(mono_aot_module_Assembly_UnityScript_firstpass_info);
 	mono_aot_register_module(mono_aot_module_System_Core_info);
 	mono_aot_register_module(mono_aot_module_System_info);
 	mono_aot_register_module(mono_aot_module_UnityEngine_info);
@@ -872,6 +870,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Object_CompareBaseObjects ();
 	void Register_UnityEngine_Object_Internal_CloneSingle ();
 	Register_UnityEngine_Object_Internal_CloneSingle ();
+	void Register_UnityEngine_Object_INTERNAL_CALL_Internal_InstantiateSingle ();
+	Register_UnityEngine_Object_INTERNAL_CALL_Internal_InstantiateSingle ();
 	void Register_UnityEngine_Object_Destroy ();
 	Register_UnityEngine_Object_Destroy ();
 	void Register_UnityEngine_Object_FindObjectsOfType ();
@@ -882,8 +882,6 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Object_set_name ();
 	void Register_UnityEngine_Object_DontDestroyOnLoad ();
 	Register_UnityEngine_Object_DontDestroyOnLoad ();
-	void Register_UnityEngine_Object_DestroyObject ();
-	Register_UnityEngine_Object_DestroyObject ();
 	void Register_UnityEngine_Object_ToString ();
 	Register_UnityEngine_Object_ToString ();
 	void Register_UnityEngine_ParticleSystem_get_isPlaying ();

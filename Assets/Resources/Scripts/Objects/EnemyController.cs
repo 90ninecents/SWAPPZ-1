@@ -138,8 +138,12 @@ public class EnemyController : MonoBehaviour {
 				CancelInvoke("AttackDelay");
 				//arrivalComponent.SetWeight(0);
 				//anim.Stop();
-				//anim.CrossFadeQueued("death_"+enemyName, 0.05f, QueueMode.PlayNow);
-				Destroy(gameObject);
+				if (transform.name.StartsWith("Foot Clan Throwing Star")) {
+					anim.CrossFadeQueued("death_"+enemyName, 0.05f, QueueMode.PlayNow);
+					Destroy(gameObject, 2.0f);
+				}
+				else Destroy(gameObject);
+				
 				Destroy (this);
 			}
 		}
