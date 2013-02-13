@@ -136,14 +136,18 @@ public class EnemyController : MonoBehaviour {
 				}
 				
 				CancelInvoke("AttackDelay");
-				//arrivalComponent.SetWeight(0);
-				//anim.Stop();
-				if (transform.name.StartsWith("Foot Clan Throwing Star")) {
-					anim.CrossFadeQueued("death_"+enemyName, 0.05f, QueueMode.PlayNow);
-					Destroy(gameObject, 2.0f);
-				}
-				else Destroy(gameObject);
+
+				anim.CrossFadeQueued("death_"+enemyName, 0.05f, QueueMode.PlayNow);
+				Destroy(gameObject, 2.0f);
 				
+				foreach (SteeringBehaviour sb in gameObject.GetComponents<SteeringBehaviour>()) {
+					Destroy (sb);
+				}
+				
+				Destroy (transform.FindChild("Shadow").gameObject);
+				Destroy (gameObject.GetComponent<Boid>());
+				Destroy (collider);
+				Destroy (rigidbody);
 				Destroy (this);
 			}
 		}
