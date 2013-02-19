@@ -62,6 +62,7 @@ public class PopupManager : MonoBehaviour
 	}
 	
 	void PopupDismiss (UIButton obj) {
+		StopAllCoroutines();
 		hBox.hidden = true;
 		
 		foreach (GameObject go in activateOnClose) {
