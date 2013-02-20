@@ -130,10 +130,10 @@ public class EnemyController : MonoBehaviour {
 				Game.EnemiesKilled++;
 				Game.Score += score;
 				
-				if (Game.SpawnCoin()) {
-					GameObject coin = Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
-					coin.transform.position = transform.position+new Vector3(0,15,0);
-				}
+//				if (Game.SpawnCoin()) {
+//					GameObject coin = Instantiate(Resources.Load("Prefabs/Objects/General/Coin")) as GameObject;
+//					coin.transform.position = transform.position+new Vector3(0,15,0);
+//				}
 				
 				CancelInvoke("AttackDelay");
 

@@ -47,5 +47,8 @@ public class AppSetup : MonoBehaviour {
 		
 		// Play menu music
 		if (AudioManager.GetChannelClipName("Background") != "MenuBG") AudioManager.PlayAudio("MenuBG", "Background", 0, true);
+		
+		// debugging
+		LanguageManager.Test();
 	}
 }

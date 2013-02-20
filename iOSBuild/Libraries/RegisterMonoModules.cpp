@@ -864,6 +864,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_MonoBehaviour_StartCoroutine ();
 	void Register_UnityEngine_MonoBehaviour_StopCoroutine ();
 	Register_UnityEngine_MonoBehaviour_StopCoroutine ();
+	void Register_UnityEngine_MonoBehaviour_StopAllCoroutines ();
+	Register_UnityEngine_MonoBehaviour_StopAllCoroutines ();
 	void Register_UnityEngine_MonoBehaviour__ctor ();
 	Register_UnityEngine_MonoBehaviour__ctor ();
 	void Register_UnityEngine_Object_CompareBaseObjects ();
