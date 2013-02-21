@@ -888,12 +888,6 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Object_ToString ();
 	void Register_UnityEngine_ParticleSystem_get_isPlaying ();
 	Register_UnityEngine_ParticleSystem_get_isPlaying ();
-	void Register_UnityEngine_ParticleSystem_Internal_Play ();
-	Register_UnityEngine_ParticleSystem_Internal_Play ();
-	void Register_UnityEngine_ParticleSystem_Internal_Stop ();
-	Register_UnityEngine_ParticleSystem_Internal_Stop ();
-	void Register_UnityEngine_ParticleSystem_Internal_Clear ();
-	Register_UnityEngine_ParticleSystem_Internal_Clear ();
 	void Register_UnityEngine_ParticleSystem_INTERNAL_CALL_Emit ();
 	Register_UnityEngine_ParticleSystem_INTERNAL_CALL_Emit ();
 	void Register_UnityEngine_Physics_INTERNAL_get_gravity ();

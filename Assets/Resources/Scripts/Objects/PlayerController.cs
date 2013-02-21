@@ -13,9 +13,7 @@ public class PlayerController : MonoBehaviour {
 	public string playerName;			// Player's name (e.g. Leonardo)
 	
 	public Transform weapon1;			// reference to turtle's weapon #1 for trail rendering
-	ParticleSystem weaponTrail1;		// the trail attached to weapon 1
 	public Transform weapon2;			// reference to turtle's weapon #2 for trail rendering
-	ParticleSystem weaponTrail2;		// the trail attached to weapon 2
 	
 	GameObject particle;
 	
@@ -71,6 +69,8 @@ public class PlayerController : MonoBehaviour {
 	bool attacked = false;				// Tracks whether an attack has already been made for this swipe gesture
 	bool swipeUp = false;				// Tracks end of swipe whether touch is lifted or not (e.g. drag pause, direction change)
 	bool engaged = false;				// Tracks whether player has engaged an enemy
+	
+	bool trailsOn = true;
 	
 	
 	//_________________CHANGE_________________
@@ -136,19 +136,13 @@ public class PlayerController : MonoBehaviour {
 		anim = transform.GetComponentInChildren<Animation>();
 		
 		playerName = transform.name.Substring(0, transform.name.Length-7);
-		
-		if (weapon1 != null) {
-			weaponTrail1 = weapon1.GetComponentInChildren<ParticleSystem>();
-			weaponTrail1.Stop();
-		}
-		if (weapon2 != null) {
-			weaponTrail2 = weapon2.GetComponentInChildren<ParticleSystem>();
-			weaponTrail2.Stop();
-		}
+
 		
 		if (playerName == "Michelangelo") {
 			weapon1.gameObject.active = false;
 		}
+		
+		ToggleTrail();
 	}
 	
 	void OnEnable() {
@@ -425,38 +419,35 @@ public class PlayerController : MonoBehaviour {
 			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
 			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
 			
-			CancelInvoke("BreakCombo");
-			
-			currentCombo += ""+attackNumber;
-			
-			bool match = false;
-			for (int i = 0; i < combos.Length; i++) {
-				if (combos[i].StartsWith(currentCombo)) {
-					if (combos[i] == currentCombo) {
-						currentCombo = "";
-						if (comboMeter < comboMax) comboMeter += Mathf.RoundToInt(comboPoints*comboModifier);
-						
-						anim.CrossFadeQueued("attack3_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[2];
-						anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
-						
-						ToggleTrail1();
-						Invoke("ToggleTrail1", attackSpeeds[2]/3);
-						
-						ToggleTrail2();
-						Invoke("ToggleTrail2", attackSpeeds[2]/3);
-					}
-					match = true;
-				}
-			}
-			
-			if (currentCombo != "") {
-				//Invoke("ToggleTrail"+attackNumber, 0);
-				//Invoke("ToggleTrail"+attackNumber, attackSpeeds[attackNumber-1]/3);
-			}
-			
-			if (!match) {
-				currentCombo = currentCombo.Remove(0,1);
-			}
+//			CancelInvoke("BreakCombo");
+//			
+//			currentCombo += ""+attackNumber;
+//			
+//			bool match = false;
+//			for (int i = 0; i < combos.Length; i++) {
+//				if (combos[i].StartsWith(currentCombo)) {
+//					if (combos[i] == currentCombo) {
+//						currentCombo = "";
+//						if (comboMeter < comboMax) comboMeter += Mathf.RoundToInt(comboPoints*comboModifier);
+//						
+//						anim.CrossFadeQueued("attack3_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[2];
+//						anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
+//						
+//						ToggleTrail();
+//						Invoke("ToggleTrail", 1);
+//					}
+//					match = true;
+//				}
+//			}
+//			
+//			if (currentCombo != "") {
+//				//Invoke("ToggleTrail"+attackNumber, 0);
+//				//Invoke("ToggleTrail"+attackNumber, attackSpeeds[attackNumber-1]/3);
+//			}
+//			
+//			if (!match) {
+//				currentCombo = currentCombo.Remove(0,1);
+//			}
 			
 
 			
@@ -473,6 +464,18 @@ public class PlayerController : MonoBehaviour {
 					toEnemy = transform.position-enemy.transform.position;
 					
 					if (Mathf.Abs(Vector3.Angle(transform.forward, toEnemy)) >= 130) {
+						if (!hit) {
+							if (!trailsOn) {
+								ToggleTrail();
+							}
+							else {
+								CancelInvoke("ToggleTrail");
+							}
+							
+							Invoke("ToggleTrail", 0.5f);
+						}
+						
+						
 						enemy.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), transform);
 						// Get XP on hit
 						if (xp < xpTNL) ReceiveXP(enemy.xpGain);
@@ -486,7 +489,7 @@ public class PlayerController : MonoBehaviour {
 			else AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), AudioManager.UnusedChannel);
 	
 			// Combo/jumping/cooldowns
-			if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
+			//if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
 			
 			cooling = true;
 			Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber-1]*speedModifier);
@@ -654,28 +657,14 @@ public class PlayerController : MonoBehaviour {
 		xp += Mathf.RoundToInt(amount*xpModifier);
 	}
 	
-	void ToggleTrail1() {
-		if (weaponTrail1 != null) {
-			if (weaponTrail1.isPlaying) {
-				weaponTrail1.Stop ();
-				weaponTrail1.Clear();
-			}
-			else {
-				weaponTrail1.Clear();
-				weaponTrail1.Play();
-			}
+	void ToggleTrail() {
+		trailsOn = !trailsOn;
+			
+		if (weapon1 != null) {
+			weapon1.GetComponent<TrailRenderer>().enabled = trailsOn;
 		}
-	}
-	void ToggleTrail2() {
-		if (weaponTrail2 != null) {
-			if (weaponTrail2.isPlaying) {
-				weaponTrail2.Stop ();
-				weaponTrail2.Clear();
-			}
-			else {
-				weaponTrail2.Clear();
-				weaponTrail2.Play();
-			}
+		if (weapon2 != null) {
+			weapon2.GetComponent<TrailRenderer>().enabled = trailsOn;
 		}
 	}
 	
