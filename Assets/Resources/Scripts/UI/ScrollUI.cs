@@ -40,7 +40,7 @@ public class ScrollUI : MonoBehaviour {
 		leftButton.client.name = "LeftButton";
 		rightButton.client.name = "RightButton";
 		
-		var headline = new UIText("Molot", "Molot");
+		//var headline = new UIText("Molot", "Molot");
 		
 	}
 	
@@ -163,13 +163,11 @@ public class ScrollUI : MonoBehaviour {
 				sort.onComplete = () => { 
 				Debug.Log("Running after completion of animations");
 				HideOutOfScreenItems();
-				itemsInScroll.Remove(uiButton);
-				
 			};
 			Debug.Log("Moving " + itemsInScroll[i + 1].client.name + " to " + itemsInScroll[i].client.name);
 			//itemsInScroll[i].pixelsFromCenter(0, i * 220);
 		}
-		
+		itemsInScroll.Remove(uiButton);
 	}
 	
 	void AnimateSlots() {
