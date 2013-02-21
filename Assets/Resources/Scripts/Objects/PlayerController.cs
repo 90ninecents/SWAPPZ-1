@@ -191,7 +191,7 @@ public class PlayerController : MonoBehaviour {
 	void OnDrag(DragInfo di) {
 		lastMoveTime = Time.time;
 		
-		if (!swiping && di.delta.magnitude > 15) {
+		if (!swiping && di.delta.magnitude > 25) {
 			swiping = true;
 			attacked = false;
 		}
