@@ -1,9 +1,12 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/UI/ScrollUI.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Resources/Scripts/UI/ItemLoadoutManager.cs">
     <Files>
-      <File FileName="Assets/Resources/Scripts/UI/ScrollUI.cs" Line="313" Column="3" />
+      <File FileName="Assets/Resources/Scripts/UI/ItemLoadoutManager.cs" Line="41" Column="32" />
       <File FileName="Assets/Resources/Scripts/General/Util.cs" Line="4" Column="25" />
+      <File FileName="Assets/Resources/ItemLoadoutSheet.txt" Line="83" Column="8" />
+      <File FileName="Assets/Resources/Scripts/General/AppSetup.cs" Line="20" Column="3" />
+      <File FileName="Assets/Plugins/InputTouches/General.cs" Line="60" Column="5" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -16,7 +19,7 @@
                   <Node name="Menus" expanded="True" />
                   <Node name="UI" expanded="True">
                     <Node name="Buttons" expanded="True" />
-                    <Node name="ScrollUI.cs" selected="True" />
+                    <Node name="ItemLoadoutManager.cs" selected="True" />
                   </Node>
                 </Node>
               </Node>
@@ -25,6 +28,7 @@
           <Node name="Assembly-CSharp-firstpass" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Plugins" expanded="True">
+                <Node name="InputTouches" expanded="True" />
                 <Node name="UIToolkit" expanded="True">
                   <Node name="UIToolkit" expanded="True">
                     <Node name="BaseElements" expanded="True" />

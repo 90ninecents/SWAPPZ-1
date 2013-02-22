@@ -14,15 +14,55 @@ public class ItemLoadoutManager : MonoBehaviour {
 	private List<UIButton> itemsInInventory, itemsInSlots;
 	private UIHorizontalLayout inventoryContainer, slotContainer;
 	
-	private UITextInstance headlineText;
+	private UITextInstance headlineText, descriptionText;
 	#endregion
 	
 	#region Initializations
 	void Start() {
+		
+		inventoryItemNames = new List<string>();
+		var itemsFromSavedData = SavedData.Inventory.Split(SavedData.Separator[0]);
+		foreach (string itemName in itemsFromSavedData)
+			inventoryItemNames.Add(itemName);
+		
 		StaticObjects();
 		CreateInventory();
 		CreateSlots();
 	}
+	
+	bool dragging = false;
+	Vector2 dragStartPos;
+	
+	void OnEnable() {
+		Gesture.onDraggingE += OnDraggingE;
+		Gesture.onDraggingEndE += OnDraggingEnd;
+	}
+
+	void OnDisable() {
+		Gesture.onDraggingE -= OnDraggingE;
+	}
+	
+	void OnDraggingE (DragInfo dragInfo) {
+		if (!dragging) {
+			dragging = true;
+			dragStartPos = dragInfo.pos;
+		}
+	}
+	
+	void OnDraggingEnd (Vector2 pos) {
+		dragging = false;
+		Vector2 direction = (dragStartPos - pos);
+		direction.Normalize();
+		//Debug.Log(direction);
+		if (Mathf.Abs(direction.y) < 0.2) {
+			if (Mathf.Sign(direction.x) != 1)
+				MoveLeft();
+			else
+				MoveRight();
+		}
+	}
+
+
 	
 	/// <summary>
 	/// Statics all the buttons and static objects in the scene.
@@ -52,11 +92,16 @@ public class ItemLoadoutManager : MonoBehaviour {
 		backButton.scale = new Vector2(0.4f, 0.4f);
 		nextButton.scale = new Vector2(0.4f, 0.4f);
 		
-		UIText headlineTextUI = new UIText(UITextManager, "prototype", "prototype.png");
-		headlineText = headlineTextUI.addTextInstance("hello world", 0, 0);
+		UIText textUI = new UIText(UITextManager, "prototype", "prototype.png");
+		headlineText = textUI.addTextInstance("hello world", 0, 0);
 		headlineText.alignMode = UITextAlignMode.Center;
 		headlineText.positionCenter();
-		headlineText.position = new Vector2(headlineText.position.x, headlineText.position.y - 200);
+		headlineText.position = new Vector2(headlineText.position.x, headlineText.position.y - 150);
+		
+		descriptionText = textUI.addTextInstance("Neque porro quisquam est qui dolorem ipsum\nquia dolor sit amet, consectetur, adipisci velit..", 0, 0);
+		descriptionText.alignMode = UITextAlignMode.Center;
+		descriptionText.positionCenter();
+		descriptionText.position = new Vector2(descriptionText.position.x, descriptionText.position.y - 200);
 	}
 	#endregion
 	
@@ -121,7 +166,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 				highlightedButton.scaleTo(0.1f, new Vector2(1.2f, 1.2f), Easing.Bounce.easeOut);
 				headlineText.text = highlightedButton.client.name;
 				headlineText.positionCenter();
-				headlineText.position = new Vector2(headlineText.position.x, headlineText.position.y - 200);
+				headlineText.position = new Vector2(headlineText.position.x, headlineText.position.y - 150);
 			}
 			
 		}
@@ -132,7 +177,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 	/// There is no way to insert between buttons in UItoolkit's horzontial panel.
 	/// </summary>
 	void RefreshInventory() {
-
+		
 		for (int i = 0; i < itemsInInventory.Count; i++) {
 			if (i != storedNewIndex)
 				inventoryContainer.removeChild(itemsInInventory[i], false);
@@ -216,7 +261,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 				HighlightedButton = itemsInInventory[indexOfPreviousItem];
 				HideItemsInInventory();
 				animating = false;
-				Debug.Log("Highlighted item: " + HighlightedButton.client.name);
+				//Debug.Log("Highlighted item: " + HighlightedButton.client.name);
 			};
 		}
 	}
@@ -242,7 +287,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 				HighlightedButton = itemsInInventory[indexOfNextItem];
 				HideItemsInInventory();
 				animating = false;
-				Debug.Log("Highlighted item: " + HighlightedButton.client.name);
+				//Debug.Log("Highlighted item: " + HighlightedButton.client.name);
 			};
 		}
 	}
@@ -254,11 +299,17 @@ public class ItemLoadoutManager : MonoBehaviour {
 		
 	}
 	
+	string itemsToLoadout;
 	/// <summary>
 	/// Saves the inventory list and also the inventory slot.
 	/// </summary>
 	void NextButton() {
-		//This is where you write the code to save the data of both the Inventory and in the slots.
+		foreach (UIButton item in itemsInSlots) {
+			itemsToLoadout += item.client.name;
+			if (itemsInSlots.IndexOf(item) != itemsInSlots.Count - 1)
+				itemsToLoadout += "|";
+		}
+		SavedData.ItemLoadout = itemsToLoadout;
 	}
 	#endregion
 	

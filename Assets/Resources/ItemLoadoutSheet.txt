@@ -16,7 +16,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":498,"h":174},
 	"sourceSize": {"w":498,"h":174}
 },
-"BlueOoze.png":
+"ItemCombo.png":
 {
 	"frame": {"x":2,"y":178,"w":219,"h":239},
 	"rotated": false,
@@ -24,7 +24,7 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":219,"h":239},
 	"sourceSize": {"w":219,"h":239}
 },
-"GreenOoze.png":
+"ItemInvincibility.png":
 {
 	"frame": {"x":223,"y":178,"w":219,"h":239},
 	"rotated": false,
@@ -56,7 +56,31 @@
 	"spriteSourceSize": {"x":0,"y":0,"w":498,"h":174},
 	"sourceSize": {"w":498,"h":174}
 },
-"OrangeOoze.png":
+"ItemPizzaFull.png":
+{
+	"frame": {"x":2,"y":595,"w":219,"h":239},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":219,"h":239},
+	"sourceSize": {"w":219,"h":239}
+},
+"ItemSizeUp.png":
+{
+	"frame": {"x":2,"y":178,"w":219,"h":239},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":219,"h":239},
+	"sourceSize": {"w":219,"h":239}
+},
+"ItemSpeed.png":
+{
+	"frame": {"x":223,"y":178,"w":219,"h":239},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":219,"h":239},
+	"sourceSize": {"w":219,"h":239}
+},
+"ItemXP.png":
 {
 	"frame": {"x":2,"y":595,"w":219,"h":239},
 	"rotated": false,
