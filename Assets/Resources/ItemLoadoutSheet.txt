@@ -1,8 +1,24 @@
 {"frames": {
 
+"BackButton_Down.png":
+{
+	"frame": {"x":2,"y":2,"w":498,"h":174},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":498,"h":174},
+	"sourceSize": {"w":498,"h":174}
+},
+"BackButton_Up.png":
+{
+	"frame": {"x":502,"y":2,"w":498,"h":174},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":498,"h":174},
+	"sourceSize": {"w":498,"h":174}
+},
 "BlueOoze.png":
 {
-	"frame": {"x":2,"y":484,"w":219,"h":239},
+	"frame": {"x":2,"y":178,"w":219,"h":239},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":219,"h":239},
@@ -10,7 +26,7 @@
 },
 "GreenOoze.png":
 {
-	"frame": {"x":2,"y":243,"w":219,"h":239},
+	"frame": {"x":223,"y":178,"w":219,"h":239},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":219,"h":239},
@@ -18,39 +34,39 @@
 },
 "LeftButton.png":
 {
-	"frame": {"x":223,"y":2,"w":111,"h":195},
+	"frame": {"x":444,"y":178,"w":111,"h":195},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":111,"h":195},
 	"sourceSize": {"w":111,"h":195}
 },
+"NextButton_Down.png":
+{
+	"frame": {"x":2,"y":419,"w":498,"h":174},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":498,"h":174},
+	"sourceSize": {"w":498,"h":174}
+},
+"NextButton_Up.png":
+{
+	"frame": {"x":502,"y":419,"w":498,"h":174},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":498,"h":174},
+	"sourceSize": {"w":498,"h":174}
+},
 "OrangeOoze.png":
 {
-	"frame": {"x":2,"y":2,"w":219,"h":239},
+	"frame": {"x":2,"y":595,"w":219,"h":239},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":219,"h":239},
 	"sourceSize": {"w":219,"h":239}
 },
-"Pasta.png":
-{
-	"frame": {"x":2,"y":725,"w":145,"h":224},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":145,"h":224},
-	"sourceSize": {"w":145,"h":224}
-},
-"Pizza.png":
-{
-	"frame": {"x":223,"y":199,"w":131,"h":165},
-	"rotated": false,
-	"trimmed": false,
-	"spriteSourceSize": {"x":0,"y":0,"w":131,"h":165},
-	"sourceSize": {"w":131,"h":165}
-},
 "RightButton.png":
 {
-	"frame": {"x":149,"y":725,"w":111,"h":195},
+	"frame": {"x":223,"y":595,"w":111,"h":195},
 	"rotated": false,
 	"trimmed": false,
 	"spriteSourceSize": {"x":0,"y":0,"w":111,"h":195},
@@ -63,6 +79,6 @@
 	"format": "RGBA8888",
 	"size": {"w":1024,"h":1024},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:c22c36d32dcbf918e9b3e594f7fc1176$"
+	"smartupdate": "$TexturePacker:SmartUpdate:b37e769f50eea7cc9f0f58c7046ea483$"
 }
 }
