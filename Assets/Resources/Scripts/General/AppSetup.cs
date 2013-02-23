@@ -17,7 +17,7 @@ public class AppSetup : MonoBehaviour {
 		// debugging
 		//SavedData.Characters = "CharacterLeonardo|CharacterDonatello|CharacterMichelangelo|CharacterRaphael";
 		//SavedData.UnlockedCharacters = "CharacterLeonardo|CharacterMichelangelo";
-		SavedData.Inventory = "ItemCombo|ItemInvincibility|ItemPizzaFull|ItemSizeUp|ItemSpeed|ItemXP";
+		SavedData.Inventory = "ItemCombo|ItemInvincibility|ItemPizzaFull|ItemSizeUp|ItemSpeed|ItemXP|ItemNuke|ItemCombo|ItemInvincibility|ItemPizzaFull|ItemSizeUp|ItemSpeed|ItemXP|ItemNuke";
 		// ---------
 		
 		if (!qualityChanged) {

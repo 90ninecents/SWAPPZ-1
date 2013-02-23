@@ -1,0 +1,92 @@
+{"frames": {
+
+"TMNT_IconsActiveWACake_121212_AE_v01.png":
+{
+	"frame": {"x":8,"y":8,"w":184,"h":244},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":184,"h":244},
+	"sourceSize": {"w":183,"h":244}
+},
+"ItemInvincibility.png":
+{
+	"frame": {"x":448,"y":240,"w":212,"h":224},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":212,"h":224},
+	"sourceSize": {"w":211,"h":221}
+},
+"ItemNuke.png":
+{
+	"frame": {"x":420,"y":8,"w":212,"h":224},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":212,"h":224},
+	"sourceSize": {"w":211,"h":221}
+},
+"ItemSpeed.png":
+{
+	"frame": {"x":228,"y":240,"w":212,"h":224},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":212,"h":224},
+	"sourceSize": {"w":211,"h":221}
+},
+"ItemXP.png":
+{
+	"frame": {"x":872,"y":8,"w":140,"h":208},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":140,"h":208},
+	"sourceSize": {"w":137,"h":206}
+},
+"ItemPizzaFull.png":
+{
+	"frame": {"x":872,"y":224,"w":124,"h":148},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":124,"h":148},
+	"sourceSize": {"w":123,"h":147}
+},
+"ItemCombo.png":
+{
+	"frame": {"x":200,"y":8,"w":212,"h":224},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":212,"h":224},
+	"sourceSize": {"w":211,"h":221}
+},
+"ItemSizeUp.png":
+{
+	"frame": {"x":8,"y":260,"w":212,"h":224},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":212,"h":224},
+	"sourceSize": {"w":211,"h":221}
+},
+"TMNT_IconsStaticShurikenWall_121212_AE_v01.png":
+{
+	"frame": {"x":640,"y":8,"w":224,"h":220},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":224,"h":220},
+	"sourceSize": {"w":221,"h":218}
+},
+"TMNT_IconsStaticShuriken_121212_AE_v01.png":
+{
+	"frame": {"x":668,"y":236,"w":172,"h":176},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":172,"h":176},
+	"sourceSize": {"w":172,"h":175}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "InventoryItems4x.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":512},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:609395b468f6525aaf0320fcf9e11b5e$"
+}
+}

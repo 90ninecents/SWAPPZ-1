@@ -3,13 +3,36 @@ using System.Collections;
 
 public class ThirdPersonCamera : MonoBehaviour {
 	public Transform target;
-	
+
+    public Vector3 leftCollider;            // Used to determine if the Camera is locked or follows character
+    public Transform middleOfWave;          // Position in the middle of the wave.
+    public Vector3 waveOffSet;              // Moves the leftCollider based off the wave number. Set in inspector (X value only);
 	
 	public void SetTarget(Transform t) {
 		target = t;
 	}
-	
+	/// <summary>
+	/// Sets the new target. If the parameter is the character's transform it will follow the character. 
+	/// If it is null it will lock the camera at the wave point.
+	/// </summary>
+	/// <param name='t'>
+	/// Target's transform
+	/// </param>
+    public void SetNewBounds (Transform t)
+    {
+		if (t == null)
+		{
+			SetTarget(middleOfWave);
+			return;
+		}
+		middleOfWave = t;
+		
+		leftCollider = middleOfWave.position - ((waveOffSet * camera.aspect) / 2);		
+		SetTarget(middleOfWave);
+    }
+
 	void Update() {
+
 		if (target != null) {
 			transform.position = new Vector3(target.position.x, transform.position.y, transform.position.z);
 		}

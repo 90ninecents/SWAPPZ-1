@@ -359,6 +359,23 @@ public class PlayerController : MonoBehaviour {
 
 			
 			
+			
+			// If the Player is to the left of the wave area then follow the Player
+			if (transform.position.x <= Camera.main.GetComponent<ThirdPersonCamera>().leftCollider.x)
+            {
+                Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(transform);
+            }
+			// Otherwise keep the camera locked at the wave area.
+            else
+            {				
+                Camera.main.GetComponent<ThirdPersonCamera>().SetNewBounds(null);
+            }
+			
+			
+			
+			
+			
+			
 			if (jumping && ((enemyHit.position-transform.position).magnitude <= attackRadius*1.5)) {
 				speedModifier = 1;	// TODO: change this "tornado" hack fix
 				jumping = false;

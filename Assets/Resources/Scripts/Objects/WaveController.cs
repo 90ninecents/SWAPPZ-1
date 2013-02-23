@@ -7,10 +7,12 @@ public class WaveController : MonoBehaviour {
 	public GameObject[] waves;		// set in inspector
 	public GUIText waveCounter;
 	public GUITexture movePopup;
-	int waveNumber = 0;
+	public int waveNumber = 0;
 	public float checkFrequencyInSeconds = 0.5f;
 	public int coinsOnWaveEnd = 5;
 	public int coinsOnLevelEnd = 20;
+	float currentTime = 5.0f;		// Use this to increment/decrement based on time.
+	float timeToHint = 5.0f;		// When the wave is over if after this time they are not at the location, show an arrow
 	
 	GUITexture arrow;
 
@@ -22,11 +24,12 @@ public class WaveController : MonoBehaviour {
 		if (movePopup != null) movePopup.enabled = false;
 		
 		InvokeRepeating("CheckWave", 0, checkFrequencyInSeconds);
-		//Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[0].transform);
+		
+		Camera.main.GetComponent<ThirdPersonCamera>().SetNewBounds(waves[0].transform);
 		
 		Invoke("LaunchWave", Game.TimeBetweenWaves);
 		
-		if (GameObject.Find ("ProgressArrow") != null) arrow = GameObject.Find ("ProgressArrow").guiTexture;
+		if (GameObject.Find ("Icon") != null) arrow = GameObject.Find ("Icon").guiTexture;
 	}
 	
 	void LaunchWave() {
@@ -48,8 +51,12 @@ public class WaveController : MonoBehaviour {
 		if (Game.EnemyGroup.GetChildCount() == 0 && waves[waveNumber].transform.childCount == 0 && waveNumber < waves.Length-1) {
 			waves[waveNumber].SetActiveRecursively(false);
 			waveNumber++;
+            Camera.main.GetComponent<ThirdPersonCamera>().SetNewBounds(waves[waveNumber].transform);
 			
-			//CoinController.SpawnCoins(coinsOnWaveEnd);
+			//if (waveNumber != 1) {
+				//CoinController.SpawnCoins(coinsOnWaveEnd);
+				//Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
+			//}
 			
 			CancelInvoke("CheckWave");
 		}
@@ -91,7 +98,14 @@ public class WaveController : MonoBehaviour {
 				if (arrow != null) arrow.enabled = false;
 			}
 			else {
-				if (arrow != null) arrow.enabled = true;
+				currentTime -= Time.deltaTime;
+				
+				if (currentTime <= 0)
+				{
+					if (arrow != null) arrow.enabled = true;
+					
+					currentTime = timeToHint;
+				}
 			}
 		}
 	}
