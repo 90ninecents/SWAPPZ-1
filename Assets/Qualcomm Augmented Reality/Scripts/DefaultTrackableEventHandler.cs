@@ -12,6 +12,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
                                             ITrackableEventHandler
 {
 	public TrackableBehaviour mtrackableBehaviour;
+	public Transform turtle;
 	
 	bool scanned = false;
 	Animation turtleAnim;
@@ -42,7 +43,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
         }
 		
-		turtleAnim = GameObject.Find ("Leonardo").transform.GetChild(0).GetComponent<Animation>();
+		turtleAnim = turtle.GetChild(0).GetComponent<Animation>();
 		turtleAnim.Play();
 		
         OnTrackingLost();
@@ -97,7 +98,7 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
 		
 		if (!scanned) {
 			// Unlock scanned character
-			string character = "CharacterLeonardo";
+			string character = "Character"+turtle.name;
 			bool unlock = true;
 			
 			foreach (string s in SavedData.UnlockedCharacters.Split(SavedData.Separator[0])) {
@@ -126,8 +127,6 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
 		foreach (GameObject go in activeOnLost) {
 			go.SetActiveRecursively(true);
 		}
-
-       //if (Idle_test_ani != null) Idle_test_ani.Stop();
     }
 	
 	void OnTrack() {

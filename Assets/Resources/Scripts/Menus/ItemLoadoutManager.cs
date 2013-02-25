@@ -9,7 +9,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 	void Start()
 	{
 		// add a scrollable with paging enabled
-		var scrollable = new UIScrollableHorizontalLayout( 75 );
+		var scrollable = new UIScrollableHorizontalLayout(0);
 		
 		// we wrap the addition of all the sprites with a begin updates so it only lays out once when complete
 		scrollable.beginUpdates();
@@ -19,12 +19,12 @@ public class ItemLoadoutManager : MonoBehaviour {
 		// if you plan on making the scrollable wider than the item width you need to set your edgeInsets so that the
 		// left + right inset is equal to the extra width you set
 		scrollable.edgeInsets = new UIEdgeInsets( 0, 75, 0, 75 );		
-		var width = UI.scaleFactor * ( 250f + 150f ); // item width + 150 extra width
+		var width = UI.scaleFactor * (220*3); // item width
 		scrollable.setSize( width, height );
 		
 		// paging will snap to the nearest page when scrolling
 		scrollable.pagingEnabled = true;
-		//scrollable.pageWidth = 55 * UI.scaleFactor;
+		scrollable.pageWidth = 220;
 		
 		// center the scrollable horizontally
 		scrollable.position = new Vector3( Screen.width/2 - width/2, -Screen.height/2 + height/4, 0 );

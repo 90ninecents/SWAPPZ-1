@@ -434,6 +434,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Camera_set_orthographic ();
 	void Register_UnityEngine_Camera_set_depth ();
 	Register_UnityEngine_Camera_set_depth ();
+	void Register_UnityEngine_Camera_get_aspect ();
+	Register_UnityEngine_Camera_get_aspect ();
 	void Register_UnityEngine_Camera_set_cullingMask ();
 	Register_UnityEngine_Camera_set_cullingMask ();
 	void Register_UnityEngine_Camera_INTERNAL_get_backgroundColor ();
