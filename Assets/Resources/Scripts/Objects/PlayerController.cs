@@ -15,6 +15,9 @@ public class PlayerController : MonoBehaviour {
 	public Transform weapon1;			// reference to turtle's weapon #1 for trail rendering
 	public Transform weapon2;			// reference to turtle's weapon #2 for trail rendering
 	
+	public TrailRenderer trail1;
+	public TrailRenderer trail2;
+	
 	GameObject particle;
 	
 	
@@ -136,13 +139,12 @@ public class PlayerController : MonoBehaviour {
 		anim = transform.GetComponentInChildren<Animation>();
 		
 		playerName = transform.name.Substring(0, transform.name.Length-7);
-
+		
+		ToggleTrail();
 		
 		if (playerName == "Michelangelo") {
 			weapon1.gameObject.active = false;
 		}
-		
-		ToggleTrail();
 	}
 	
 	void OnEnable() {
@@ -677,11 +679,11 @@ public class PlayerController : MonoBehaviour {
 	void ToggleTrail() {
 		trailsOn = !trailsOn;
 			
-		if (weapon1 != null) {
-			weapon1.GetComponent<TrailRenderer>().enabled = trailsOn;
+		if (trail1 != null && weapon1.gameObject.active) {
+			trail1.enabled = trailsOn;
 		}
-		if (weapon2 != null) {
-			weapon2.GetComponent<TrailRenderer>().enabled = trailsOn;
+		if (trail2 != null && weapon2.gameObject.active) {
+			trail2.enabled = trailsOn;
 		}
 	}
 	

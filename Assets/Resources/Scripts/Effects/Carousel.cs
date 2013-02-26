@@ -4,6 +4,7 @@ using System.Collections;
 public class Carousel : MonoBehaviour {
 	
 	public Transform lockedPopup;
+	public Camera renderingCamera;
 	
 	int numberOfSlots = 4;
 	public bool vertical = true;
@@ -20,6 +21,8 @@ public class Carousel : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
+		if (renderingCamera == null) renderingCamera = Camera.main;
+		
 		items = new Transform[transform.parent.childCount-1];
 		
 		int i = 0;
@@ -57,7 +60,7 @@ public class Carousel : MonoBehaviour {
 		}
 		
 		
-		Ray ray = Camera.main.ScreenPointToRay(touchPos);
+		Ray ray = renderingCamera.ScreenPointToRay(touchPos);
 		RaycastHit[] hits = Physics.RaycastAll(ray);
 		
 		foreach (RaycastHit hit in hits) {
@@ -130,9 +133,9 @@ public class Carousel : MonoBehaviour {
 		float closestDistance = 0;
 		
 		foreach (Transform t in items) {
-			if (Mathf.Abs(t.position.z-Camera.main.transform.position.z) < closestDistance|| closestDistance == 0) {
+			if (Mathf.Abs(t.position.z-renderingCamera.transform.position.z) < closestDistance|| closestDistance == 0) {
 				result = t;
-				closestDistance = Mathf.Abs (t.position.z-Camera.main.transform.position.z);
+				closestDistance = Mathf.Abs (t.position.z-renderingCamera.transform.position.z);
 			}
 		}
 		
