@@ -11,11 +11,12 @@ public class PauseButton : Button {
 	
 	public override void Fire() {
 		if (!cooling) {
-			
+//			paused = !paused;
 			paused = (Time.timeScale == 0.0f);
 			
 			if (paused) Time.timeScale = 1.0f;		// unpause
 			else Time.timeScale = 0.0f;				// pause
+			//Game.TogglePause();
 			
 			if (pauseMenu != null) pauseMenu.gameObject.SetActiveRecursively(!paused);
 			

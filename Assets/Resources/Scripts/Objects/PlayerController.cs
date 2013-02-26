@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour {
 	bool engaged = false;				// Tracks whether player has engaged an enemy
 	
 	bool trailsOn = true;
+	bool passive = false;
 	
 	
 	//_________________CHANGE_________________
@@ -185,23 +186,25 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnDrag(DragInfo di) {
-		lastMoveTime = Time.time;
-		
-		if (!swiping && di.delta.magnitude > 25) {
-			swiping = true;
-			attacked = false;
-		}
-		
-		//if (!moving) {
-			if (!dragging) dragStart = di.pos;
-			dragging = true;
+		if (!passive) {
+			lastMoveTime = Time.time;
 			
-			lastSwipeDir2 = lastSwipeDir;
-			lastSwipeDir = di.pos-lastTouchPos;
-			lastTouchPos = di.pos;
-		//}
-		if (!engaged) {
-			ArrivalTouch.targetPoint = TouchPoint(di.pos);
+			if (!swiping && di.delta.magnitude > 25) {
+				swiping = true;
+				attacked = false;
+			}
+			
+			//if (!moving) {
+				if (!dragging) dragStart = di.pos;
+				dragging = true;
+				
+				lastSwipeDir2 = lastSwipeDir;
+				lastSwipeDir = di.pos-lastTouchPos;
+				lastTouchPos = di.pos;
+			//}
+			if (!engaged) {
+				ArrivalTouch.targetPoint = TouchPoint(di.pos);
+			}
 		}
 	}
 	
@@ -218,97 +221,103 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnDragEnd(Vector2 touchPos) {
-		if ((swiping || swipeUp) && !attacked) {
-			
-			dragEnd = touchPos;
-			
-			// Find where the dragging motion intersects playing field
-			RaycastHit hit1;
-			Physics.Raycast(Camera.main.ScreenPointToRay(dragStart), out hit1, 5000, ((1 << 13) | (1 << 15)));
-			
-			RaycastHit hit2;
-			Physics.Raycast(Camera.main.ScreenPointToRay(dragEnd), out hit2, 5000, ((1 << 13) | (1 << 15)));
-			
-			// Create a capsule from the above hit points and move it towards the camera to see if any enemies were swiped
-			RaycastHit[] hits =	Physics.CapsuleCastAll(hit1.point, hit2.point, capsuleSize, Camera.main.transform.forward*-1);
-			
-			if (hits.Length > 0) {
-				Transform prevEnemy = enemyHit;
-				enemyHit = null;
+		if (!passive) {
+			if ((swiping || swipeUp) && !attacked) {
 				
-				foreach (RaycastHit hit in hits) {
-					if (hit.transform.GetComponent<EnemyController>() != null) {
-						enemyHit = hit.transform;
-						
-						if (enemyHit == prevEnemy) break;
-					}
-				}
+				dragEnd = touchPos;
 				
-				if (enemyHit != null) {
-					moving = false;
-					dragging = false;
+				// Find where the dragging motion intersects playing field
+				RaycastHit hit1;
+				Physics.Raycast(Camera.main.ScreenPointToRay(dragStart), out hit1, 5000, ((1 << 13) | (1 << 15)));
+				
+				RaycastHit hit2;
+				Physics.Raycast(Camera.main.ScreenPointToRay(dragEnd), out hit2, 5000, ((1 << 13) | (1 << 15)));
+				
+				// Create a capsule from the above hit points and move it towards the camera to see if any enemies were swiped
+				RaycastHit[] hits =	Physics.CapsuleCastAll(hit1.point, hit2.point, capsuleSize, Camera.main.transform.forward*-1);
+				
+				if (hits.Length > 0) {
+					Transform prevEnemy = enemyHit;
+					enemyHit = null;
 					
-					hitCount++;
-					if (hitCount > 3) hitCount = 1;
-					
-					// if the swiped enemy is outside the turtle's reach, jump to the enemy
-					if ((enemyHit.position-transform.position).magnitude > attackRadius*1.5) JumpToTarget();
-					
-					// otherwise, face the enemy and attack
-					else {
-						ArrivalTouch.targetPoint = transform.position;
-						
-						Vector3 prevRot = transform.rotation.eulerAngles;
-						transform.LookAt(enemyHit);
-						transform.rotation = Quaternion.Euler(prevRot.x, transform.rotation.eulerAngles.y, prevRot.z);
-						
-						ExecuteAttack();
+					foreach (RaycastHit hit in hits) {
+						if (hit.transform.GetComponent<EnemyController>() != null) {
+							enemyHit = hit.transform;
+							
+							if (enemyHit == prevEnemy) break;
+						}
 					}
+					
+					if (enemyHit != null) {
+						moving = false;
+						dragging = false;
+						
+						hitCount++;
+						if (hitCount > 3) hitCount = 1;
+						
+						// if the swiped enemy is outside the turtle's reach, jump to the enemy
+						if ((enemyHit.position-transform.position).magnitude > attackRadius*1.5) JumpToTarget();
+						
+						// otherwise, face the enemy and attack
+						else {
+							ArrivalTouch.targetPoint = transform.position;
+							
+							Vector3 prevRot = transform.rotation.eulerAngles;
+							transform.LookAt(enemyHit);
+							transform.rotation = Quaternion.Euler(prevRot.x, transform.rotation.eulerAngles.y, prevRot.z);
+							
+							ExecuteAttack();
+						}
+					}
+					else enemyHit = prevEnemy;
 				}
-				else enemyHit = prevEnemy;
 			}
+			
+			if (Input.touchCount == 0 && !Input.GetMouseButton(0)) {
+				swiping = false;
+				dragging = false;
+			}
+			moving = false;
+			swipeUp = false;
+			
+			lastSwipeDir = Vector2.zero;
+			lastSwipeDir2 = Vector2.zero;
 		}
-		
-		if (Input.touchCount == 0 && !Input.GetMouseButton(0)) {
-			swiping = false;
-			dragging = false;
-		}
-		moving = false;
-		swipeUp = false;
-		
-		lastSwipeDir = Vector2.zero;
-		lastSwipeDir2 = Vector2.zero;
 	}
 	
 	
 	void OnTouchDown(Vector2 touchPos) {
-		Vector3 touch = TouchPoint(touchPos);
-		ArrivalTouch.targetPoint = touch;
-		moving = true;
-		
-		GameObject effect = Instantiate(Resources.Load("FX/Prefabs/Tap Effect"), touch, Quaternion.identity) as GameObject;
-		Destroy (effect, 0.3f);
+		if (!passive) {
+			Vector3 touch = TouchPoint(touchPos);
+			ArrivalTouch.targetPoint = touch;
+			moving = true;
+			
+			GameObject effect = Instantiate(Resources.Load("FX/Prefabs/Tap Effect"), touch, Quaternion.identity) as GameObject;
+			Destroy (effect, 0.3f);
+		}
 	}
 	
 	
-	void OnTouchUp(Vector2 touchPos) {		
-		if (!dragging && moving && !engaged) {
-			ArrivalTouch.targetPoint = TouchPoint(touchPos);
-			moving = false;
+	void OnTouchUp(Vector2 touchPos) {
+		if (!passive) {
+			if (!dragging && moving && !engaged) {
+				ArrivalTouch.targetPoint = TouchPoint(touchPos);
+				moving = false;
+			}
+			hitCount = 0;
+			dragging = false;
+			engaged = false;
+			
+			if (swiping) {
+				swiping = false;
+				swipeUp = true;
+			}
+			
+			Vector3 touch = TouchPoint(touchPos);
+			
+			GameObject effect = Instantiate(Resources.Load("FX/Prefabs/Tap Effect"), touch, Quaternion.identity) as GameObject;
+			Destroy (effect, 0.3f);
 		}
-		hitCount = 0;
-		dragging = false;
-		engaged = false;
-		
-		if (swiping) {
-			swiping = false;
-			swipeUp = true;
-		}
-		
-		Vector3 touch = TouchPoint(touchPos);
-		
-		GameObject effect = Instantiate(Resources.Load("FX/Prefabs/Tap Effect"), touch, Quaternion.identity) as GameObject;
-		Destroy (effect, 0.3f);
 	}
 	
 	void EndEngagement() {
@@ -316,7 +325,7 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void Update() {
-		if (health > 0) {
+		if (health > 0 && !passive) {
 			if (enemyHit == null && engaged) {
 				Invoke ("EndEngagement", 0.75f);
 			}
@@ -428,91 +437,93 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	public void ExecuteAttack() {
-		attacked = true;
-		engaged = true;
-		
-		int attackNumber = hitCount;
-		if (hitCount == 0) attackNumber = 1;
-		
-		if (!cooling) {
-			anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
-			anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
+		if (!passive) {
+			attacked = true;
+			engaged = true;
 			
-//			CancelInvoke("BreakCombo");
-//			
-//			currentCombo += ""+attackNumber;
-//			
-//			bool match = false;
-//			for (int i = 0; i < combos.Length; i++) {
-//				if (combos[i].StartsWith(currentCombo)) {
-//					if (combos[i] == currentCombo) {
-//						currentCombo = "";
-//						if (comboMeter < comboMax) comboMeter += Mathf.RoundToInt(comboPoints*comboModifier);
-//						
-//						anim.CrossFadeQueued("attack3_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[2];
-//						anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
-//						
-//						ToggleTrail();
-//						Invoke("ToggleTrail", 1);
-//					}
-//					match = true;
-//				}
-//			}
-//			
-//			if (currentCombo != "") {
-//				//Invoke("ToggleTrail"+attackNumber, 0);
-//				//Invoke("ToggleTrail"+attackNumber, attackSpeeds[attackNumber-1]/3);
-//			}
-//			
-//			if (!match) {
-//				currentCombo = currentCombo.Remove(0,1);
-//			}
+			int attackNumber = hitCount;
+			if (hitCount == 0) attackNumber = 1;
 			
-
-			
-			// Check for object to be hit by attack			
-			Collider[] collisions = Physics.OverlapSphere(transform.position, attackRadius*sizeModifier);
-			
-			Vector3 toEnemy;
-			EnemyController enemy;
-			bool hit = false;
-			
-			foreach (Collider c in collisions) {
-				enemy = c.transform.GetComponent<EnemyController>();
-				if (enemy != null) {
-					toEnemy = transform.position-enemy.transform.position;
-					
-					if (Mathf.Abs(Vector3.Angle(transform.forward, toEnemy)) >= 130) {
-						if (!hit) {
-							if (!trailsOn) {
-								ToggleTrail();
-							}
-							else {
-								CancelInvoke("ToggleTrail");
+			if (!cooling) {
+				anim.CrossFadeQueued("attack"+attackNumber+"_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[attackNumber-1];			
+				anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
+				
+	//			CancelInvoke("BreakCombo");
+	//			
+	//			currentCombo += ""+attackNumber;
+	//			
+	//			bool match = false;
+	//			for (int i = 0; i < combos.Length; i++) {
+	//				if (combos[i].StartsWith(currentCombo)) {
+	//					if (combos[i] == currentCombo) {
+	//						currentCombo = "";
+	//						if (comboMeter < comboMax) comboMeter += Mathf.RoundToInt(comboPoints*comboModifier);
+	//						
+	//						anim.CrossFadeQueued("attack3_"+playerName,0,QueueMode.PlayNow).speed = attackSpeeds[2];
+	//						anim.CrossFadeQueued("idle_"+playerName,0.1f,QueueMode.CompleteOthers);
+	//						
+	//						ToggleTrail();
+	//						Invoke("ToggleTrail", 1);
+	//					}
+	//					match = true;
+	//				}
+	//			}
+	//			
+	//			if (currentCombo != "") {
+	//				//Invoke("ToggleTrail"+attackNumber, 0);
+	//				//Invoke("ToggleTrail"+attackNumber, attackSpeeds[attackNumber-1]/3);
+	//			}
+	//			
+	//			if (!match) {
+	//				currentCombo = currentCombo.Remove(0,1);
+	//			}
+				
+	
+				
+				// Check for object to be hit by attack			
+				Collider[] collisions = Physics.OverlapSphere(transform.position, attackRadius*sizeModifier);
+				
+				Vector3 toEnemy;
+				EnemyController enemy;
+				bool hit = false;
+				
+				foreach (Collider c in collisions) {
+					enemy = c.transform.GetComponent<EnemyController>();
+					if (enemy != null) {
+						toEnemy = transform.position-enemy.transform.position;
+						
+						if (Mathf.Abs(Vector3.Angle(transform.forward, toEnemy)) >= 130) {
+							if (!hit) {
+								if (!trailsOn) {
+									ToggleTrail();
+								}
+								else {
+									CancelInvoke("ToggleTrail");
+								}
+								
+								Invoke("ToggleTrail", 0.5f);
 							}
 							
-							Invoke("ToggleTrail", 0.5f);
+							
+							enemy.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), transform);
+							// Get XP on hit
+							if (xp < xpTNL) ReceiveXP(enemy.xpGain);
+							
+							Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), enemy.transform);
+							hit = true;
 						}
-						
-						
-						enemy.TakeDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), transform);
-						// Get XP on hit
-						if (xp < xpTNL) ReceiveXP(enemy.xpGain);
-						
-						Game.DisplayDamage(Mathf.RoundToInt(attackStrengths[attackNumber-1]*strengthModifier), enemy.transform);
-						hit = true;
 					}
 				}
-			}
-			if (hit) AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
-			else AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), AudioManager.UnusedChannel);
+				if (hit) AudioManager.PlayAudio("Sword"+Random.Range(1,6), AudioManager.UnusedChannel);
+				else AudioManager.PlayAudio("Swoosh"+Random.Range(1,5), AudioManager.UnusedChannel);
+		
+				// Combo/jumping/cooldowns
+				//if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
+				
+				cooling = true;
+				Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber-1]*speedModifier);
 	
-			// Combo/jumping/cooldowns
-			//if (currentCombo != "") Invoke("BreakCombo", comboCooldown);
-			
-			cooling = true;
-			Invoke("Cooldown", attackCooldown*attackSpeeds[attackNumber-1]*speedModifier);
-
+			}
 		}
 	}
 	
@@ -528,60 +539,62 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	public void CollectPowerup(Powerup p) {
-		Destroy(p.gameObject);
-		
-		if (p.effect != null) {
-			if (p.playEffectOnAwake) Destroy(p.effect);
+		if (!passive) {
+			Destroy(p.gameObject);
+			
+			if (p.effect != null) {
+				if (p.playEffectOnAwake) Destroy(p.effect);
+				else {
+					p.effect.SetActiveRecursively(true);
+					Destroy(p.effect, 3.0f);
+				}
+			}
+			
+			// Assuming a powerup that affects enemies/restores life has no other benefits
+			if (p.destroyEnemies) {
+				Game.DestroyEnemies(p.effectRadius);
+			}
+			
+			else if (p.slowEnemies) {
+				Game.StartSlowMo(p.durationInSeconds);
+			}
+			
+			else if (p.stunEnemies) {
+				Game.StunEnemies(p.durationInSeconds, p.effectRadius);
+			}
+			
+			else if (p.healthRestorePercent > 0) {
+				health += healthMax*(p.healthRestorePercent/100);
+				if (health > healthMax) health = healthMax;
+			}
+			
+			// Powerups with duration
 			else {
-				p.effect.SetActiveRecursively(true);
-				Destroy(p.effect, 3.0f);
+				powerups.Add(p);
+				if (powerups.Count == 1) InvokeRepeating("PowerupTick", 1, 1);
+				
+				armorModifier 	 *= p.armorModifier;
+				speedModifier 	 *= p.speedModifier;
+				strengthModifier *= p.damageModifier;
+				regenModifier 	 *= p.regenModifier;
+				xpModifier 		 *= p.xpModifier;
+				comboModifier 	 *= p.comboModifier;
+				
+				sizeModifier 	 *= p.sizeModifier;
+				
+				if (sizeModifier > maxSizeIncrease) sizeModifier = maxSizeIncrease;
+				else transform.localScale *= p.sizeModifier;
+				
+				if (IsInvoking("HealthTick")) {
+					CancelInvoke("HealthTick");
+					InvokeRepeating("HealthTick", healthRegenRate/regenModifier, healthRegenRate/regenModifier);
+				}
+				
+				boidComponent.turningSpeed *= p.speedModifier;
+				
+				// don't use invincible = p.invincibility; will cause powerups to cancel invincibility granted by other powerups
+				if (p.invincibility) invincible = true;
 			}
-		}
-		
-		// Assuming a powerup that affects enemies/restores life has no other benefits
-		if (p.destroyEnemies) {
-			Game.DestroyEnemies(p.effectRadius);
-		}
-		
-		else if (p.slowEnemies) {
-			Game.StartSlowMo(p.durationInSeconds);
-		}
-		
-		else if (p.stunEnemies) {
-			Game.StunEnemies(p.durationInSeconds, p.effectRadius);
-		}
-		
-		else if (p.healthRestorePercent > 0) {
-			health += healthMax*(p.healthRestorePercent/100);
-			if (health > healthMax) health = healthMax;
-		}
-		
-		// Powerups with duration
-		else {
-			powerups.Add(p);
-			if (powerups.Count == 1) InvokeRepeating("PowerupTick", 1, 1);
-			
-			armorModifier 	 *= p.armorModifier;
-			speedModifier 	 *= p.speedModifier;
-			strengthModifier *= p.damageModifier;
-			regenModifier 	 *= p.regenModifier;
-			xpModifier 		 *= p.xpModifier;
-			comboModifier 	 *= p.comboModifier;
-			
-			sizeModifier 	 *= p.sizeModifier;
-			
-			if (sizeModifier > maxSizeIncrease) sizeModifier = maxSizeIncrease;
-			else transform.localScale *= p.sizeModifier;
-			
-			if (IsInvoking("HealthTick")) {
-				CancelInvoke("HealthTick");
-				InvokeRepeating("HealthTick", healthRegenRate/regenModifier, healthRegenRate/regenModifier);
-			}
-			
-			boidComponent.turningSpeed *= p.speedModifier;
-			
-			// don't use invincible = p.invincibility; will cause powerups to cancel invincibility granted by other powerups
-			if (p.invincibility) invincible = true;
 		}
 	}
 	
@@ -700,5 +713,16 @@ public class PlayerController : MonoBehaviour {
 		
 //		print(result);
 		return result;
+	}
+	
+	public void SetPause(bool flag) {
+		print ("pause from player controller");
+	}
+	
+	public void SetPassive(bool flag) {
+		passive = flag;
+		
+		if (flag) ArrivalTouch.SetWeight(0);
+		else ArrivalTouch.SetWeight(1);
 	}
 }

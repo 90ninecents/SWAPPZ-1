@@ -11,6 +11,7 @@ public class Game : MonoBehaviour {
 	public Transform enemyGroupObject;
 	public Transform playerGroupObject;
 	public Transform damageCounterObject;
+	public Transform waveControllerObject;
 	
 	public float powerupSpawnInterval = 0.1f;		// Seconds between attempting to spawn a powerup
 	public int enemyKillsPerCoin = 5;
@@ -20,6 +21,7 @@ public class Game : MonoBehaviour {
 	// -----
 	PlayerController player;
 	DamageCounter damageCounter;
+	WaveController waveController;
 	
 	bool won = false;
 	int score = 0;
@@ -32,6 +34,8 @@ public class Game : MonoBehaviour {
 	int coins;
 	int enemiesKilled = 0;
 	int levelTimeInSeconds = 0;		// Measures time taken to complete level
+	
+	bool paused = false;
 	
 	
 	public static PlayerController Player { get { return instance.player; } }
@@ -92,7 +96,10 @@ public class Game : MonoBehaviour {
 		
 		player = playerObject.GetComponent<PlayerController>();
 		player.ArrivalTouch.targetPoint = playerObject.position;
+		
 		if (damageCounterObject != null) damageCounter = damageCounterObject.GetComponent<DamageCounter>();
+		
+		if (waveControllerObject != null) waveController = waveControllerObject.GetComponent<WaveController>();
 		
 		// Start counters
 		if (powerupSpawners.Length > 0) InvokeRepeating("SpawnPowerup", powerupSpawnInterval, powerupSpawnInterval);
@@ -171,12 +178,23 @@ public class Game : MonoBehaviour {
 		}
 	}
 	
-	public static void PacifyEnemies() {
-		int count = EnemyGroup.childCount;
+	public static void PacifyEnemies(bool flag = true) {
+		EnemyGroup.BroadcastMessage("SetPassive", flag, SendMessageOptions.DontRequireReceiver);
+	}
+	
+	public static void FreezeAll() {
+		instance.paused = true;
 		
-		for (int i = 0; i < count; i++) {
-			EnemyGroup.GetChild(i).GetComponent<EnemyController>().SetPassive(true);
-		}
+		PacifyEnemies();
+		Player.SetPassive(true);
+		instance.waveController.TogglePause();
+	}
+	public static void UnfreezeAll() {
+		instance.paused = false;
+		
+		PacifyEnemies(false);
+		Player.SetPassive(false);
+		instance.waveController.TogglePause();
 	}
 	
 	public static void ChangePlayer(string characterName) {
@@ -272,6 +290,10 @@ public class Game : MonoBehaviour {
 	}
 	
 	void TimeTick() {
-		levelTimeInSeconds++;
+		if (!instance.paused) levelTimeInSeconds++;
+	}
+	
+	public static void TogglePause() {
+		instance.gameObject.BroadcastMessage("SetPause", true, SendMessageOptions.RequireReceiver);
 	}
 }

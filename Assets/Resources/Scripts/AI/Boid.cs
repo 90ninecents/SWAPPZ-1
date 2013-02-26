@@ -11,6 +11,7 @@ public class Boid : MonoBehaviour {
 //	float distanceToJump = 0.0f;
 	bool falling = false;
 	bool jumping = false;
+	bool paused = false;
 	
 	int jumpCount = 0;
 	
@@ -46,17 +47,6 @@ public class Boid : MonoBehaviour {
 		return null;
 	}
 	
-	// forget this for now
-//	void OnCollisionEnter(Collision collisionInfo) {		
-//		// On collision, check if top of other collider is above boid's feet and also lower than max jumping height
-//		distanceToJump = collisionInfo.collider.bounds.max.y-transform.collider.bounds.min.y;
-//		
-//		Debug.Log(collisionInfo.collider.bounds.max.y+" "+transform.collider.bounds.min.y);
-//		
-//		if (collisionInfo.collider.gameObject.GetComponent<Boid>() == null  && distanceToJump > 1f && distanceToJump <= jumpHeight) {
-//			jumping = true;
-//		}
-//	}
 	
 	// Called before each physics timestep
 	void FixedUpdate () {

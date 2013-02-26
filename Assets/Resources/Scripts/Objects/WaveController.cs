@@ -14,6 +14,8 @@ public class WaveController : MonoBehaviour {
 	float currentTime = 5.0f;		// Use this to increment/decrement based on time.
 	float timeToHint = 5.0f;		// When the wave is over if after this time they are not at the location, show an arrow
 	
+	bool paused = false;
+	
 	GUITexture arrow;
 
 	void Start () {
@@ -33,44 +35,53 @@ public class WaveController : MonoBehaviour {
 	}
 	
 	void LaunchWave() {
-		waves[waveNumber].SetActiveRecursively(true);
-		
-		// snap camera to wave center
-		//if (waveNumber != 0) 
-			//Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[waveNumber].transform);
-		
-		if (waveCounter != null) {
-			waveCounter.text = "Wave "+(waveNumber+1);
-			waveCounter.GetComponent<SlidingTexture>().StartSlide();
+		if (!paused) {
+			
+			CancelInvoke("LaunchWave");
+			
+			waves[waveNumber].SetActiveRecursively(true);
+			
+			// snap camera to wave center
+			//if (waveNumber != 0) 
+				//Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(waves[waveNumber].transform);
+			
+			if (waveCounter != null) {
+				waveCounter.text = "Wave "+(waveNumber+1);
+				waveCounter.GetComponent<SlidingTexture>().StartSlide();
+			}
+			
+			InvokeRepeating("CheckWave", checkFrequencyInSeconds, checkFrequencyInSeconds);
 		}
 		
-		InvokeRepeating("CheckWave", checkFrequencyInSeconds, checkFrequencyInSeconds);
+		else InvokeRepeating("LaunchWave", 1, 1);
 	}
 	
 	void CheckWave () {
-		if (Game.EnemyGroup.GetChildCount() == 0 && waves[waveNumber].transform.childCount == 0 && waveNumber < waves.Length-1) {
-			waves[waveNumber].SetActiveRecursively(false);
-			waveNumber++;
-            Camera.main.GetComponent<ThirdPersonCamera>().SetNewBounds(waves[waveNumber].transform);
-			
-			//if (waveNumber != 1) {
-				//CoinController.SpawnCoins(coinsOnWaveEnd);
-				//Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
-			//}
-			
-			CancelInvoke("CheckWave");
-		}
-		else if (Game.EnemyGroup.GetChildCount() == 0 && waves[waveNumber].transform.childCount == 0 && waveNumber == waves.Length-1) {
-			if (movePopup != null) {
-				movePopup.enabled = true;
-				InvokeRepeating("CheckPopupEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
+		if (!paused) {
+			if (Game.EnemyGroup.GetChildCount() == 0 && waves[waveNumber].transform.childCount == 0 && waveNumber < waves.Length-1) {
+				waves[waveNumber].SetActiveRecursively(false);
+				waveNumber++;
+	            Camera.main.GetComponent<ThirdPersonCamera>().SetNewBounds(waves[waveNumber].transform);
+				
+				//if (waveNumber != 1) {
+					//CoinController.SpawnCoins(coinsOnWaveEnd);
+					//Camera.main.GetComponent<ThirdPersonCamera>().SetTarget(Game.Player.transform);
+				//}
+				
+				CancelInvoke("CheckWave");
 			}
-			else {
-				//CoinController.SpawnCoins(coinsOnLevelEnd);
-				InvokeRepeating("CheckLevelEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
+			else if (Game.EnemyGroup.GetChildCount() == 0 && waves[waveNumber].transform.childCount == 0 && waveNumber == waves.Length-1) {
+				if (movePopup != null) {
+					movePopup.enabled = true;
+					InvokeRepeating("CheckPopupEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
+				}
+				else {
+					//CoinController.SpawnCoins(coinsOnLevelEnd);
+					InvokeRepeating("CheckLevelEnd", checkFrequencyInSeconds, checkFrequencyInSeconds);
+				}
+				
+				CancelInvoke("CheckWave");
 			}
-			
-			CancelInvoke("CheckWave");
 		}
 	}
 	
@@ -92,7 +103,7 @@ public class WaveController : MonoBehaviour {
 	}
 	
 	void Update() {
-		if (!IsInvoking() && waveNumber > 0) {
+		if (!paused && !IsInvoking() && waveNumber > 0) {
 			if (Mathf.Abs (Camera.main.transform.position.x - waves[waveNumber].transform.position.x) < 10.0f) {
 				LaunchWave();
 				if (arrow != null) arrow.enabled = false;
@@ -107,6 +118,17 @@ public class WaveController : MonoBehaviour {
 					currentTime = timeToHint;
 				}
 			}
+		}
+	}
+	
+	public void TogglePause() {
+		paused = !paused;
+		
+		if (paused) {
+			gameObject.BroadcastMessage("Pause", SendMessageOptions.DontRequireReceiver);
+		}
+		else {
+			gameObject.BroadcastMessage("Unpause", SendMessageOptions.DontRequireReceiver);
 		}
 	}
 }

@@ -18,6 +18,7 @@ public class EnemyController : MonoBehaviour {
 	protected bool cooling = false;
 	protected bool stunned = false;
 	protected bool passive = false;
+	protected bool paused = false;
 	
 	protected Animation anim;
 	protected string enemyName;
@@ -36,39 +37,41 @@ public class EnemyController : MonoBehaviour {
 		}
 	}
 	
-	void Update() {		
-		if (!stunned && !passive && health > 0) {
-			if (cooling && arrivalComponent.Steering == Vector3.zero) {
-				if (anim.IsPlaying("run_"+enemyName)) anim.CrossFadeQueued("endRun_"+enemyName, 0f, QueueMode.PlayNow);
-				else anim.CrossFadeQueued("idle_"+enemyName, 0.05f, QueueMode.CompleteOthers);
-			}
-			else {
-				anim.Play("run_"+enemyName);
-			}
-			
-			boidComponent.Speed = boidComponent.maxSpeed*speedModifier;
-			
-			if (arrivalComponent.targetObject == null) {
-				arrivalComponent.targetObject = Game.Player.transform;
-			}
-			
-			if (!cooling && (transform.position-arrivalComponent.targetObject.position).magnitude <= attackRadius) {
-				Attack ();
-			}
-			
-			// rotate to face player at all times
-			else if (cooling) {
-				Vector3 aim = arrivalComponent.targetObject.position-transform.position;
-				aim.y = 0;
+	void Update() {
+		if (!paused) {
+			if (!stunned && !passive && health > 0) {
+				if (cooling && arrivalComponent.Steering == Vector3.zero) {
+					if (anim.IsPlaying("run_"+enemyName)) anim.CrossFadeQueued("endRun_"+enemyName, 0f, QueueMode.PlayNow);
+					else anim.CrossFadeQueued("idle_"+enemyName, 0.05f, QueueMode.CompleteOthers);
+				}
+				else {
+					anim.Play("run_"+enemyName);
+				}
 				
-				transform.rigidbody.rotation = Quaternion.LookRotation(aim);
+				boidComponent.Speed = boidComponent.maxSpeed*speedModifier;
+				
+				if (arrivalComponent.targetObject == null) {
+					arrivalComponent.targetObject = Game.Player.transform;
+				}
+				
+				if (!cooling && (transform.position-arrivalComponent.targetObject.position).magnitude <= attackRadius) {
+					Attack ();
+				}
+				
+				// rotate to face player at all times
+				else if (cooling) {
+					Vector3 aim = arrivalComponent.targetObject.position-transform.position;
+					aim.y = 0;
+					
+					transform.rigidbody.rotation = Quaternion.LookRotation(aim);
+				}
 			}
-		}
-		else {
-			// play stunned animations
-			//boidComponent.Speed = 0;
-			arrivalComponent.SetWeight(0);
-			if (!anim.IsPlaying("idle_"+enemyName)) anim.CrossFadeQueued("idle_"+enemyName, 0.05f, QueueMode.PlayNow);
+			else if (stunned || passive) {
+				// play stunned animations
+				//boidComponent.Speed = 0;
+				arrivalComponent.SetWeight(0);
+				if (!anim.IsPlaying("idle_"+enemyName)) anim.CrossFadeQueued("idle_"+enemyName, 0.05f, QueueMode.PlayNow);
+			}
 		}
 	}
 	
@@ -106,6 +109,8 @@ public class EnemyController : MonoBehaviour {
 	
 	public void SetPassive(bool flag) {
 		passive = flag;
+		
+		if (!flag) arrivalComponent.SetWeight(1);
 	}
 	
 	void EndStun() {
@@ -150,6 +155,16 @@ public class EnemyController : MonoBehaviour {
 				Destroy (rigidbody);
 				Destroy (this);
 			}
+		}
+	}
+	
+	
+	public virtual void SetPause(bool flag) {
+		paused = flag;
+		
+		if (paused) {
+			print ("pause from enemy controller");
+			anim.Stop();
 		}
 	}
 }

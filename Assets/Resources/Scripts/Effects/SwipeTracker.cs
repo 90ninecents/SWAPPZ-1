@@ -20,7 +20,7 @@ public class SwipeTracker : MonoBehaviour {
 			Vector3 pos = new Vector3(di.pos.x - Screen.width/2, di.pos.y - Screen.height/2, origZ);
 			pos += Camera.main.transform.position;
 			
-			transform.position = new Vector3(pos.x, pos.y-50, origZ);
+			transform.position = new Vector3(pos.x, pos.y, origZ);
 		}
 	}
 }

@@ -32,6 +32,7 @@ public class LoadoutManager : MonoBehaviour {
 		if (roster != null) {
 			if (roster.SelectedItem.name.Substring(roster.SelectedItem.name.Length-6, 6) != "Locked") {
 				SavedData.CharacterLoadout = roster.SelectedItem.name;
+				if (Application.loadedLevelName.StartsWith ("0")) Game.ChangePlayer(SavedData.CharacterLoadout.Substring(9));
 			}
 		}
 		

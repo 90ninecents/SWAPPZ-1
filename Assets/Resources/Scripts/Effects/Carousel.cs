@@ -42,6 +42,8 @@ public class Carousel : MonoBehaviour {
 		Gesture.onTouchUpE += OnTouchUp;
 		Gesture.onDraggingE += OnDrag;
 		Gesture.onDraggingEndE += OnDragEnd;
+		
+		if (Application.loadedLevelName.StartsWith("0")) Game.FreezeAll();
 	}
 	
 	void OnDisable() {
@@ -49,12 +51,12 @@ public class Carousel : MonoBehaviour {
 		Gesture.onTouchUpE -= OnTouchUp;
 		Gesture.onDraggingE -= OnDrag;
 		Gesture.onDraggingEndE -= OnDragEnd;
+		
+		if (Application.loadedLevelName.StartsWith("0")) Game.UnfreezeAll();
 	}
 	
 	
 	void OnTouch(Vector2 touchPos) {
-		//print ("touch down");
-		
 		if (fullScreen) {
 			touchPos.x = transform.position.x+Screen.width/2;
 		}
@@ -72,7 +74,6 @@ public class Carousel : MonoBehaviour {
 	}
 	
 	void OnTouchUp(Vector2 pos) {
-		//print ("touch up");
 		if (touchWithin && !dragging) {
 			touchWithin = false;
 			

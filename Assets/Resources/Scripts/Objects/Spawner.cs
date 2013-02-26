@@ -5,12 +5,16 @@ public class Spawner : MonoBehaviour {
 	public GameObject entityToSpawn;
 	public int numberToSpawn = 5;
 	public float spawnInterval = 5;			// Seconds between spawnings
+	float timeToSpawn = 0;
 	
 	int numberSpawned = 0;
 
 	// Use this for initialization
 	void Start () {		
 		InvokeRepeating("SpawnEntity", spawnInterval, spawnInterval);
+		InvokeRepeating("TimeTick", 1, 1);
+		
+		timeToSpawn = spawnInterval;
 	}
 	
 	void SpawnEntity() {
@@ -30,5 +34,22 @@ public class Spawner : MonoBehaviour {
 			CancelInvoke("SpawnEntity");
 			Destroy(gameObject);
 		}
+		else {
+			timeToSpawn = spawnInterval;
+		}
+	}
+	
+	void TimeTick() {
+		timeToSpawn--;
+	}
+	
+	public void Pause() {
+		CancelInvoke("TimeTick");
+		CancelInvoke("SpawnEntity");
+	}
+	
+	public void Unpause() {
+		InvokeRepeating("SpawnEntity", timeToSpawn, spawnInterval);
+		InvokeRepeating("TimeTick", 1, 1);
 	}
 }

@@ -29,4 +29,8 @@ public class RangedEnemyController : EnemyController {
 		go.transform.Translate(transform.right*-5, Space.World);
 		go.GetComponent<Projectile>().Launch(projectileSpeed*speedModifier, transform.forward, strength, attackReach);
 	}
+	
+	public override void SetPause(bool flag) {
+		print ("pause from ranged enemy controller");
+	}
 }
