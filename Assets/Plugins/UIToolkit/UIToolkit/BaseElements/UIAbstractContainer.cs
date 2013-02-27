@@ -31,7 +31,10 @@ public abstract class UIAbstractContainer : UIObject, IPositionable
 
 	protected float _contentWidth;
 	protected float _contentHeight;
-
+	
+	public List<UISprite> Children { get { return _children; } }
+	
+	
 	/// <summary>
 	/// Hides the container and all of it's children
 	/// </summary>
