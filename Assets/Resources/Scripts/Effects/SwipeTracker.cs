@@ -16,7 +16,7 @@ public class SwipeTracker : MonoBehaviour {
 	}
 	
 	void OnDrag(DragInfo di) {
-		if (di.delta.magnitude > 25) {
+		if (di.delta.magnitude > 25 && Time.timeScale != 0) {
 			Vector3 pos = new Vector3(di.pos.x - Screen.width/2, di.pos.y - Screen.height/2, origZ);
 			pos += Camera.main.transform.position;
 			
