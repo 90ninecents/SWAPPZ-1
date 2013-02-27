@@ -1,0 +1,76 @@
+{"frames": {
+
+"ItemCombo.png":
+{
+	"frame": {"x":236,"y":728,"w":220,"h":232},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":220,"h":232},
+	"sourceSize": {"w":220,"h":230}
+},
+"ItemInvincibility.png":
+{
+	"frame": {"x":8,"y":728,"w":220,"h":232},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":220,"h":232},
+	"sourceSize": {"w":220,"h":230}
+},
+"ItemNuke.png":
+{
+	"frame": {"x":236,"y":488,"w":220,"h":232},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":220,"h":232},
+	"sourceSize": {"w":220,"h":230}
+},
+"ItemPizzaFull.png":
+{
+	"frame": {"x":8,"y":488,"w":220,"h":232},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":220,"h":232},
+	"sourceSize": {"w":220,"h":230}
+},
+"ItemShurikenBarrier.png":
+{
+	"frame": {"x":236,"y":248,"w":220,"h":232},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":220,"h":232},
+	"sourceSize": {"w":220,"h":230}
+},
+"ItemSizeUp.png":
+{
+	"frame": {"x":8,"y":248,"w":220,"h":232},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":220,"h":232},
+	"sourceSize": {"w":220,"h":230}
+},
+"ItemSpeed.png":
+{
+	"frame": {"x":236,"y":8,"w":220,"h":232},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":220,"h":232},
+	"sourceSize": {"w":220,"h":230}
+},
+"ItemXP.png":
+{
+	"frame": {"x":8,"y":8,"w":220,"h":232},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":220,"h":232},
+	"sourceSize": {"w":220,"h":230}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "Inventory4x.png",
+	"format": "RGBA8888",
+	"size": {"w":512,"h":1024},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e93575d21532f39dc397f6a2964a1b7f$"
+}
+}

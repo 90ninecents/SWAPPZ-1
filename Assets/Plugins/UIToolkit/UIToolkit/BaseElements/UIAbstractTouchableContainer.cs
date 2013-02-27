@@ -32,7 +32,9 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 	// paging
 	public bool pagingEnabled; // enables paging support which will snap scrolling. page size is the container width
 	public float pageWidth; // width for page snapping. should be set to the size of the items in the container
+	int pageNumber = 0;
 	
+	public int PageNumber { get { return pageNumber; } }
 	
 	public override float width
 	{
@@ -199,6 +201,7 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 	{
 		// which page is closest?
 		var page = Mathf.RoundToInt( Math.Abs( _scrollPosition ) / ( pageWidth + spacing ) );
+		pageNumber = page;
 		scrollToPage( page );
 	}
 
