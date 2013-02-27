@@ -22,7 +22,7 @@ public class ButtonControl : MonoBehaviour {
 			Ray ray = Camera.main.ScreenPointToRay(touchPos);
 		
 			foreach (Transform t in transform) {
-				if (t.GetComponent<Button>() != null && t.gameObject.active) {
+				if (t.GetComponent<Button>() != null && t.gameObject.active && t.GetComponent<Button>().enabled) {
 					if (t.guiTexture != null) {
 						if (t.guiTexture.enabled &&
 							t.guiTexture.GetScreenRect().Contains(touchPos)) {

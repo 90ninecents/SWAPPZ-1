@@ -5,6 +5,6 @@ public class PopupToggleButton : Button {
 	public GameObject popup;
 	
 	public override void Fire() {
-		popup.SetActiveRecursively(!popup.active);
+		if (popup != null) popup.SetActiveRecursively(!popup.active);
 	}
 }

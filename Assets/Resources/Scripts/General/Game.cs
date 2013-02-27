@@ -12,6 +12,7 @@ public class Game : MonoBehaviour {
 	public Transform playerGroupObject;
 	public Transform damageCounterObject;
 	public Transform waveControllerObject;
+	public PopupToggleButton swapButton;
 	
 	public float powerupSpawnInterval = 0.1f;		// Seconds between attempting to spawn a powerup
 	public int enemyKillsPerCoin = 5;
@@ -101,6 +102,8 @@ public class Game : MonoBehaviour {
 		
 		if (waveControllerObject != null) waveController = waveControllerObject.GetComponent<WaveController>();
 		
+		DisableSwapping();
+		
 		// Start counters
 		if (powerupSpawners.Length > 0) InvokeRepeating("SpawnPowerup", powerupSpawnInterval, powerupSpawnInterval);
 		
@@ -126,6 +129,14 @@ public class Game : MonoBehaviour {
 		
 		Gesture.onTouchDownE -= OnTouchDown;
 		Gesture.onDraggingE -= OnDrag;
+	}
+	
+	public static void EnableSwapping() {
+		instance.swapButton.enabled = true;
+	}
+	
+	public static void DisableSwapping() {
+		instance.swapButton.enabled = false;
 	}
 	
 	void OnTouchDown(Vector2 touchPos) {

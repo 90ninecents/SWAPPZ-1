@@ -36,6 +36,7 @@ public class WaveController : MonoBehaviour {
 	
 	void LaunchWave() {
 		if (!paused) {
+			if (waveNumber == 0) Game.EnableSwapping();
 			
 			CancelInvoke("LaunchWave");
 			
