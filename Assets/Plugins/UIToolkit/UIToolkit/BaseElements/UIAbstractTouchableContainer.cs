@@ -464,6 +464,8 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 	
 	public void scrollToPage( int page )
 	{
+		pageNumber = page;
+		
 		// take the spacing into account when scrolling
 		var pageSpacing = page * spacing;
 		_manager.StartCoroutine( scrollToInset( (int)( -page * pageWidth - pageSpacing ) ) );

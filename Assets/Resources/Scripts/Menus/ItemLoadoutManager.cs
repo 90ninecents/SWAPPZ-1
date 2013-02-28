@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ItemLoadoutManager : MonoBehaviour {
 	private bool _movedContainer;
@@ -13,12 +14,17 @@ public class ItemLoadoutManager : MonoBehaviour {
 	int itemHeight = 232;
 	int numVisibleItems = 3;
 	
-	float scaleFactor = 1.15f;
+	int maxItems = 4;
 	
-	InventoryItem[] items;
+	float scaleFactor = 1.15f;
+	float loadoutScaleFactor = 1.5f;
+	
+	List<InventoryItem> items;
 	string[] inventoryNames;
 	
 	UIScrollableHorizontalLayout scrollable;
+	
+	UIScrollableHorizontalLayout loadoutScrollable;
 	
 	int prevPage = -1;
 	
@@ -26,11 +32,11 @@ public class ItemLoadoutManager : MonoBehaviour {
 	void Start() {
 		
 		inventoryNames = SavedData.Inventory.Split(SavedData.Separator[0]);
-		items = new InventoryItem[inventoryNames.Length];
+		items = new List<InventoryItem>();
 		
 		int index = 0;
 		foreach (string s in inventoryNames) {
-			items[index] = (Resources.Load("Prefabs/Loadout Items/"+s) as GameObject).GetComponent<InventoryItem>();
+			items.Add((Resources.Load("Prefabs/Loadout Items/"+s) as GameObject).GetComponent<InventoryItem>());
 			
 			if (index == 0) {
 				itemName.text = items[index].itemName;
@@ -72,7 +78,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 		
 		int count = 0;
 		foreach (string s in inventoryNames) {
-			var button = UIButton.create(s+".png", s+".png", count*(itemWidth*2), 1 );
+			var button = UIButton.create(s+".png", s+".png", 0, 0 );
 			scrollable.addChild( button );
 			
 			//button.onTouchUpInside += OnTouchUp;
@@ -85,16 +91,59 @@ public class ItemLoadoutManager : MonoBehaviour {
 		
 		scrollable.endUpdates();
 		scrollable.endUpdates(); // this is a bug. it shouldnt need to be called twice
+		
+		
+		loadoutScrollable = new UIScrollableHorizontalLayout(Mathf.RoundToInt(itemSpacing/(2*loadoutScaleFactor)));
+		loadoutScrollable.setSize( 20 + width/(loadoutScaleFactor), height/(2*loadoutScaleFactor) );
+		loadoutScrollable.position = new Vector3( 30 + Screen.width/2 - width/(2*loadoutScaleFactor), -(itemHeight/UI.scaleFactor)/2, 2 );
+		loadoutScrollable.locked = true;
+				
+		
 	}
 	
 	void OnTouchUp(UIButton button) {
-		print ("hi "+button.index);
+		if (loadoutScrollable.Children.Count < maxItems) {
+			if (button.index == scrollable.PageNumber) {
+				if (button.index == scrollable.Children.Count-1) {
+					scrollable.scrollToPage(scrollable.PageNumber-1);
+				}
+				
+				items.RemoveAt(button.index);
+				scrollable.removeChild(button, false);
+				
+				button.localScale /= loadoutScaleFactor;
+				
+				loadoutScrollable.addChild(button);
+				
+				button.onTouchDown -= OnTouchUp;
+				button.onTouchDown += OnTouchUpReverse;
+				
+				foreach (UISprite child in scrollable.Children) {
+					if (child.index > button.index)	child.index--;
+				}
+			}
+		}
 	}
 	
-	void Update() {
+	void OnTouchUpReverse(UIButton button) {
+		print ("hi");
+		loadoutScrollable.removeChild(button, false);
 		
-		if (itemName.text != items[scrollable.PageNumber].itemName) {
-			if (prevPage >= 0) scrollable.Children[prevPage].localScale = new Vector3(1,1,1);
+		button.localScale *= loadoutScaleFactor;
+		
+		button.onTouchDown -= OnTouchUpReverse;
+		button.onTouchDown += OnTouchUp;
+		scrollable.addChild(button);
+	}
+	
+	
+	void Update() {
+		if (scrollable.Children.Count == 0) {
+			itemName.text = "";
+			itemDesc.text = "";
+		}
+		else if (itemName.text != items[scrollable.PageNumber].itemName) {
+			if (prevPage >= 0 && prevPage+1 < scrollable.Children.Count) scrollable.Children[prevPage].localScale = new Vector3(1,1,1);
 			scrollable.Children[scrollable.PageNumber].localScale = new Vector3(scaleFactor,scaleFactor,1); 
 			
 			// NaN?
