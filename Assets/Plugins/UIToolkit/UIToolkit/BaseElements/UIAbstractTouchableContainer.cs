@@ -17,7 +17,7 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 	protected const int TOTAL_VELOCITY_SAMPLE_COUNT = 3;
 	protected const float SCROLL_DECELERATION_MODIFIER = 0.93f; // how fast should we slow down
 	protected float TOUCH_MAX_DELTA_FOR_ACTIVATION = 5; // this is the SD setting. the constructor will modify this for HD/XD
-	protected const float CONTENT_TOUCH_DELAY = 0.1f;
+	protected const float CONTENT_TOUCH_DELAY = 0.05f; // allows dragging to happen without registering as a button touch
 	
 	protected bool _isDragging;
 	protected bool _isDraggingPastExtents;
@@ -101,7 +101,7 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 			_scrollPosition -= snapBack;
 			layoutChildren();
 
-			// once we are moving less then a 0.2 pixel stop the animation and hit out target
+			// once we are moving less than 0.2 pixels stop the animation and hit out target
 			if( Mathf.Abs( snapBack ) < 0.2f )
 			{
 				_scrollPosition = targetScrollPosition;
@@ -234,13 +234,16 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 	protected IEnumerator checkDelayedContentTouch()
 	{
 		yield return new WaitForSeconds( CONTENT_TOUCH_DELAY );
-
-		if( _isDragging && Mathf.Abs( _deltaTouch ) < TOUCH_MAX_DELTA_FOR_ACTIVATION )
+		
+			// isDragging causes touches to not register if container is stationary
+		if( /*_isDragging &&*/ Mathf.Abs( _deltaTouch ) < TOUCH_MAX_DELTA_FOR_ACTIVATION )
 		{
 			var fixedTouchPosition = new Vector2( _lastTouch.position.x, Screen.height - _lastTouch.position.y );
+			
 			_activeTouchable = getButtonForScreenPosition( fixedTouchPosition );
-			if( _activeTouchable != null )
+			if( _activeTouchable != null ) {
 				_activeTouchable.onTouchBegan( _lastTouch, fixedTouchPosition );
+			}
 		}
 	}
 	
@@ -366,8 +369,9 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 			if( touchable != null )
 			{
 				ITouchable touched = testTouchable( touchable, touchPosition ); // Recursive
-				if( touched != null )
+				if( touched != null ) {
 					return touched;
+				}
 			}
 		}
 		

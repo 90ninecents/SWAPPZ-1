@@ -65,17 +65,18 @@ public class ItemLoadoutManager : MonoBehaviour {
 		scrollable.pageWidth = itemWidth*scaleFactor;
 		
 		// center the scrollable horizontally
-		scrollable.position = new Vector3( Screen.width/2 - width/2, -Screen.height/2 + height/4, 0 );
+		scrollable.position = new Vector3( Screen.width/2 - width/2, -Screen.height/2 + height/4, 2 );
 		
 		//var blank = UIButton.create(null, null, 0, 0 );
 		//scrollable.addChild(blank);
 		
 		int count = 0;
 		foreach (string s in inventoryNames) {
-			var button = UIButton.create(s+".png", s+".png", count*(itemWidth*2), 0 );
+			var button = UIButton.create(s+".png", s+".png", count*(itemWidth*2), 1 );
 			scrollable.addChild( button );
 			
-			button.onTouchUpInside += OnTouchUp;
+			//button.onTouchUpInside += OnTouchUp;
+			button.onTouchDown += OnTouchUp;
 			
 			count++;
 		}
@@ -87,7 +88,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 	}
 	
 	void OnTouchUp(UIButton button) {
-		print ("hi");
+		print ("hi "+button.index);
 	}
 	
 	void Update() {

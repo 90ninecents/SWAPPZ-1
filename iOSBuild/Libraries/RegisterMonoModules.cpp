@@ -210,6 +210,8 @@ void RegisterMonoModules()
 
 void RegisterAllStrippedInternalCalls ()
 {
+	void Register_UnityEngine_Animation_INTERNAL_CALL_Stop ();
+	Register_UnityEngine_Animation_INTERNAL_CALL_Stop ();
 	void Register_UnityEngine_Animation_Internal_StopByName ();
 	Register_UnityEngine_Animation_Internal_StopByName ();
 	void Register_UnityEngine_Animation_get_isPlaying ();
@@ -490,6 +492,8 @@ void RegisterAllStrippedInternalCalls ()
 	Register_UnityEngine_Component_GetComponents ();
 	void Register_UnityEngine_Component_GetComponentsWithCorrectReturnType ();
 	Register_UnityEngine_Component_GetComponentsWithCorrectReturnType ();
+	void Register_UnityEngine_Component_BroadcastMessage ();
+	Register_UnityEngine_Component_BroadcastMessage ();
 	void Register_UnityEngine_Coroutine_ReleaseCoroutine ();
 	Register_UnityEngine_Coroutine_ReleaseCoroutine ();
 	void Register_UnityEngine_Debug_Internal_Log ();
