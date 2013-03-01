@@ -40,6 +40,6 @@ public class StatsManager : MonoBehaviour {
 	
 	int CalculateScore() {
 		// Score from enemies killed, coins collected, and time in seconds
-		return Game.Score + (Game.Coins*10) - Game.LevelTimeInSeconds;
+		return Mathf.RoundToInt((Game.Score + (Game.Coins*10) - Game.LevelTimeInSeconds)/2);
 	}
 }

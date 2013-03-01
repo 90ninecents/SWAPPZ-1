@@ -333,19 +333,32 @@ public class UISpriteManager : MonoBehaviour
 	/// <summary>
 	/// Adds a new sprite to the mix at the given position
 	/// </summary>
+	public UISprite addSprite( string name, int xPos, int yPos, float xScale, float yScale )
+	{
+		return addSprite( name, xPos, yPos, xScale, yScale, 1, false );
+	}
+
 	public UISprite addSprite( string name, int xPos, int yPos )
 	{
-		return addSprite( name, xPos, yPos, 1, false );
+		return addSprite( name, xPos, yPos, 1, 1, 1, false );
 	}
-
-
+	
+	public UISprite addSprite( string name, int xPos, int yPos, int depth, bool gameObjectOriginInCenter )
+	{
+		return addSprite( name, xPos, yPos, 1, 1, depth, gameObjectOriginInCenter );
+	}
+	
+	public UISprite addSprite( string name, int xPos, int yPos, float xScale, float yScale, int depth )
+	{
+		return addSprite( name, xPos, yPos, xScale, yScale, depth, false );
+	}
+	
 	public UISprite addSprite( string name, int xPos, int yPos, int depth )
 	{
-		return addSprite( name, xPos, yPos, depth, false );
+		return addSprite( name, xPos, yPos, 1, 1, depth, false );
 	}
 
-
-	public UISprite addSprite( string name, int xPos, int yPos, int depth, bool gameObjectOriginInCenter )
+	public UISprite addSprite( string name, int xPos, int yPos, float xScale, float yScale, int depth, bool gameObjectOriginInCenter )
 	{
 #if UNITY_EDITOR
 		// sanity check while in editor
@@ -353,7 +366,7 @@ public class UISpriteManager : MonoBehaviour
 			throw new Exception( "can't find texture details for texture packer sprite:" + name );
 #endif
 		var textureInfo = textureDetails[name];
-		var positionRect = new Rect( xPos, yPos, textureInfo.frame.width, textureInfo.frame.height );
+		var positionRect = new Rect( xPos, yPos, textureInfo.frame.width*xScale, textureInfo.frame.height*yScale );
 
 		return this.addSprite( positionRect, textureInfo.uvRect, depth, gameObjectOriginInCenter );
 	}

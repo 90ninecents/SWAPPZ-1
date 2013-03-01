@@ -17,7 +17,9 @@ public class WaveController : MonoBehaviour {
 	bool paused = false;
 	
 	GUITexture arrow;
-
+	
+	public bool IsPaused { get { return paused; } }
+	
 	void Start () {
 		foreach (GameObject go in waves) {
 			go.SetActiveRecursively(false);
@@ -36,7 +38,6 @@ public class WaveController : MonoBehaviour {
 	
 	void LaunchWave() {
 		if (!paused) {
-			if (waveNumber == 0) Game.EnableSwapping();
 			
 			CancelInvoke("LaunchWave");
 			

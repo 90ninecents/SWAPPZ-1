@@ -54,7 +54,14 @@ public class UIButton : UITouchableSprite
 
 	#endregion;
 
-
+	
+	public void setSpriteImage( string filenameUp, string filenameDown)
+	{
+		uvFrame = manager.uvRectForFilename( filenameUp );
+		highlightedUVframe = manager.uvRectForFilename(filenameDown);
+	}
+	
+	
 	// Sets the uvFrame of the original UISprite and resets the _normalUVFrame for reference when highlighting
 	public override UIUVRect uvFrame
 	{

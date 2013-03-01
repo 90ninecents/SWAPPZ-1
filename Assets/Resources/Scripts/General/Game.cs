@@ -39,6 +39,7 @@ public class Game : MonoBehaviour {
 	bool paused = false;
 	
 	
+	public static WaveController WaveManager { get { return instance.waveController; } }
 	public static PlayerController Player { get { return instance.player; } }
 	public static Transform EnemyGroup { get { return instance.enemyGroupObject; } }
 	public static Transform PlayerGroup { get { return instance.playerGroupObject; } }

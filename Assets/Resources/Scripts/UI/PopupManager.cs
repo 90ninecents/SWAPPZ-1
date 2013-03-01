@@ -9,6 +9,8 @@ public class PopupManager : MonoBehaviour
 	private int scaleFactor;
 	UIAbsoluteLayout hBox;
 	public GameObject[] activateOnClose;
+	public UIToolkit textToolKit;
+	private UITextInstance content;
 	
 	void Start()
 	{	
@@ -54,10 +56,26 @@ public class PopupManager : MonoBehaviour
 		centerize( splinter );
 		StartCoroutine( animateScale( splinter , Vector3.zero , Vector3.one , 0.5f , 2f , Easing.Exponential.easeIn ) );
 		
+		
+//		var text = new UIText( textToolKit , "prototype", "prototype.png" );
+//		text.alignMode = UITextAlignMode.Center;
+//		
+//		// add a text instance that we will animate later
+//		content = text.addTextInstance( "Touch to Move\nSwipe to Attack", 0, 0 , 1 , 0 , Color.black );
+//		content.hidden = true;
+//		StartCoroutine( animateFade( content , 0 , 1 , 0.8f , 2.8f , Easing.Exponential.easeOut ) );
+		
+		
 		hBox = new UIAbsoluteLayout();
 		hBox.addChild( bg , whiteSmear , star1 , brick , whiteBg , circle , yellowSmear , emblem , star2 , splinter );
 		hBox.matchSizeToContentSize();
 		hBox.positionCenter();
+		
+		
+//		content.parentUIObject = hBox;
+//		content.pixelsFromCenter( -10 , 20 );
+		
+		
 		StartCoroutine( animatePosition( hBox , new Vector3( hBox.position.x , -Screen.height - hBox.height , 0 ) , hBox.position ,  0.3f , 1f , Easing.Exponential.easeOut ) );
 	}
 	
@@ -102,6 +120,13 @@ public class PopupManager : MonoBehaviour
 		yield return new WaitForSeconds( delay );
 		sprite.hidden = false;
 		sprite.scaleFromTo( duration, scaleStart , scaleStop , ease );
+	}
+	
+	private IEnumerator animateFade( UITextInstance text, float fadeStart , float fadeStop , float duration , float delay , System.Func<float, float> ease )
+	{
+		yield return new WaitForSeconds( delay );
+		text.hidden = false;
+		text.alphaFromTo( duration , fadeStart , fadeStop , ease );
 	}
 	
 	private void centerize( UISprite sprite )

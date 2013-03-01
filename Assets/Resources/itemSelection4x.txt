@@ -1,0 +1,52 @@
+{"frames": {
+
+"back.png":
+{
+	"frame": {"x":8,"y":1552,"w":336,"h":252},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":336,"h":252},
+	"sourceSize": {"w":334,"h":250}
+},
+"bg.png":
+{
+	"frame": {"x":8,"y":8,"w":2048,"h":1536},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":2048,"h":1536},
+	"sourceSize": {"w":2048,"h":1536}
+},
+"container.png":
+{
+	"frame": {"x":352,"y":1552,"w":260,"h":252},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":4,"w":260,"h":252},
+	"sourceSize": {"w":260,"h":260}
+},
+"info.png":
+{
+	"frame": {"x":2064,"y":8,"w":1304,"h":612},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":1304,"h":612},
+	"sourceSize": {"w":1320,"h":650}
+},
+"play.png":
+{
+	"frame": {"x":8,"y":1812,"w":384,"h":208},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":384,"h":208},
+	"sourceSize": {"w":382,"h":205}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "itemSelection4x.png",
+	"format": "RGBA8888",
+	"size": {"w":4096,"h":2048},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:633ff39c8d737b9ec2381ead794514d4$"
+}
+}

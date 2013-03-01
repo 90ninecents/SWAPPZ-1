@@ -11,6 +11,7 @@ public class ThirdPersonCamera : MonoBehaviour {
 	public void SetTarget(Transform t) {
 		target = t;
 	}
+	
 	/// <summary>
 	/// Sets the new target. If the parameter is the character's transform it will follow the character. 
 	/// If it is null it will lock the camera at the wave point.
@@ -22,9 +23,19 @@ public class ThirdPersonCamera : MonoBehaviour {
     {
 		if (t == null)
 		{
+			// Locked
 			SetTarget(middleOfWave);
+			
+			// Start wave
+			if (Game.WaveManager.IsPaused) Game.WaveManager.TogglePause();
+			
 			return;
 		}
+		
+		// Following player
+		// Pause waves
+		if (!Game.WaveManager.IsPaused) Game.WaveManager.TogglePause();
+		
 		middleOfWave = t;
 		
 		leftCollider = middleOfWave.position - ((waveOffSet * camera.aspect) / 2);		

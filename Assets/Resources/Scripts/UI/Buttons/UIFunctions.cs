@@ -9,7 +9,8 @@ public class UIFunctions {
 	}
 	
 	public static void PauseButton (UIButton obj) {
-		
+		Time.timeScale = 0;
+		GameObject.Find("PauseMenu").SetActiveRecursively(true);
 	}
 	
 	public static void NextButton (UIButton obj) {
