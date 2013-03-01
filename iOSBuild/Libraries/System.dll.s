@@ -13982,14 +13982,14 @@ mono_image_table:
 
 	.long 2
 	.asciz "System"
-	.asciz "EB798D2D-DD8C-4D67-BAF5-4148ADC5B122"
+	.asciz "D5276EC1-24EF-436F-909E-A88B913D3DBA"
 	.asciz ""
 	.asciz "7cec85d7bea7798e"
 	.align 3
 
 	.long 1,2,0,5,0
 	.asciz "mscorlib"
-	.asciz "B7F42375-994B-43FE-8301-D3325E4F8BC4"
+	.asciz "B16DBB1A-C6BD-4BA7-89FA-CCA07E429DE8"
 	.asciz ""
 	.asciz "7cec85d7bea7798e"
 	.align 3
@@ -14014,7 +14014,7 @@ mono_aot_file_info:
 .text
 	.align 2
 mono_assembly_guid:
-	.asciz "EB798D2D-DD8C-4D67-BAF5-4148ADC5B122"
+	.asciz "D5276EC1-24EF-436F-909E-A88B913D3DBA"
 .text
 	.align 2
 mono_aot_version:

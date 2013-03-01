@@ -236,7 +236,7 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 		yield return new WaitForSeconds( CONTENT_TOUCH_DELAY );
 		
 			// isDragging causes touches to not register if container is stationary
-		if( /*_isDragging &&*/ Mathf.Abs( _deltaTouch ) < TOUCH_MAX_DELTA_FOR_ACTIVATION )
+		if( /*_isDragging &&*/ !_isDragging && Mathf.Abs( _deltaTouch ) < TOUCH_MAX_DELTA_FOR_ACTIVATION )
 		{
 			var fixedTouchPosition = new Vector2( _lastTouch.position.x, Screen.height - _lastTouch.position.y );
 			

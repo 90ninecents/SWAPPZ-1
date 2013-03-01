@@ -123,7 +123,6 @@ public class ItemLoadoutManager : MonoBehaviour {
 				items.RemoveAt(button.index);
 				
 				scrollable.removeChild(button, false);
-				scrollable.RefreshLayout();
 				
 				
 				button.localScale /= loadoutScaleFactor;
@@ -145,34 +144,41 @@ public class ItemLoadoutManager : MonoBehaviour {
 	void OnTouchUpReverse(UIButton button) {
 		loadoutScrollable.removeChild(button, false);
 		
-		button.localScale *= loadoutScaleFactor;
+		button.localScale = new Vector3(1,1,1);
+		
+		scrollable.addChild(button);
 		
 		button.onTouchDown -= OnTouchUpReverse;
 		button.onTouchDown += OnTouchUp;
-		scrollable.addChild(button);
 		
 		items.Add(loadoutItems[button.index]);
 		loadoutItems.RemoveAt(button.index);
+		
+		button.index = scrollable.Children.Count-1;
 	}
 	
 	
 	void Update() {
-		if (scrollable.Children.Count == 0) {
-			itemName.text = "";
-			itemDesc.text = "";
-		}
-		else if (itemName.text != items[scrollable.PageNumber].itemName) {
-			if (prevPage >= 0 && prevPage+1 < scrollable.Children.Count) scrollable.Children[prevPage].localScale = new Vector3(1,1,1);
-			scrollable.Children[scrollable.PageNumber].localScale = new Vector3(scaleFactor,scaleFactor,1); 
-			
-			// NaN?
-			//scrollable.Children[scrollable.PageNumber].scaleTo(0, new Vector3(scaleFactor,scaleFactor,1), Easing.Exponential.easeIn);
-			
-			itemName.text = items[scrollable.PageNumber].itemName;
-			itemDesc.text = items[scrollable.PageNumber].description;
-		}
+		print (scrollable.PageNumber+" "+(items.Count-1));
 		
-		prevPage = scrollable.PageNumber;
+		//if (scrollable.PageNumber <= (items.Count-1)) {
+			if (scrollable.Children.Count == 0) {
+				itemName.text = "";
+				itemDesc.text = "";
+			}
+			else if (itemName.text != items[scrollable.PageNumber].itemName) {
+				if (prevPage >= 0 && prevPage+1 < scrollable.Children.Count) scrollable.Children[prevPage].localScale = new Vector3(1,1,1);
+				scrollable.Children[scrollable.PageNumber].localScale = new Vector3(scaleFactor,scaleFactor,1); 
+				
+				// NaN?
+				//scrollable.Children[scrollable.PageNumber].scaleTo(0, new Vector3(scaleFactor,scaleFactor,1), Easing.Exponential.easeIn);
+				
+				itemName.text = items[scrollable.PageNumber].itemName;
+				itemDesc.text = items[scrollable.PageNumber].description;
+			}
+			
+			prevPage = scrollable.PageNumber;
+		//}
 	}
 	
 	private IEnumerator animateScale( UISprite sprite, Vector3 scaleStart, Vector3 scaleStop , float duration , float delay , System.Func<float, float> ease ) {
