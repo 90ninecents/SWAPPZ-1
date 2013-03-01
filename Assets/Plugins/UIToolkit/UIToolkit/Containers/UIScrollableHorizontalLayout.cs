@@ -67,23 +67,23 @@ public class UIScrollableHorizontalLayout : UIAbstractTouchableContainer
 
 	public override void onTouchMoved( Touch touch, Vector2 touchPos )
 	{
+		// increment deltaTouch so we can pass on the touch if necessary
+		_deltaTouch += touch.deltaPosition.x;
+		_lastTouch = touch;
+
+		// once we move too far unhighlight and stop tracking the touchable
+		if( _activeTouchable != null && Mathf.Abs( _deltaTouch ) > TOUCH_MAX_DELTA_FOR_ACTIVATION )
+		{
+			_activeTouchable.onTouchEnded( touch, touchPos, true );
+			_activeTouchable = null;
+		}
+		
 		if (!locked) {
-			// increment deltaTouch so we can pass on the touch if necessary
-			_deltaTouch += touch.deltaPosition.x;
-			_lastTouch = touch;
-	
-			// once we move too far unhighlight and stop tracking the touchable
-			if( _activeTouchable != null && Mathf.Abs( _deltaTouch ) > TOUCH_MAX_DELTA_FOR_ACTIVATION )
-			{
-				_activeTouchable.onTouchEnded( touch, touchPos, true );
-				_activeTouchable = null;
-			}
-	
-	
 			var newOffset = _scrollPosition + touch.deltaPosition.x;
 			
-			// are we dragging above/below the scrollables boundaries?
+			// are we dragging above/below the scrollable's boundaries?
 			_isDraggingPastExtents = ( newOffset > 0 || newOffset < _minEdgeInset.x );
+			Debug.Log(newOffset+" "+_minEdgeInset.x+" "+_contentWidth);
 			
 			// if we are dragging past our extents dragging is no longer 1:1. we apply an exponential falloff
 			if( _isDraggingPastExtents )

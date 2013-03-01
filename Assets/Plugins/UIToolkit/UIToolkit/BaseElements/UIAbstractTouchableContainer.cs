@@ -296,6 +296,10 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 		base.layoutChildren();
 		clipToBounds();
 	}
+	
+	public void RefreshLayout() {
+		layoutChildren();
+	}
 
 
 	public override void transformChanged()
@@ -508,6 +512,13 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 			if( child is ITouchable )
 				child.manager.removeFromTouchables( child as ITouchable );
 		}
+	}
+	
+	public override void removeChild(UISprite child, bool removeFromManager) {
+		base.removeChild(child, removeFromManager);
+		
+		if( !_suspendUpdates )
+			calculateMinMaxInsets();
 	}
 	
 	

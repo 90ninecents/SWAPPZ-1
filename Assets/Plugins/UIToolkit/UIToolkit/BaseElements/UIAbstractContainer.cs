@@ -95,7 +95,7 @@ public abstract class UIAbstractContainer : UIObject, IPositionable
 	/// Removes a child from the container and optionally from it's manager.  If it is removed from
 	/// it's manager it is no longer in existance so be sure to null out any references to it.
 	/// </summary>
-	public void removeChild( UISprite child, bool removeFromManager )
+	public virtual void removeChild( UISprite child, bool removeFromManager )
 	{
 #if UNITY_EDITOR
 		// sanity check while we are in the editor
@@ -103,6 +103,7 @@ public abstract class UIAbstractContainer : UIObject, IPositionable
 			throw new System.Exception( "could not find child in UIAbstractContainer: " + child );
 #endif
 		_children.Remove( child );
+		
 		layoutChildren();
 
 		if( removeFromManager )

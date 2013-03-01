@@ -20,6 +20,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 	float loadoutScaleFactor = 1.5f;
 	
 	List<InventoryItem> items;
+	List<InventoryItem> loadoutItems;
 	string[] inventoryNames;
 	
 	UIScrollableHorizontalLayout scrollable;
@@ -33,6 +34,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 		
 		inventoryNames = SavedData.Inventory.Split(SavedData.Separator[0]);
 		items = new List<InventoryItem>();
+		loadoutItems = new List<InventoryItem>();
 		
 		int index = 0;
 		foreach (string s in inventoryNames) {
@@ -81,7 +83,6 @@ public class ItemLoadoutManager : MonoBehaviour {
 			var button = UIButton.create(s+".png", s+".png", 0, 0 );
 			scrollable.addChild( button );
 			
-			//button.onTouchUpInside += OnTouchUp;
 			button.onTouchDown += OnTouchUp;
 			
 			count++;
@@ -96,10 +97,20 @@ public class ItemLoadoutManager : MonoBehaviour {
 		loadoutScrollable = new UIScrollableHorizontalLayout(Mathf.RoundToInt(itemSpacing/(2*loadoutScaleFactor)));
 		loadoutScrollable.setSize( 20 + width/(loadoutScaleFactor), height/(2*loadoutScaleFactor) );
 		loadoutScrollable.position = new Vector3( 30 + Screen.width/2 - width/(2*loadoutScaleFactor), -(itemHeight/UI.scaleFactor)/2, 2 );
-		loadoutScrollable.locked = true;
-				
 		
+		loadoutScrollable.locked = true;
 	}
+	
+	
+	void OnDisable() {
+		// Write loadout choices to saved data
+		SavedData.ItemLoadout = "";
+		foreach (InventoryItem item in loadoutItems) {
+			if (SavedData.ItemLoadout != "") SavedData.ItemLoadout += "|";
+			SavedData.ItemLoadout += item.name;
+		}
+	}
+	
 	
 	void OnTouchUp(UIButton button) {
 		if (loadoutScrollable.Children.Count < maxItems) {
@@ -108,8 +119,12 @@ public class ItemLoadoutManager : MonoBehaviour {
 					scrollable.scrollToPage(scrollable.PageNumber-1);
 				}
 				
+				loadoutItems.Add(items[button.index]);
 				items.RemoveAt(button.index);
+				
 				scrollable.removeChild(button, false);
+				scrollable.RefreshLayout();
+				
 				
 				button.localScale /= loadoutScaleFactor;
 				
@@ -121,6 +136,8 @@ public class ItemLoadoutManager : MonoBehaviour {
 				foreach (UISprite child in scrollable.Children) {
 					if (child.index > button.index)	child.index--;
 				}
+				
+				
 			}
 		}
 	}
