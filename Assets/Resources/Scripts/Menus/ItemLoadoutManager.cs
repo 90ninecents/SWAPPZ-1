@@ -137,13 +137,12 @@ public class ItemLoadoutManager : MonoBehaviour {
 					if (child.index > button.index)	child.index--;
 				}
 				
-				
+				button.index = loadoutScrollable.Children.Count-1;
 			}
 		}
 	}
 	
 	void OnTouchUpReverse(UIButton button) {
-		print ("hi");
 		loadoutScrollable.removeChild(button, false);
 		
 		button.localScale *= loadoutScaleFactor;
@@ -151,6 +150,9 @@ public class ItemLoadoutManager : MonoBehaviour {
 		button.onTouchDown -= OnTouchUpReverse;
 		button.onTouchDown += OnTouchUp;
 		scrollable.addChild(button);
+		
+		items.Add(loadoutItems[button.index]);
+		loadoutItems.RemoveAt(button.index);
 	}
 	
 	

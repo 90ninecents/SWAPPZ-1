@@ -83,7 +83,6 @@ public class UIScrollableHorizontalLayout : UIAbstractTouchableContainer
 			
 			// are we dragging above/below the scrollable's boundaries?
 			_isDraggingPastExtents = ( newOffset > 0 || newOffset < _minEdgeInset.x );
-			Debug.Log(newOffset+" "+_minEdgeInset.x+" "+_contentWidth);
 			
 			// if we are dragging past our extents dragging is no longer 1:1. we apply an exponential falloff
 			if( _isDraggingPastExtents )
