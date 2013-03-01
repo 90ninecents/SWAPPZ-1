@@ -113,30 +113,32 @@ public class ItemLoadoutManager : MonoBehaviour {
 	
 	
 	void OnTouchUp(UIButton button) {
-		if (loadoutScrollable.Children.Count < maxItems) {
-			if (button.index == scrollable.PageNumber) {
-				if (button.index == scrollable.Children.Count-1) {
-					scrollable.scrollToPage(scrollable.PageNumber-1);
+		if (scrollable.PageNumber <= (items.Count-1)) {
+			if (loadoutScrollable.Children.Count < maxItems) {
+				if (button.index == scrollable.PageNumber) {
+					if (button.index == scrollable.Children.Count-1) {
+						scrollable.scrollToPage(scrollable.PageNumber-1);
+					}
+					
+					loadoutItems.Add(items[button.index]);
+					items.RemoveAt(button.index);
+					
+					scrollable.removeChild(button, false);
+					
+					
+					button.localScale /= loadoutScaleFactor;
+					
+					loadoutScrollable.addChild(button);
+					
+					button.onTouchDown -= OnTouchUp;
+					button.onTouchDown += OnTouchUpReverse;
+					
+					foreach (UISprite child in scrollable.Children) {
+						if (child.index > button.index)	child.index--;
+					}
+					
+					button.index = loadoutScrollable.Children.Count-1;
 				}
-				
-				loadoutItems.Add(items[button.index]);
-				items.RemoveAt(button.index);
-				
-				scrollable.removeChild(button, false);
-				
-				
-				button.localScale /= loadoutScaleFactor;
-				
-				loadoutScrollable.addChild(button);
-				
-				button.onTouchDown -= OnTouchUp;
-				button.onTouchDown += OnTouchUpReverse;
-				
-				foreach (UISprite child in scrollable.Children) {
-					if (child.index > button.index)	child.index--;
-				}
-				
-				button.index = loadoutScrollable.Children.Count-1;
 			}
 		}
 	}
@@ -151,17 +153,23 @@ public class ItemLoadoutManager : MonoBehaviour {
 		button.onTouchDown -= OnTouchUpReverse;
 		button.onTouchDown += OnTouchUp;
 		
+		print (button.index+" "+loadoutItems.Count);
+		
 		items.Add(loadoutItems[button.index]);
 		loadoutItems.RemoveAt(button.index);
+		
+		foreach (UISprite child in loadoutScrollable.Children) {
+			if (child.index > button.index)	child.index--;
+		}
 		
 		button.index = scrollable.Children.Count-1;
 	}
 	
 	
 	void Update() {
-		print (scrollable.PageNumber+" "+(items.Count-1));
+//		print (scrollable.PageNumber+" "+(items.Count-1));
 		
-		//if (scrollable.PageNumber <= (items.Count-1)) {
+		if (scrollable.PageNumber <= (items.Count-1)) {
 			if (scrollable.Children.Count == 0) {
 				itemName.text = "";
 				itemDesc.text = "";
@@ -178,7 +186,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 			}
 			
 			prevPage = scrollable.PageNumber;
-		//}
+		}
 	}
 	
 	private IEnumerator animateScale( UISprite sprite, Vector3 scaleStart, Vector3 scaleStop , float duration , float delay , System.Func<float, float> ease ) {
