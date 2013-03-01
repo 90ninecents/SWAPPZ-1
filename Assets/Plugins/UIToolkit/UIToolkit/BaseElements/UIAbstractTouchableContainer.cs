@@ -15,7 +15,7 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 	protected Vector2 _minEdgeInset; // lets us know how far we can scroll
 	
 	protected const int TOTAL_VELOCITY_SAMPLE_COUNT = 3;
-	protected const float SCROLL_DECELERATION_MODIFIER = 0.93f; // how fast should we slow down
+	protected const float SCROLL_DECELERATION_MODIFIER = 0.9f; // how fast should we slow down
 	protected float TOUCH_MAX_DELTA_FOR_ACTIVATION = 5; // this is the SD setting. the constructor will modify this for HD/XD
 	protected const float CONTENT_TOUCH_DELAY = 0.05f; // allows dragging to happen without registering as a button touch
 	
@@ -101,8 +101,8 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 			_scrollPosition -= snapBack;
 			layoutChildren();
 
-			// once we are moving less than 0.2 pixels stop the animation and hit out target
-			if( Mathf.Abs( snapBack ) < 0.2f )
+			// once we are moving less than 1 pixel stop the animation and hit out target
+			if( Mathf.Abs( snapBack ) < 1f )
 			{
 				_scrollPosition = targetScrollPosition;
 				break;
@@ -111,9 +111,10 @@ public abstract class UIAbstractTouchableContainer : UIAbstractContainer, ITouch
 			yield return null;
 		}
 		
-		layoutChildren();
+		//layoutChildren();
 		
 		_isDraggingPastExtents = false;
+		scrollToNearestPage();
 	}
 	
 	
