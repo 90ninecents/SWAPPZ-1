@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class ItemLoadoutManager : MonoBehaviour {
 	private bool _movedContainer;
-	public UIToolkit textManager;
+	public UIToolkit manager;
 	
 	public GUIText itemName;
 	public GUIText itemDesc;
@@ -26,11 +26,19 @@ public class ItemLoadoutManager : MonoBehaviour {
 	UIScrollableHorizontalLayout scrollable;
 	
 	UIScrollableHorizontalLayout loadoutScrollable;
+	UIHorizontalLayout loadoutHighlights;
 	
 	int prevPage = -1;
 	
 	
 	void Start() {
+		
+		
+		manager.addSprite("bg.png", 0,0, 5);
+		
+		UISprite info = manager.addSprite("info.png", 0, 0, 4);
+		info.localPosition = new Vector3(Screen.width/2 - info.width/2, -Screen.height+info.height, 4);
+		
 		
 		inventoryNames = SavedData.Inventory.Split(SavedData.Separator[0]);
 		items = new List<InventoryItem>();
@@ -73,7 +81,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 		scrollable.pageWidth = itemWidth*scaleFactor;
 		
 		// center the scrollable horizontally
-		scrollable.position = new Vector3( Screen.width/2 - width/2, -Screen.height/2 + height/4, 2 );
+		scrollable.position = new Vector3( Screen.width/2 - width/2, -Screen.height/2 + 75, 2 );
 		
 		//var blank = UIButton.create(null, null, 0, 0 );
 		//scrollable.addChild(blank);
@@ -96,9 +104,19 @@ public class ItemLoadoutManager : MonoBehaviour {
 		
 		loadoutScrollable = new UIScrollableHorizontalLayout(Mathf.RoundToInt(itemSpacing/(2*loadoutScaleFactor)));
 		loadoutScrollable.setSize( 20 + width/(loadoutScaleFactor), height/(2*loadoutScaleFactor) );
-		loadoutScrollable.position = new Vector3( 30 + Screen.width/2 - width/(2*loadoutScaleFactor), -(itemHeight/UI.scaleFactor)/2, 2 );
+		loadoutScrollable.position = new Vector3( 30 + Screen.width/2 - width/(2*loadoutScaleFactor), -(itemHeight/UI.scaleFactor)-25, 2 );
 		
 		loadoutScrollable.locked = true;
+		
+		
+		loadoutHighlights = new UIHorizontalLayout(Mathf.RoundToInt(itemSpacing/(2*loadoutScaleFactor))-23);
+		//loadoutHighlights.setSize( 120 + width/(loadoutScaleFactor), height/(2*loadoutScaleFactor) );
+		loadoutHighlights.position = new Vector3( Screen.width/2 - width/(2*loadoutScaleFactor), -(itemHeight/UI.scaleFactor)-20, 4 );
+		
+		
+		for (int i = 0; i < maxItems; i++) {
+			loadoutHighlights.addChild(UIStateSprite.create(manager, "container.png", 0, 0));
+		}
 	}
 	
 	
