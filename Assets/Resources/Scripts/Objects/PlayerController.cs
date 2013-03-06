@@ -582,7 +582,16 @@ public class PlayerController : MonoBehaviour {
 				
 				sizeModifier 	 *= p.sizeModifier;
 				
-				if (sizeModifier > maxSizeIncrease) sizeModifier = maxSizeIncrease;
+				if (sizeModifier > maxSizeIncrease) {
+					sizeModifier = maxSizeIncrease;
+					
+					// find other size powerup and reset life
+					foreach (Powerup pu in powerups) {
+						if (pu.sizeModifier > 1) pu.ResetLife();
+						powerups.Remove(p);
+						Destroy (p);
+					}
+				}
 				else transform.localScale *= p.sizeModifier;
 				
 				if (IsInvoking("HealthTick")) {
@@ -711,12 +720,7 @@ public class PlayerController : MonoBehaviour {
 		}
 		else result = ArrivalTouch.targetPoint;
 		
-//		print(result);
 		return result;
-	}
-	
-	public void SetPause(bool flag) {
-		print ("pause from player controller");
 	}
 	
 	public void SetPassive(bool flag) {

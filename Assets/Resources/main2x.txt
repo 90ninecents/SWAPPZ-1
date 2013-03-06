@@ -1,0 +1,100 @@
+{"frames": {
+
+"bg.png":
+{
+	"frame": {"x":0,"y":0,"w":1136,"h":768},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1136,"h":768},
+	"sourceSize": {"w":1136,"h":768}
+},
+"don.png":
+{
+	"frame": {"x":1136,"y":276,"w":312,"h":470},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":312,"h":470},
+	"sourceSize": {"w":311,"h":469}
+},
+"lair.png":
+{
+	"frame": {"x":1448,"y":480,"w":336,"h":84},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":336,"h":84},
+	"sourceSize": {"w":335,"h":84}
+},
+"leo.png":
+{
+	"frame": {"x":406,"y":768,"w":622,"h":252},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":622,"h":252},
+	"sourceSize": {"w":622,"h":252}
+},
+"logo.png":
+{
+	"frame": {"x":1448,"y":276,"w":384,"h":128},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":384,"h":128},
+	"sourceSize": {"w":383,"h":128}
+},
+"mike.png":
+{
+	"frame": {"x":1352,"y":746,"w":412,"h":262},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":412,"h":262},
+	"sourceSize": {"w":412,"h":262}
+},
+"play.png":
+{
+	"frame": {"x":1028,"y":768,"w":324,"h":222},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":324,"h":222},
+	"sourceSize": {"w":324,"h":222}
+},
+"raph.png":
+{
+	"frame": {"x":1352,"y":0,"w":420,"h":276},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":2,"w":420,"h":276},
+	"sourceSize": {"w":423,"h":279}
+},
+"right_base.png":
+{
+	"frame": {"x":0,"y":768,"w":406,"h":256},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":406,"h":256},
+	"sourceSize": {"w":406,"h":255}
+},
+"setting.png":
+{
+	"frame": {"x":1136,"y":0,"w":200,"h":144},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":200,"h":144},
+	"sourceSize": {"w":200,"h":144}
+},
+"training.png":
+{
+	"frame": {"x":1448,"y":404,"w":354,"h":76},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":0,"w":354,"h":76},
+	"sourceSize": {"w":354,"h":76}
+}},
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "main2x.png",
+	"format": "RGBA8888",
+	"size": {"w":2048,"h":1024},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:c8a1c25192eaa4a2e77b80be9da4baf7$"
+}
+}

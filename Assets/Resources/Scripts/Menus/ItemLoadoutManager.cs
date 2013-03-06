@@ -33,11 +33,19 @@ public class ItemLoadoutManager : MonoBehaviour {
 	
 	void Start() {
 		
-		
 		manager.addSprite("bg.png", 0,0, 5);
 		
+		
+		UIButton btnBack = UIButton.create(manager, "back.png", "back.png", 0, 0, 4);
+		btnBack.localPosition = new Vector3(0, -Screen.height+btnBack.height, 4);
+		btnBack.onTouchUpInside += UIFunctions.BackButton;
+		
+		UIButton btnPlay = UIButton.create(manager, "play.png", "play.png", 0, 0, 4);
+		btnPlay.localPosition = new Vector3(Screen.width-btnPlay.width, -Screen.height+btnPlay.height, 4);
+		btnPlay.onTouchUpInside += UIFunctions.PlayButton;
+		
 		UISprite info = manager.addSprite("info.png", 0, 0, 4);
-		info.localPosition = new Vector3(Screen.width/2 - info.width/2, -Screen.height+info.height, 4);
+		info.localPosition = new Vector3(Screen.width/2 - info.width/2 - 10, -Screen.height+info.height, 4);
 		
 		
 		inventoryNames = SavedData.Inventory.Split(SavedData.Separator[0]);
@@ -67,7 +75,7 @@ public class ItemLoadoutManager : MonoBehaviour {
 		scrollable.beginUpdates();
 		
 		var height = UI.scaleFactor * itemHeight;
-		var width  = UI.scaleFactor * (itemWidth*numVisibleItems);
+		var width  = Screen.width;
 		
 		// if you plan on making the scrollable wider than the item width you need to set your edgeInsets so that the
 		// left + right inset is equal to the extra width you set
@@ -102,16 +110,18 @@ public class ItemLoadoutManager : MonoBehaviour {
 		scrollable.endUpdates(); // this is a bug. it shouldnt need to be called twice
 		
 		
+		width  = UI.scaleFactor * (itemWidth*numVisibleItems);
+		
 		loadoutScrollable = new UIScrollableHorizontalLayout(Mathf.RoundToInt(itemSpacing/(2*loadoutScaleFactor)));
 		loadoutScrollable.setSize( 20 + width/(loadoutScaleFactor), height/(2*loadoutScaleFactor) );
-		loadoutScrollable.position = new Vector3( 30 + Screen.width/2 - width/(2*loadoutScaleFactor), -(itemHeight/UI.scaleFactor)-25, 2 );
+		loadoutScrollable.position = new Vector3( 30 + Screen.width/2 - width/(2*loadoutScaleFactor), -(itemHeight/UI.scaleFactor)-35, 2 );
 		
 		loadoutScrollable.locked = true;
 		
 		
 		loadoutHighlights = new UIHorizontalLayout(Mathf.RoundToInt(itemSpacing/(2*loadoutScaleFactor))-23);
 		//loadoutHighlights.setSize( 120 + width/(loadoutScaleFactor), height/(2*loadoutScaleFactor) );
-		loadoutHighlights.position = new Vector3( Screen.width/2 - width/(2*loadoutScaleFactor), -(itemHeight/UI.scaleFactor)-20, 4 );
+		loadoutHighlights.position = new Vector3( Screen.width/2 - width/(2*loadoutScaleFactor), -(itemHeight/UI.scaleFactor)-25, 4 );
 		
 		
 		for (int i = 0; i < maxItems; i++) {
@@ -170,8 +180,6 @@ public class ItemLoadoutManager : MonoBehaviour {
 		
 		button.onTouchDown -= OnTouchUpReverse;
 		button.onTouchDown += OnTouchUp;
-		
-		print (button.index+" "+loadoutItems.Count);
 		
 		items.Add(loadoutItems[button.index]);
 		loadoutItems.RemoveAt(button.index);

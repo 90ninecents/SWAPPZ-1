@@ -6,7 +6,7 @@ public class HUDManager : MonoBehaviour
 {
 	
 	public UIToolkit manager;
-	private int scaleFactor;
+	private float scaleFactor = 1.5f;
 	UIAbsoluteLayout hBox;
 	
 	UISprite[] healthNotches;
@@ -19,19 +19,17 @@ public class HUDManager : MonoBehaviour
 	void Start()
 	{
 		healthNotches = new UISprite[15];
-		
-		scaleFactor = UI.scaleFactor;
 		//Time.timeScale = 0;
 		
 		
-		UIButton b = UIButton.create(manager, "hud_pause.png", "hud_pause.png", Screen.width/2-60, 20);
+		UIButton b = UIButton.create(manager, "hud_pause.png", "hud_pause.png", Screen.width-120, 20);
 		b.onTouchUp += Pause;
 		
 		
 		
-		UISprite portraitBG = manager.addSprite("hud_02.png", 0,0,2);
-		portraitBG.localScale /= 2;
-		portraitBG.localPosition = new Vector3(0,-20,1);
+		UISprite portraitBG = manager.addSprite("hud_02.png", 0,0,0);
+		portraitBG.localScale /= scaleFactor;
+		portraitBG.localPosition = new Vector3(0,-20,10);
 		
 		portrait = null;
 		switch (Game.Player.playerName) {
@@ -50,19 +48,18 @@ public class HUDManager : MonoBehaviour
 		}
 		
 		portrait.onTouchUpInside += Swap;
-		portrait.localScale /= 2;
-		portrait.localPosition = new Vector3(-17,0,0);
+		portrait.localScale /= scaleFactor;
+		portrait.localPosition = new Vector3(-17,0,1);
 		
-		int healthPosStartX = 75;
+		int healthPosStartX = Mathf.FloorToInt(portrait.width/2)+15;
 		int healthPosStartY = -35;
 		
-		var healthBase = manager.addSprite("hud_health_base.png", 0, 0, 2);
-		healthBase.localScale /= 2;
-		healthBase.localPosition = new Vector3(healthPosStartX, healthPosStartY, 3);
-		//UIStateSprite healthHolder = UIStateSprite.create("hud_health_base.png", 0, 0);
+		var healthBase = manager.addSprite("hud_health_base.png", 0, 0, 1);
+		healthBase.localScale /= scaleFactor;
+		healthBase.localPosition = new Vector3(healthPosStartX+1, healthPosStartY, 3);
 		
 		string number;
-		int offset = -12;//11;
+		int offset = -14;//-12;
 		
 		for (int i = 0; i < healthNotches.Length; i++) {
 			number = "";
@@ -74,11 +71,11 @@ public class HUDManager : MonoBehaviour
 			if (i > 0) {
 				pos = Mathf.RoundToInt(healthNotches[i-1].position.x + healthNotches[i-1].width + offset);
 			}
-			else pos = healthPosStartX-1;
+			else pos = healthPosStartX;
 			
 			healthNotches[i] = manager.addSprite("hud_health_"+number+".png", pos, 0, 0);
-			healthNotches[i].localScale /= 2;
-			healthNotches[i].localPosition = new Vector3(pos+6, healthPosStartY-17, 2);
+			healthNotches[i].localScale /= scaleFactor;
+			healthNotches[i].localPosition = new Vector3(pos+6, healthPosStartY-23, 2);
 		}
 		
 		//UIButton pauseButton = UIButton.create("hud_pause.png", "hud_pause.png", Screen.width/2, 50);
@@ -96,26 +93,26 @@ public class HUDManager : MonoBehaviour
 		if (pauseMenu != null) pauseMenu.gameObject.SetActiveRecursively(true);
 	}
 	
-	void Swap(UIButton button) {
+	public void Swap(UIButton button) {
 		if (swapCarousel != null && (Game.WaveManager.waveNumber > 0 || Game.EnemyGroup.childCount > 0)) {
-			//if (swapCarousel.active) Game.UnfreezeAll();
-			//else Game.FreezeAll();
 			
 			swapCarousel.SetActiveRecursively(!swapCarousel.active);
 			
-			switch (Game.Player.playerName) {
-			case "Donatello":
-				portrait.setSpriteImage("head_don.png", "head_don.png");
-				break;
-			case "Michelangelo":
-				portrait.setSpriteImage("head_mike.png", "head_mike.png");
-				break;
-			case "Leonardo":
-				portrait.setSpriteImage("head_leo.png", "head_leo.png");
-				break;
-			case "Raphael":
-				portrait.setSpriteImage("head_raph.png", "head_raph.png");
-				break;
+			if (!swapCarousel.active) {
+				switch (Game.Player.playerName) {
+				case "Donatello":
+					portrait.setSpriteImage("head_don.png", "head_don.png");
+					break;
+				case "Michelangelo":
+					portrait.setSpriteImage("head_mike.png", "head_mike.png");
+					break;
+				case "Leonardo":
+					portrait.setSpriteImage("head_leo.png", "head_leo.png");
+					break;
+				case "Raphael":
+					portrait.setSpriteImage("head_raph.png", "head_raph.png");
+					break;
+				}
 			}
 		}
 	}
@@ -123,8 +120,8 @@ public class HUDManager : MonoBehaviour
 	void Update() {
 		int health = Mathf.FloorToInt(Game.Player.HealthPercentage * healthNotches.Length);
 		
-		for (int i = 0; i < healthNotches.Length; i++) {
-			healthNotches[i].hidden = !(i <= health);
+		for (int i = 1; i < healthNotches.Length+1; i++) {
+			healthNotches[i-1].hidden = !(i <= health);
 		}
 	}
 }

@@ -18,10 +18,20 @@ public class UIFunctions {
 		Application.LoadLevel(Application.loadedLevel+1);
 	}
 	
+	public static void PlayButton (UIButton obj) {
+		StartLoadingGraphic();
+		Application.LoadLevel(SavedData.CurrentLevel);
+	}
+	
 	public static void BackButton (UIButton obj) {
 		StartLoadingGraphic();
 		Application.LoadLevel(Application.loadedLevel-1);
-	}	
+	}
+	
+	public static void GoToAR(UIButton button) {
+		StartLoadingGraphic();
+		Application.LoadLevel("ARScanScene");
+	}
 	
 	static void StartLoadingGraphic() {
 		GameObject loader = Object.Instantiate(Resources.Load("Prefabs/UI/LoadingGraphic")) as GameObject;
@@ -33,3 +43,7 @@ public class UIFunctions {
 		}
 	}
 }
+
+
+//andrew@swappzinteractive.com
+//william1972

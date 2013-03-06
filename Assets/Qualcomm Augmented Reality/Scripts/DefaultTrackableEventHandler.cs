@@ -82,12 +82,10 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
     {
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>();
 		
-		
-		
         // Enable rendering:
-        foreach (Renderer component in rendererComponents) {
-            component.enabled = true;
-        }
+//        foreach (Renderer component in rendererComponents) {
+//            component.enabled = true;
+//        }
 		
 		foreach (GameObject go in activeOnTrack) {
 			go.SetActiveRecursively(true);
@@ -117,9 +115,9 @@ public class DefaultTrackableEventHandler : MonoBehaviour,
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>();
 
         // Disable rendering:
-        foreach (Renderer component in rendererComponents) {
-            component.enabled = false;
-        }
+//        foreach (Renderer component in rendererComponents) {
+//            component.enabled = false;
+//        }
 		
 		foreach (GameObject go in activeOnTrack) {
 			go.SetActiveRecursively(false);

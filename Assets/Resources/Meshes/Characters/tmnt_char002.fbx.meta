@@ -6,6 +6,7 @@ ModelImporter:
     4300002: tmnt_wep_002
     4300004: tmnt_wep_002_2
     7400000: Take 001 //// tmnt_char002
+    7400002: death_Michelangelo //// tmnt_char002
   serializedVersion: 10
   materials:
     importMaterials: 1
@@ -20,7 +21,12 @@ ModelImporter:
     animationPositionError: .5
     animationScaleError: .5
     animationWrapMode: 0
-    clipAnimations: []
+    clipAnimations:
+    - name: death_Michelangelo
+      firstFrame: 155
+      lastFrame: 185
+      wrapMode: 0
+      loop: 0
   meshes:
     lODScreenPercentages: []
     globalScale: 1.5

@@ -17,6 +17,8 @@ public class Carousel : MonoBehaviour {
 	Transform selectedItem;
 	public Transform SelectedItem { get { return selectedItem; } }
 	
+	public bool selectCarousel = false;
+	
 	Vector3 inheritedRotation;
 
 	// Use this for initialization
@@ -79,6 +81,14 @@ public class Carousel : MonoBehaviour {
 			
 			if (lockedPopup != null && SelectedItem.name.Substring(SelectedItem.name.Length-6, 6) == "Locked") {
 				lockedPopup.gameObject.SetActiveRecursively(true);
+			}
+			else if (SelectedItem.name.Substring(SelectedItem.name.Length-6, 6) != "Locked") {
+				if (selectCarousel) UIFunctions.NextButton(null);
+				else {
+					HUDManager hud = GameObject.FindGameObjectWithTag("HUD").GetComponent<HUDManager>();
+					hud.Swap(null);
+					transform.parent.gameObject.SetActiveRecursively(false);
+				}
 			}
 		}
 	}

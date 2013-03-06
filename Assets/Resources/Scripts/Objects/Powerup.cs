@@ -42,4 +42,8 @@ public class Powerup : MonoBehaviour {
 		life++;
 		expired = (life >= durationInSeconds);
 	}
+	
+	public void ResetLife() {
+		life = 0;
+	}
 }
